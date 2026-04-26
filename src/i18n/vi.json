@@ -1,0 +1,62 @@
+{
+  "_todo": "TODO: cần người bản ngữ tiếng Việt rà soát trước khi đưa vào sử dụng (bản dịch khởi đầu do Claude)",
+  "app": {
+    "name": "ChineseLearn",
+    "tagline": "Nền tảng học tiếng Trung cho nhân viên Viện dưỡng lão Ai-Ai"
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "learn": "Học",
+    "practice": "Luyện tập",
+    "homework": "Bài tập",
+    "profile": "Cá nhân",
+    "logout": "Đăng xuất"
+  },
+  "home": {
+    "welcome": "Chào mừng đến với ChineseLearn",
+    "subtitle": "Từ Bopomofo đến TOCFL trôi chảy",
+    "startLearning": "Bắt đầu học",
+    "myCourses": "Khóa học của tôi",
+    "todayMission": "Nhiệm vụ hôm nay",
+    "streak": "Học liên tục {days} ngày"
+  },
+  "auth": {
+    "login": {
+      "title": "Đăng nhập",
+      "subtitle": "Chọn vai trò để bắt đầu",
+      "username": "Tên đăng nhập",
+      "usernamePlaceholder": "Tên đăng nhập hoặc mã nhân viên",
+      "password": "Mật khẩu",
+      "passwordPlaceholder": "Nhập mật khẩu",
+      "submit": "Đăng nhập",
+      "submitting": "Đang đăng nhập…",
+      "forgotPassword": "Quên mật khẩu?",
+      "errorInvalid": "Tên đăng nhập hoặc mật khẩu không đúng"
+    },
+    "roles": {
+      "learner": "Học viên",
+      "learnerDesc": "Nhân viên chăm sóc / văn phòng",
+      "teacher": "Giáo viên",
+      "teacherDesc": "Giáo viên tiếng Trung / chấm bài",
+      "admin": "Quản trị viên",
+      "adminDesc": "Nhân sự / Quản lý cơ sở"
+    }
+  },
+  "common": {
+    "loading": "Đang tải…",
+    "save": "Lưu",
+    "cancel": "Huỷ",
+    "back": "Quay lại",
+    "continue": "Tiếp tục",
+    "language": "Ngôn ngữ"
+  },
+  "levels": {
+    "ZHUYIN": "Lớp dự bị Bopomofo",
+    "A1_BEGINNER": "A1 Sơ cấp",
+    "A2_BASIC": "A2 Cơ bản",
+    "B1_INTERMEDIATE": "B1 Trung cấp",
+    "B2_UPPER_INTER": "B2 Trung cao cấp",
+    "C1_ADVANCED": "C1 Cao cấp",
+    "C2_PROFICIENT": "C2 Thành thạo"
+  }
+}

@@ -146,7 +146,7 @@ export async function routeAiRequest(req: AiRequest): Promise<AiResponse> {
   let fallbackUsed = false;
 
   for (let i = 0; i < providers.length; i++) {
-    const provider = providers[i];
+    const provider = providers[i]!;
     try {
       const response = await callProvider(provider, req, config.timeout);
       return {

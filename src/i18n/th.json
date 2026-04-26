@@ -1,0 +1,62 @@
+{
+  "_todo": "TODO: ต้องให้ผู้ใช้ภาษาไทยเจ้าของภาษาตรวจทานก่อนใช้งานจริง (แปลเริ่มต้นโดย Claude)",
+  "app": {
+    "name": "ChineseLearn",
+    "tagline": "แพลตฟอร์มเรียนภาษาจีนสำหรับพนักงานบ้านพักคนชราไอ่ไอ่"
+  },
+  "nav": {
+    "home": "หน้าหลัก",
+    "learn": "เรียน",
+    "practice": "ฝึกฝน",
+    "homework": "การบ้าน",
+    "profile": "โปรไฟล์",
+    "logout": "ออกจากระบบ"
+  },
+  "home": {
+    "welcome": "ยินดีต้อนรับ",
+    "subtitle": "เริ่มจาก ㄅㄆㄇ จนถึงระดับ TOCFL คล่องแคล่ว",
+    "startLearning": "เริ่มเรียน",
+    "myCourses": "คอร์สของฉัน",
+    "todayMission": "ภารกิจวันนี้",
+    "streak": "เรียนต่อเนื่อง {days} วัน"
+  },
+  "auth": {
+    "login": {
+      "title": "เข้าสู่ระบบ",
+      "subtitle": "เลือกบทบาทเพื่อเริ่มต้น",
+      "username": "ชื่อผู้ใช้",
+      "usernamePlaceholder": "ชื่อผู้ใช้หรือรหัสพนักงาน",
+      "password": "รหัสผ่าน",
+      "passwordPlaceholder": "กรอกรหัสผ่าน",
+      "submit": "เข้าสู่ระบบ",
+      "submitting": "กำลังเข้าสู่ระบบ…",
+      "forgotPassword": "ลืมรหัสผ่าน?",
+      "errorInvalid": "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
+    },
+    "roles": {
+      "learner": "ผู้เรียน",
+      "learnerDesc": "ผู้ดูแล / พนักงานออฟฟิศ",
+      "teacher": "ครู",
+      "teacherDesc": "ครูสอนภาษาจีน / ตรวจการบ้าน",
+      "admin": "ผู้ดูแลระบบ",
+      "adminDesc": "ฝ่ายบุคคล / ผู้จัดการสถาน"
+    }
+  },
+  "common": {
+    "loading": "กำลังโหลด…",
+    "save": "บันทึก",
+    "cancel": "ยกเลิก",
+    "back": "ย้อนกลับ",
+    "continue": "ต่อไป",
+    "language": "ภาษา"
+  },
+  "levels": {
+    "ZHUYIN": "ระดับเตรียม จู้อิน",
+    "A1_BEGINNER": "A1 เริ่มต้น",
+    "A2_BASIC": "A2 พื้นฐาน",
+    "B1_INTERMEDIATE": "B1 ขั้นกลาง",
+    "B2_UPPER_INTER": "B2 ขั้นกลางสูง",
+    "C1_ADVANCED": "C1 ขั้นสูง",
+    "C2_PROFICIENT": "C2 เชี่ยวชาญ"
+  }
+}

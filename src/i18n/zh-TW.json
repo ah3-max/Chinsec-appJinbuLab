@@ -1,0 +1,61 @@
+{
+  "app": {
+    "name": "ChineseLearn",
+    "tagline": "愛愛院員工繁體中文學習平台"
+  },
+  "nav": {
+    "home": "首頁",
+    "learn": "學習",
+    "practice": "練習",
+    "homework": "作業",
+    "profile": "個人",
+    "logout": "登出"
+  },
+  "home": {
+    "welcome": "歡迎來到中文學習平台",
+    "subtitle": "從注音 ㄅㄆㄇ 開始，到 TOCFL 流利級",
+    "startLearning": "開始學習",
+    "myCourses": "我的課程",
+    "todayMission": "今日任務",
+    "streak": "連續打卡 {days} 天"
+  },
+  "auth": {
+    "login": {
+      "title": "登入",
+      "subtitle": "選擇身份開始學習",
+      "username": "帳號",
+      "usernamePlaceholder": "請輸入帳號或員工編號",
+      "password": "密碼",
+      "passwordPlaceholder": "請輸入密碼",
+      "submit": "登入",
+      "submitting": "登入中…",
+      "forgotPassword": "忘記密碼？",
+      "errorInvalid": "帳號或密碼錯誤"
+    },
+    "roles": {
+      "learner": "學員",
+      "learnerDesc": "照服員、辦公室員工",
+      "teacher": "老師",
+      "teacherDesc": "中文老師、批改作業",
+      "admin": "管理員",
+      "adminDesc": "HR、機構主管"
+    }
+  },
+  "common": {
+    "loading": "載入中…",
+    "save": "儲存",
+    "cancel": "取消",
+    "back": "返回",
+    "continue": "繼續",
+    "language": "語言"
+  },
+  "levels": {
+    "ZHUYIN": "注音預備",
+    "A1_BEGINNER": "A1 入門",
+    "A2_BASIC": "A2 基礎",
+    "B1_INTERMEDIATE": "B1 進階",
+    "B2_UPPER_INTER": "B2 高階",
+    "C1_ADVANCED": "C1 流利",
+    "C2_PROFICIENT": "C2 精通"
+  }
+}

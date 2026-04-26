@@ -1,0 +1,62 @@
+{
+  "_todo": "TODO: perlu ditinjau oleh penutur asli bahasa Indonesia sebelum digunakan (terjemahan awal oleh Claude)",
+  "app": {
+    "name": "ChineseLearn",
+    "tagline": "Platform belajar bahasa Mandarin untuk staf Panti Jompo Ai-Ai"
+  },
+  "nav": {
+    "home": "Beranda",
+    "learn": "Belajar",
+    "practice": "Latihan",
+    "homework": "Pekerjaan rumah",
+    "profile": "Profil",
+    "logout": "Keluar"
+  },
+  "home": {
+    "welcome": "Selamat datang di ChineseLearn",
+    "subtitle": "Dari Bopomofo hingga TOCFL fasih",
+    "startLearning": "Mulai belajar",
+    "myCourses": "Kursus saya",
+    "todayMission": "Misi hari ini",
+    "streak": "Streak {days} hari"
+  },
+  "auth": {
+    "login": {
+      "title": "Masuk",
+      "subtitle": "Pilih peran untuk memulai",
+      "username": "Nama pengguna",
+      "usernamePlaceholder": "Nama pengguna atau ID karyawan",
+      "password": "Kata sandi",
+      "passwordPlaceholder": "Masukkan kata sandi",
+      "submit": "Masuk",
+      "submitting": "Sedang masuk…",
+      "forgotPassword": "Lupa kata sandi?",
+      "errorInvalid": "Nama pengguna atau kata sandi salah"
+    },
+    "roles": {
+      "learner": "Pembelajar",
+      "learnerDesc": "Pengasuh / staf kantor",
+      "teacher": "Guru",
+      "teacherDesc": "Guru bahasa Mandarin / penilaian",
+      "admin": "Admin",
+      "adminDesc": "HR / Manajer fasilitas"
+    }
+  },
+  "common": {
+    "loading": "Memuat…",
+    "save": "Simpan",
+    "cancel": "Batal",
+    "back": "Kembali",
+    "continue": "Lanjut",
+    "language": "Bahasa"
+  },
+  "levels": {
+    "ZHUYIN": "Kelas Persiapan Zhuyin",
+    "A1_BEGINNER": "A1 Pemula",
+    "A2_BASIC": "A2 Dasar",
+    "B1_INTERMEDIATE": "B1 Menengah",
+    "B2_UPPER_INTER": "B2 Menengah Atas",
+    "C1_ADVANCED": "C1 Lanjut",
+    "C2_PROFICIENT": "C2 Mahir"
+  }
+}
