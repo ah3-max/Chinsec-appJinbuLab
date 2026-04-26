@@ -1,0 +1,152 @@
+// ============================================
+// 05_speaking_writing.prisma — 口說錄音、手寫筆跡
+// ============================================
+
+// ----------------------------------------
+// SpeakingRecord 口說錄音記錄
+// ----------------------------------------
+model SpeakingRecord {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  
+  // 關聯來源 (練習題或自由錄音)
+  exerciseId      String?
+  conversationId  String?               // AI 對話練習
+  
+  // === 音檔 ===
+  audioUrl    String                    // MinIO
+  audioFormat String                    // mp3/wav/webm
+  durationSec Float
+  fileSize    Int                       // bytes
+  
+  // === 目標文字 (要跟讀的內容) ===
+  targetText  String?
+  targetZhuyin String?
+  targetPinyin String?
+  
+  // === STT 辨識結果 ===
+  transcript      String?               // Whisper 辨識
+  transcriptLang  String?               // 偵測到的語言
+  sttModel        String?               // whisper-large-v3
+  sttConfidence   Float?                // 辨識置信度
+  
+  // === 發音評分 (AI 分析) ===
+  pronunciationScore Float?             // 發音準確度 0-100
+  toneScore          Float?             // 聲調準確度
+  fluencyScore       Float?             // 流暢度
+  rhythmScore        Float?             // 節奏
+  overallScore       Float?
+  
+  // === 詳細分析 ===
+  phoneticErrors Json?                  // [{position, expected, actual}]
+  toneErrors     Json?                  // 聲調錯誤
+  aiAnalysis     Json?                  // AI 完整分析
+  aiSuggestions  String?                // 改進建議
+  aiSuggestionsI18n Json?
+  
+  // === 母語干擾分析 (進階) ===
+  l1Interference String?                // 偵測到的母語干擾類型
+  
+  recordedAt  DateTime @default(now())
+
+  @@index([userId, recordedAt])
+  @@index([exerciseId])
+  @@map("speaking_records")
+}
+
+// ----------------------------------------
+// HandwritingRecord 手寫筆跡記錄
+// ----------------------------------------
+// 用途：
+// 1. 漢字書寫練習評分
+// 2. 防抄襲 (筆順、節奏)
+// 3. 訓練資料收集 (預留)
+// ----------------------------------------
+model HandwritingRecord {
+  id          String   @id @default(cuid())
+  userId      String
+  exerciseId  String?
+  submissionId String?
+  
+  // === 目標 ===
+  targetCharacter String?               // 要寫的漢字
+  targetText      String?               // 要寫的句子/段落
+  
+  // === 手寫資料 ===
+  imageUrl    String                    // 最終圖片 (MinIO)
+  strokes     Json                      // 筆畫資料
+  // strokes 結構:
+  // [
+  //   {
+  //     points: [{x, y, pressure, t}, ...],
+  //     startTime: timestamp,
+  //     endTime: timestamp,
+  //     duration: ms
+  //   }
+  // ]
+  
+  totalStrokes  Int
+  totalDuration Int                     // 總書寫時間 ms
+  canvasWidth   Int
+  canvasHeight  Int
+  
+  // === OCR 辨識 ===
+  ocrText       String?
+  ocrConfidence Float?
+  ocrModel      String?
+  
+  // === 評分 ===
+  // 字形評分
+  shapeScore    Float?                  // 字形相似度
+  // 筆順評分
+  strokeOrderCorrect Boolean?
+  strokeOrderScore   Float?
+  // 結構評分
+  structureScore Float?                 // 字的結構 (左右/上下比例)
+  
+  overallScore  Float?
+  feedback      Json?                   // 具體建議
+  
+  recordedAt    DateTime @default(now())
+
+  @@index([userId, recordedAt])
+  @@index([targetCharacter])
+  @@map("handwriting_records")
+}
+
+// ----------------------------------------
+// VoicePrint 聲紋特徵 (預留 - 防代考)
+// ----------------------------------------
+model VoicePrint {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  
+  embeddings  Json                      // 聲紋向量
+  modelVersion String
+  
+  sampleCount Int      @default(0)      // 樣本數
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("voice_prints")
+}
+
+// ----------------------------------------
+// HandwritingPrint 筆跡特徵 (預留 - 防代寫)
+// ----------------------------------------
+model HandwritingPrint {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  
+  features    Json                      // 筆跡特徵向量
+  modelVersion String
+  
+  sampleCount Int      @default(0)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("handwriting_prints")
+}

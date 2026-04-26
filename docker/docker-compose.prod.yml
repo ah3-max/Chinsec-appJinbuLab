@@ -1,0 +1,164 @@
+version: '3.9'
+
+# ============================================
+# ChineseLearn 生產環境 (R770 內網部署)
+# ============================================
+# 啟動：docker compose -f docker/docker-compose.prod.yml up -d
+# ============================================
+
+name: chinese-learn-prod
+
+services:
+  # ----------------------------------------
+  # Next.js App
+  # ----------------------------------------
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: chinese-learn-app
+    restart: unless-stopped
+    ports:
+      - "3003:3003"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://chinese_learn:${POSTGRES_PASSWORD}@postgres:5432/chinese_learn
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      AUTH_SECRET: ${AUTH_SECRET}
+      LM_STUDIO_BASE_URL: ${LM_STUDIO_BASE_URL}
+      LM_STUDIO_API_KEY: ${LM_STUDIO_API_KEY}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://192.168.1.214:11434}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      NETWORK_MODE: ${NETWORK_MODE:-internal}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    networks:
+      - chinese-learn-net
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3003/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ----------------------------------------
+  # PostgreSQL
+  # ----------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: chinese-learn-postgres-prod
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: chinese_learn
+      POSTGRES_USER: chinese_learn
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: Asia/Taipei
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backups:/backups
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U chinese_learn"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - chinese-learn-net
+
+  # ----------------------------------------
+  # Redis
+  # ----------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: chinese-learn-redis-prod
+    restart: unless-stopped
+    command: >
+      redis-server
+      --appendonly yes
+      --requirepass ${REDIS_PASSWORD}
+      --maxmemory 1gb
+      --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - chinese-learn-net
+
+  # ----------------------------------------
+  # MinIO
+  # ----------------------------------------
+  minio:
+    image: minio/minio:latest
+    container_name: chinese-learn-minio-prod
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - chinese-learn-net
+
+  # ----------------------------------------
+  # Nginx 反向代理 + SSL
+  # ----------------------------------------
+  nginx:
+    image: nginx:alpine
+    container_name: chinese-learn-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+      - ./nginx/logs:/var/log/nginx
+    depends_on:
+      - app
+    networks:
+      - chinese-learn-net
+
+  # ----------------------------------------
+  # Cloudflare Tunnel (外網存取，不需開 port)
+  # 啟用：docker compose --profile external up -d
+  # ----------------------------------------
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: chinese-learn-cloudflared
+    restart: unless-stopped
+    profiles:
+      - external
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    networks:
+      - chinese-learn-net
+
+volumes:
+  postgres_data:
+    name: chinese-learn-postgres-prod-data
+  redis_data:
+    name: chinese-learn-redis-prod-data
+  minio_data:
+    name: chinese-learn-minio-prod-data
+
+networks:
+  chinese-learn-net:
+    name: chinese-learn-prod-network
+    driver: bridge

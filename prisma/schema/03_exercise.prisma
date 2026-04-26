@@ -1,0 +1,195 @@
+// ============================================
+// 03_exercise.prisma — 練習題、答題記錄、SRS 間隔重複
+// ============================================
+
+// ----------------------------------------
+// Exercise 練習題 (各種題型)
+// ----------------------------------------
+model Exercise {
+  id          String   @id @default(cuid())
+  lessonId    String
+  lesson      Lesson   @relation(fields: [lessonId], references: [id])
+  
+  type        ExerciseType
+  difficulty  Int      @default(1)      // 1-5
+  
+  // === 題目內容 (依題型結構不同) ===
+  prompt      Json                      // 題目主體 (text/audio/image)
+  options     Json?                     // 選項 (MCQ/MATCH)
+  answer      Json                      // 標準答案
+  
+  // === 多語提示 ===
+  hint        String?                   // 提示
+  hintI18n    Json?                     // 多語提示
+  explanation String?                   // 解析
+  explanationI18n Json?
+  
+  // === 多媒體 ===
+  audioUrl    String?
+  imageUrl    String?
+  videoUrl    String?
+  
+  // === 評分 ===
+  maxScore    Int      @default(10)
+  passingScore Int     @default(6)
+  timeLimit   Int?                      // 秒
+  
+  // === 標籤 ===
+  skillsTrained String[]                // ["listening", "vocab"]
+  tags          String[]
+  
+  orderIndex  Int      @default(0)
+  isActive    Boolean  @default(true)
+  
+  // 反向關聯
+  attempts    UserAttempt[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([lessonId])
+  @@index([type])
+  @@map("exercises")
+}
+
+// ----------------------------------------
+// UserAttempt 答題記錄
+// ----------------------------------------
+model UserAttempt {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  exerciseId  String
+  exercise    Exercise @relation(fields: [exerciseId], references: [id])
+  
+  // === 學員作答 ===
+  userAnswer  Json
+  isCorrect   Boolean
+  score       Int
+  
+  // === 行為分析 (用於防作弊) ===
+  timeSpentSec     Int               // 作答秒數
+  attemptCount     Int      @default(1)  // 第幾次嘗試
+  hintUsed         Boolean  @default(false)
+  windowBlurCount  Int      @default(0)  // 視窗失焦次數
+  pasteDetected    Boolean  @default(false) // 偵測到貼上
+  
+  // === 裝置資訊 ===
+  device      String?                   // mobile/tablet/desktop
+  ipAddress   String?
+  
+  attemptedAt DateTime @default(now())
+
+  @@index([userId, exerciseId])
+  @@index([userId, attemptedAt])
+  @@map("user_attempts")
+}
+
+// ----------------------------------------
+// SrsSchedule 間隔重複排程 (Anki SM-2 算法)
+// ----------------------------------------
+// 核心概念：根據答對情況動態調整下次複習時間
+// ----------------------------------------
+model SrsSchedule {
+  id              String     @id @default(cuid())
+  userId          String
+  user            User       @relation(fields: [userId], references: [id])
+  
+  // 學習目標 (詞彙、語法、句子三選一)
+  targetType      SrsTargetType  // VOCABULARY/GRAMMAR/SENTENCE
+  vocabularyId    String?
+  vocabulary      Vocabulary?    @relation(fields: [vocabularyId], references: [id])
+  grammarId       String?
+  sentenceId      String?
+  
+  // === SM-2 演算法欄位 ===
+  easeFactor      Float      @default(2.5)  // 簡易係數
+  intervalDays    Int        @default(1)    // 下次間隔天數
+  repetitions     Int        @default(0)    // 已複習次數
+  
+  // === 排程 ===
+  lastReviewedAt  DateTime?
+  nextReviewAt    DateTime
+  
+  // === 學習狀態 ===
+  status          SrsStatus  @default(NEW)  // NEW/LEARNING/REVIEW/MASTERED/SUSPENDED
+  
+  // === 統計 ===
+  totalAttempts   Int        @default(0)
+  correctAttempts Int        @default(0)
+  lastQuality     Int?                      // 0-5 (上次答題品質)
+  
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@unique([userId, vocabularyId])
+  @@index([userId, nextReviewAt])
+  @@index([userId, status])
+  @@map("srs_schedules")
+}
+
+// ----------------------------------------
+// 列舉
+// ----------------------------------------
+enum ExerciseType {
+  // === 注音/發音類 ===
+  ZHUYIN_RECOGNITION  // 認注音 (聽聲音選注音)
+  ZHUYIN_PRODUCTION   // 寫注音 (看字寫注音)
+  TONE_DISCRIMINATION // 聲調辨識
+  PRONUNCIATION       // 跟讀發音 (錄音評分)
+  
+  // === 詞彙類 ===
+  VOCAB_MCQ           // 詞彙選擇題 (看中文選翻譯)
+  VOCAB_MCQ_REVERSE   // 看翻譯選中文
+  VOCAB_MATCH         // 配對題
+  VOCAB_LISTEN_CHOOSE // 聽音選字
+  VOCAB_FLASHCARD     // 字卡 (SRS 用)
+  
+  // === 語法類 ===
+  GRAMMAR_MCQ         // 語法選擇
+  GRAMMAR_FILL        // 填空題
+  GRAMMAR_ARRANGE     // 排列詞語
+  GRAMMAR_TRANSFORM   // 句型轉換
+  
+  // === 聽力類 ===
+  LISTEN_DIALOGUE_MCQ // 聽對話選答案
+  LISTEN_FILL         // 聽寫填空
+  LISTEN_DICTATION    // 完全聽寫
+  
+  // === 閱讀類 ===
+  READ_COMPREHENSION  // 閱讀理解
+  READ_TRUE_FALSE     // 是非題
+  
+  // === 口說類 ===
+  SPEAK_REPEAT        // 跟讀
+  SPEAK_RESPOND       // 回答問題 (錄音)
+  SPEAK_DESCRIBE      // 看圖說話
+  SPEAK_DIALOGUE      // 角色扮演對話
+  
+  // === 寫作類 ===
+  WRITE_HANZI         // 手寫漢字 (Canvas)
+  WRITE_SENTENCE      // 寫句子
+  WRITE_PARAGRAPH     // 寫段落
+  WRITE_COMPOSITION   // 寫作文
+  
+  // === 互動類 ===
+  DRAG_DROP           // 拖曳排序
+  IMAGE_LABELING      // 圖片標籤
+  SCENARIO_CHOICE     // 情境選擇
+}
+
+enum SrsTargetType {
+  VOCABULARY
+  GRAMMAR
+  SENTENCE
+  CHARACTER
+}
+
+enum SrsStatus {
+  NEW          // 新項目
+  LEARNING     // 學習中
+  REVIEW       // 複習中
+  MASTERED     // 已掌握
+  SUSPENDED    // 暫停
+  LEECH        // 頻繁答錯
+}

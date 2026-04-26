@@ -1,0 +1,342 @@
+// ============================================
+// 02_curriculum.prisma — 課程結構與內容
+// ============================================
+// 階層：Course → Stage → Lesson → Skill → Exercise
+// 內容類型：注音、詞彙、語法、句子、情境對話
+// ============================================
+
+// ----------------------------------------
+// Course 課程 (整個級別 e.g. A1 入門級)
+// ----------------------------------------
+model Course {
+  id          String   @id @default(cuid())
+  code        String   @unique          // A1 / A2 / B1 / ZHUYIN / SCENARIO_ELDERCARE
+  title       String                    // 入門級 - 從零開始學中文
+  description String?
+  level       Level
+  category    CourseCategory            // GENERAL / SCENARIO
+  
+  // 多語系標題 (學員看自己母語)
+  titleI18n       Json?                 // {th, vi, id, en}
+  descriptionI18n Json?
+  
+  iconUrl     String?
+  coverImage  String?
+  themeColor  String?                   // #4F46E5
+  
+  // 學習目標
+  estimatedHours  Int                   // 建議學習時數
+  vocabularyCount Int                   // 涵蓋詞彙數
+  tocflTarget     String?               // 對應 TOCFL Band
+  
+  orderIndex      Int      @default(0)
+  isPublished     Boolean  @default(false)
+  publishedAt     DateTime?
+  
+  stages          Stage[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([level])
+  @@index([category])
+  @@map("courses")
+}
+
+// ----------------------------------------
+// Stage 階段 (e.g. 1.1 問候與自我介紹)
+// ----------------------------------------
+model Stage {
+  id          String   @id @default(cuid())
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id])
+  
+  code        String                    // 1.1 / 1.2 / ZH-01
+  title       String                    // 問候與自我介紹
+  titleI18n   Json?
+  description String?
+  
+  iconUrl     String?
+  
+  orderIndex  Int      @default(0)
+  
+  // 解鎖條件 (e.g. 前一階段達 80%)
+  unlockRequirement Json?               // {prevStageId, minScore: 80}
+  
+  // 此階段的 Boss 關
+  hasBossLevel    Boolean  @default(true)
+  
+  lessons     Lesson[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([courseId, code])
+  @@index([courseId])
+  @@map("stages")
+}
+
+// ----------------------------------------
+// Lesson 單元課 (闖關地圖中的一個關卡)
+// ----------------------------------------
+model Lesson {
+  id          String   @id @default(cuid())
+  stageId     String
+  stage       Stage    @relation(fields: [stageId], references: [id])
+  
+  code        String                    // L01-01 (Stage 1 - Lesson 1)
+  title       String                    // 你好！自我介紹
+  titleI18n   Json?
+  description String?
+  
+  type        LessonType                // VOCAB / GRAMMAR / DIALOGUE / LISTENING / WRITING / BOSS
+  difficulty  Int      @default(1)      // 1-5
+  
+  // 學習內容 (JSON 結構化)
+  content     Json                      // 教學重點、文法說明、例句
+  
+  // 預期學習時間
+  estimatedMinutes Int  @default(10)
+  
+  // XP 獎勵
+  xpReward    Int      @default(10)
+  bonusXp     Int      @default(5)      // 完美過關額外
+  
+  // 關連的詞彙、語法、情境對話
+  vocabularies LessonVocabulary[]
+  grammars     LessonGrammar[]
+  dialogues    LessonDialogue[]
+  
+  // 練習題
+  exercises    Exercise[]
+  
+  // 作業
+  homeworks    Homework[]
+  
+  orderIndex   Int     @default(0)
+  isPublished  Boolean @default(false)
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([stageId, code])
+  @@index([stageId])
+  @@index([type])
+  @@map("lessons")
+}
+
+// ----------------------------------------
+// Vocabulary 詞彙 (核心資料庫)
+// ----------------------------------------
+model Vocabulary {
+  id           String   @id @default(cuid())
+  
+  // === 中文呈現 ===
+  hanzi        String                    // 漢字 (繁體)
+  hanziSimplified String?                // 簡體 (預留)
+  zhuyin       String                    // ㄋㄧˇ ㄏㄠˇ
+  pinyin       String                    // nǐ hǎo
+  
+  // === 詞性 ===
+  partOfSpeech String?                   // n. v. adj. ...
+  
+  // === 多語系翻譯 ===
+  translations Json                      // {th: "สวัสดี", vi: "xin chào", id: "halo", en: "hello"}
+  
+  // === 等級分類 ===
+  level        Level
+  tocflBand    String?                   // A1/A2/B1...
+  frequency    Int       @default(0)     // 詞頻排名
+  
+  // === 主題分類 ===
+  category     String                    // greeting/eldercare/office/daily/family/food
+  tags         String[]
+  
+  // === 例句 ===
+  exampleSentences ExampleSentence[]
+  
+  // === 多媒體 ===
+  audioUrl     String?                   // 標準發音
+  audioSlowUrl String?                   // 慢速發音
+  imageUrl     String?                   // 圖片輔助
+  
+  // === 字源/字形 (進階學習) ===
+  strokeCount  Int?
+  strokeOrder  Json?                     // 筆畫順序 SVG path
+  radicals     String?                   // 部首
+  etymology    String?                   // 字源說明
+  
+  // === 關聯 ===
+  lessons      LessonVocabulary[]
+  
+  // === 學習者進度 (反向關聯) ===
+  srsSchedules SrsSchedule[]
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([level])
+  @@index([category])
+  @@index([hanzi])
+  @@map("vocabularies")
+}
+
+// 詞彙與單元的多對多關係
+model LessonVocabulary {
+  id           String     @id @default(cuid())
+  lessonId     String
+  lesson       Lesson     @relation(fields: [lessonId], references: [id])
+  vocabularyId String
+  vocabulary   Vocabulary @relation(fields: [vocabularyId], references: [id])
+  
+  isCore       Boolean    @default(true) // 核心詞 / 擴充詞
+  orderIndex   Int        @default(0)
+  
+  @@unique([lessonId, vocabularyId])
+  @@index([lessonId])
+  @@map("lesson_vocabularies")
+}
+
+// ----------------------------------------
+// ExampleSentence 例句
+// ----------------------------------------
+model ExampleSentence {
+  id           String     @id @default(cuid())
+  vocabularyId String?
+  vocabulary   Vocabulary? @relation(fields: [vocabularyId], references: [id])
+  
+  hanzi        String                    // 你好，請問你叫什麼名字？
+  zhuyin       String?
+  pinyin       String?
+  translations Json                      // {th, vi, id, en}
+  
+  audioUrl     String?
+  level        Level
+  category     String?                   // 同 vocabulary category
+  
+  createdAt    DateTime @default(now())
+
+  @@index([vocabularyId])
+  @@index([level])
+  @@map("example_sentences")
+}
+
+// ----------------------------------------
+// Grammar 語法點
+// ----------------------------------------
+model Grammar {
+  id          String   @id @default(cuid())
+  code        String   @unique          // GR-A1-001
+  title       String                    // 「是」字句
+  pattern     String                    // 主語 + 是 + 名詞
+  description String                    // 說明
+  
+  descriptionI18n Json?                 // 多語說明
+  
+  level       Level
+  difficulty  Int      @default(1)
+  
+  examples    Json                      // [{hanzi, translation, audio}]
+  commonMistakes Json?                  // 常見錯誤
+  
+  audioUrl    String?
+  videoUrl    String?
+  
+  lessons     LessonGrammar[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([level])
+  @@map("grammars")
+}
+
+model LessonGrammar {
+  id        String  @id @default(cuid())
+  lessonId  String
+  lesson    Lesson  @relation(fields: [lessonId], references: [id])
+  grammarId String
+  grammar   Grammar @relation(fields: [grammarId], references: [id])
+  
+  orderIndex Int    @default(0)
+  
+  @@unique([lessonId, grammarId])
+  @@map("lesson_grammars")
+}
+
+// ----------------------------------------
+// Dialogue 情境對話 (養老院/辦公室/日常)
+// ----------------------------------------
+model Dialogue {
+  id          String   @id @default(cuid())
+  code        String   @unique          // DL-ELDER-001
+  title       String                    // 早安問候老人家
+  scenario    String                    // eldercare-morning-greeting
+  
+  level       Level
+  category    String                    // eldercare/office/daily
+  
+  // 對話腳本
+  script      Json                      // [{speaker, hanzi, zhuyin, translation, audio}]
+  
+  // 語境說明
+  context        String?
+  contextI18n    Json?
+  culturalNotes  String?                // 文化注意事項
+  
+  audioUrl    String?                   // 完整對話音檔
+  videoUrl    String?
+  
+  // 關鍵詞彙與語法
+  keyVocabularies String[]              // vocabulary IDs
+  keyGrammars     String[]              // grammar IDs
+  
+  lessons     LessonDialogue[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([level])
+  @@index([category])
+  @@map("dialogues")
+}
+
+model LessonDialogue {
+  id         String   @id @default(cuid())
+  lessonId   String
+  lesson     Lesson   @relation(fields: [lessonId], references: [id])
+  dialogueId String
+  dialogue   Dialogue @relation(fields: [dialogueId], references: [id])
+  
+  orderIndex Int      @default(0)
+  
+  @@unique([lessonId, dialogueId])
+  @@map("lesson_dialogues")
+}
+
+// ----------------------------------------
+// 列舉
+// ----------------------------------------
+enum CourseCategory {
+  ZHUYIN              // 注音
+  GENERAL             // 通用級別 A1-C2
+  SCENARIO_ELDERCARE  // 養老院照護情境
+  SCENARIO_OFFICE     // 辦公室商用情境
+  SCENARIO_DAILY      // 日常生活情境
+  EXAM_PREP           // 考試準備 (TOCFL 模擬)
+}
+
+enum LessonType {
+  ZHUYIN_INTRO        // 注音介紹
+  ZHUYIN_PRACTICE     // 注音練習
+  VOCAB               // 詞彙課
+  GRAMMAR             // 語法課
+  DIALOGUE            // 對話課
+  LISTENING           // 聽力課
+  READING             // 閱讀課
+  WRITING             // 寫作課
+  SPEAKING            // 口說課
+  REVIEW              // 複習
+  BOSS                // Boss 關 (階段測驗)
+  CULTURE             // 文化課
+}

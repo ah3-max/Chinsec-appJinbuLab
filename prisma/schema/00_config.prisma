@@ -1,0 +1,16 @@
+// ============================================
+// 00_config.prisma — Generator 與 Datasource
+// ============================================
+// 採用 Prisma 5+ Multi-file Schema (prismaSchemaFolder)
+// 所有 model 拆分至 prisma/schema/ 子檔
+// ============================================
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema", "fullTextSearch", "prismaSchemaFolder"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}

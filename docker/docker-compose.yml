@@ -1,0 +1,169 @@
+version: '3.9'
+
+# ============================================
+# ChineseLearn 開發環境 Docker Compose
+# 適用：本機開發、Mac Mini M4、MacBook Pro
+# ============================================
+# 啟動：docker compose -f docker/docker-compose.yml up -d
+# 停止：docker compose -f docker/docker-compose.yml down
+# 重置：docker compose -f docker/docker-compose.yml down -v
+# ============================================
+
+name: chinese-learn
+
+services:
+  # ----------------------------------------
+  # PostgreSQL 16 - 主要資料庫
+  # ----------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: chinese-learn-postgres
+    restart: unless-stopped
+    ports:
+      - "5435:5432"   # 對外 5435，避開其他本機 PostgreSQL 實例
+    environment:
+      POSTGRES_DB: chinese_learn
+      POSTGRES_USER: chinese_learn
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-chinese_learn_dev_pwd}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+      TZ: Asia/Taipei
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U chinese_learn -d chinese_learn"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - chinese-learn-net
+
+  # ----------------------------------------
+  # Redis 7 - 快取 + BullMQ 排程
+  # ----------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: chinese-learn-redis
+    restart: unless-stopped
+    ports:
+      - "6381:6379"   # 對外 6381，避開 6379/6380
+    command: >
+      redis-server
+      --appendonly yes
+      --requirepass ${REDIS_PASSWORD:-chinese_learn_redis_pwd}
+      --maxmemory 512mb
+      --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - chinese-learn-net
+
+  # ----------------------------------------
+  # MinIO - S3 相容物件儲存
+  # 用於：音檔、手寫圖、作業繳交、PDF 教材
+  # ----------------------------------------
+  minio:
+    image: minio/minio:latest
+    container_name: chinese-learn-minio
+    restart: unless-stopped
+    ports:
+      - "9000:9000"   # API
+      - "9001:9001"   # Console (瀏覽器 UI)
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-chinese_learn_minio_pwd}
+      MINIO_BROWSER_REDIRECT_URL: http://localhost:9001
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - chinese-learn-net
+
+  # ----------------------------------------
+  # MinIO Bucket 自動建立
+  # ----------------------------------------
+  minio-init:
+    image: minio/mc:latest
+    container_name: chinese-learn-minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set local http://minio:9000 ${MINIO_ROOT_USER:-minioadmin} ${MINIO_ROOT_PASSWORD:-chinese_learn_minio_pwd};
+      mc mb -p local/chinese-learn-audio || true;
+      mc mb -p local/chinese-learn-handwriting || true;
+      mc mb -p local/chinese-learn-homework || true;
+      mc mb -p local/chinese-learn-textbook-pdf || true;
+      mc anonymous set download local/chinese-learn-audio;
+      echo 'MinIO buckets ready';
+      exit 0;
+      "
+    networks:
+      - chinese-learn-net
+
+  # ----------------------------------------
+  # pgAdmin (選用) - 資料庫圖形管理
+  # 啟用：docker compose --profile tools up -d
+  # ----------------------------------------
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: chinese-learn-pgadmin
+    restart: unless-stopped
+    profiles:
+      - tools
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@chinese-learn.local
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - chinese-learn-net
+
+  # ----------------------------------------
+  # Redis Commander (選用)
+  # ----------------------------------------
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: chinese-learn-redis-commander
+    restart: unless-stopped
+    profiles:
+      - tools
+    ports:
+      - "8081:8081"
+    environment:
+      REDIS_HOSTS: local:redis:6379:0:${REDIS_PASSWORD:-chinese_learn_redis_pwd}
+    depends_on:
+      - redis
+    networks:
+      - chinese-learn-net
+
+volumes:
+  postgres_data:
+    name: chinese-learn-postgres-data
+  redis_data:
+    name: chinese-learn-redis-data
+  minio_data:
+    name: chinese-learn-minio-data
+  pgadmin_data:
+    name: chinese-learn-pgadmin-data
+
+networks:
+  chinese-learn-net:
+    name: chinese-learn-network
+    driver: bridge

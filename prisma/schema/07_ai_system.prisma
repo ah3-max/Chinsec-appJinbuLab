@@ -1,0 +1,198 @@
+// ============================================
+// 07_ai_system.prisma — AI 對話、批改記錄、系統
+// ============================================
+
+// ----------------------------------------
+// AiConversation AI 老師對話練習
+// ----------------------------------------
+model AiConversation {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  
+  // 對話設定
+  scenario    String                    // greeting/eldercare/office
+  level       Level
+  goal        String?                   // 練習目標
+  
+  // 系統提示 (動態調整難度)
+  systemPrompt    String  @db.Text
+  
+  // 訊息記錄
+  messages    Json                      // [{role, content, timestamp, audioUrl}]
+  
+  // === 評估指標 ===
+  turnCount       Int     @default(0)
+  vocabUsed       String[]              // 用到的詞彙 ID
+  grammarUsed     String[]              // 用到的語法 ID
+  errorsCount     Int     @default(0)
+  
+  // === AI 模型 ===
+  modelProvider   String                // lm-studio/ollama/anthropic
+  modelName       String
+  totalTokens     Int     @default(0)
+  
+  // === 評語 ===
+  finalFeedback   String? @db.Text
+  finalScore      Float?
+  
+  startedAt       DateTime @default(now())
+  endedAt         DateTime?
+  durationSec     Int?
+
+  @@index([userId, startedAt])
+  @@index([scenario])
+  @@map("ai_conversations")
+}
+
+// ----------------------------------------
+// AiGradeLog AI 批改日誌 (稽核用)
+// ----------------------------------------
+model AiGradeLog {
+  id              String   @id @default(cuid())
+  
+  targetType      String                // submission/exercise/speaking/handwriting
+  targetId        String
+  
+  modelProvider   String
+  modelName       String
+  
+  prompt          String   @db.Text
+  rawResponse     String   @db.Text
+  parsedResult    Json
+  
+  inputTokens     Int?
+  outputTokens    Int?
+  costEstimate    Decimal? @db.Decimal(10, 6)
+  
+  durationMs      Int
+  success         Boolean
+  errorMessage    String?
+  
+  createdAt       DateTime @default(now())
+
+  @@index([targetType, targetId])
+  @@index([createdAt])
+  @@map("ai_grade_logs")
+}
+
+// ----------------------------------------
+// Notification 通知
+// ----------------------------------------
+model Notification {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  
+  type        String                    // homework_due/achievement/feedback/system
+  title       String
+  titleI18n   Json?
+  body        String?
+  bodyI18n    Json?
+  
+  link        String?                   // 點擊跳轉的路徑
+  iconUrl     String?
+  
+  isRead      Boolean  @default(false)
+  readAt      DateTime?
+  
+  // 推播狀態
+  pushSent    Boolean  @default(false)
+  pushSentAt  DateTime?
+  
+  createdAt   DateTime @default(now())
+
+  @@index([userId, isRead])
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+// ----------------------------------------
+// SystemConfig 系統設定 (可動態調整)
+// ----------------------------------------
+model SystemConfig {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       Json
+  description String?
+  category    String?                   // ai/auth/grading/...
+  
+  updatedBy   String?
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+
+  @@map("system_configs")
+}
+
+// ----------------------------------------
+// AuditLog 稽核日誌
+// ----------------------------------------
+model AuditLog {
+  id          String   @id @default(cuid())
+  userId      String?
+  
+  action      String                    // CREATE/UPDATE/DELETE/LOGIN/...
+  resource    String                    // user/homework/exercise...
+  resourceId  String?
+  
+  before      Json?
+  after       Json?
+  
+  ipAddress   String?
+  userAgent   String?
+  
+  createdAt   DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([resource, resourceId])
+  @@map("audit_logs")
+}
+
+// ----------------------------------------
+// HeartbeatStatus OpenClaw 整合
+// ----------------------------------------
+model HeartbeatStatus {
+  id          String   @id @default(cuid())
+  
+  service     String                    // chinese-learn-app/chinese-learn-ai
+  status      String                    // OK/WARNING/CRITICAL/FATAL
+  
+  metrics     Json                      // {activeUsers, queueLength, dbConnections}
+  message     String?
+  
+  reportedAt  DateTime @default(now())
+
+  @@index([service, reportedAt])
+  @@map("heartbeat_statuses")
+}
+
+// ----------------------------------------
+// IntegrationSync 外部系統同步記錄
+// (預留 HR-IMS / LTC-IMS)
+// ----------------------------------------
+model IntegrationSync {
+  id              String   @id @default(cuid())
+  
+  targetSystem    String                // hr-ims/ltc-ims
+  syncType        String                // user/performance/bonus
+  direction       String                // push/pull/bidirectional
+  
+  recordCount     Int      @default(0)
+  successCount    Int      @default(0)
+  failureCount    Int      @default(0)
+  
+  payload         Json?
+  response        Json?
+  errors          Json?
+  
+  status          String                // PENDING/SUCCESS/PARTIAL/FAILED
+  
+  startedAt       DateTime
+  finishedAt      DateTime?
+  durationMs      Int?
+  
+  createdAt       DateTime @default(now())
+
+  @@index([targetSystem, startedAt])
+  @@map("integration_syncs")
+}

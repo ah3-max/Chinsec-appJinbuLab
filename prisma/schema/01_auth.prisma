@@ -1,0 +1,245 @@
+// ============================================
+// 01_auth.prisma — 帳號、角色、權限、養老院
+// ============================================
+// 核心：員工 → 班級 → 老師
+// 預留：HR-IMS / LTC-IMS 統一帳號接口
+// ============================================
+
+// ----------------------------------------
+// User 使用者 (學員/老師/管理員)
+// ----------------------------------------
+model User {
+  id              String    @id @default(cuid())
+
+  // === 基本身份 ===
+  username        String    @unique          // 登入帳號
+  email           String?   @unique
+  passwordHash    String                     // bcrypt
+  phoneNumber     String?
+  fullName        String                     // 中文/英文全名
+  preferredName   String?                    // 暱稱
+  avatarUrl       String?
+
+  // === 多國籍員工資訊 ===
+  nationality     Nationality                // TW/TH/VN/ID/PH/MY/OTHER
+  nativeLanguage  String                     // 母語代碼 zh-TW/th/vi/id
+  uiLanguage      String    @default("zh-TW") // 介面語言
+  workPermitId    String?                    // 工作許可證號
+  passportNo      String?                    // 護照號碼 (加密儲存)
+
+  // === 系統角色 ===
+  role            UserRole  @default(LEARNER)
+  status          UserStatus @default(ACTIVE)
+
+  // === 組織關聯 ===
+  facilityId      String?
+  facility        Facility? @relation(fields: [facilityId], references: [id])
+  department      String?                    // 部門 (照護/行政/廚房...)
+  position        String?                    // 職位
+
+  // === 學習狀態 ===
+  currentLevel    Level     @default(ZHUYIN) // 目前等級
+  currentStageId  String?                    // 目前所在階段
+  totalXp         Int       @default(0)      // 總經驗值
+  weeklyXp        Int       @default(0)
+  streakDays      Int       @default(0)      // 連續學習天數
+  lastStreakDate  DateTime?
+  totalStudyMin   Int       @default(0)      // 累計學習分鐘
+  lastActiveAt    DateTime?
+
+  // === HR/績效相關 ===
+  employeeId      String?   @unique          // 員工編號 (對應 HR)
+  hireDate        DateTime?
+  
+  // === 預留整合接口 ===
+  hrSyncId        String?   @unique          // 外部 HR-IMS 對應 ID
+  ltcImsSyncId    String?   @unique          // LTC-IMS 對應 ID
+  externalIds     Json?                      // 其他系統 ID 對應
+
+  // === 隱私與同意 ===
+  voiceConsent    Boolean   @default(false)  // 同意語音資料用於訓練
+  imageConsent    Boolean   @default(false)  // 同意手寫筆跡用於訓練
+  privacySigned   DateTime?
+
+  // === 標準時間戳 ===
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+
+  // === 反向關聯 ===
+  enrollments         Enrollment[]
+  attempts            UserAttempt[]
+  submissions         Submission[]
+  speakingRecords     SpeakingRecord[]
+  examAttempts        ExamAttempt[]
+  achievements        UserAchievement[]
+  performances        PerformanceMetric[]
+  aiConversations     AiConversation[]
+  taughtClasses       Class[]              @relation("TeacherClasses")
+  managedFacilities   Facility[]           @relation("FacilityManagers")
+  notifications       Notification[]
+  sessions            Session[]
+  srsSchedules        SrsSchedule[]
+  loginLogs           LoginLog[]
+
+  @@index([nationality])
+  @@index([role, status])
+  @@index([facilityId])
+  @@index([currentLevel])
+  @@index([employeeId])
+  @@map("users")
+}
+
+// ----------------------------------------
+// Facility 養老院 (愛愛/湖水綠)
+// ----------------------------------------
+model Facility {
+  id              String   @id @default(cuid())
+  code            String   @unique          // AAY-WH (愛愛萬華) / HSL-A20
+  name            String                    // 愛愛院（萬華）
+  shortName       String                    // 愛愛
+  group           String                    // 愛愛/湖水綠
+  address         String?
+  bedCount        Int?                      // 床位數
+  
+  // 主管
+  managers        User[]   @relation("FacilityManagers")
+  
+  // 員工
+  staff           User[]
+  classes         Class[]
+
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("facilities")
+}
+
+// ----------------------------------------
+// Class 班級 (老師管理多名學員)
+// ----------------------------------------
+model Class {
+  id              String       @id @default(cuid())
+  name            String                    // 愛愛院 泰籍 A1 班
+  description     String?
+  level           Level                     // 對應級別
+  
+  facilityId      String?
+  facility        Facility?    @relation(fields: [facilityId], references: [id])
+  
+  teacherId       String
+  teacher         User         @relation("TeacherClasses", fields: [teacherId], references: [id])
+  
+  // 學員
+  enrollments     Enrollment[]
+  
+  // 班級作業
+  homeworks       Homework[]
+  
+  startDate       DateTime?
+  endDate         DateTime?
+  isActive        Boolean      @default(true)
+  
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@index([teacherId])
+  @@index([facilityId])
+  @@map("classes")
+}
+
+// ----------------------------------------
+// Enrollment 選課關係
+// ----------------------------------------
+model Enrollment {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  classId     String
+  class       Class    @relation(fields: [classId], references: [id])
+  
+  enrolledAt  DateTime @default(now())
+  completedAt DateTime?
+  
+  @@unique([userId, classId])
+  @@index([userId])
+  @@index([classId])
+  @@map("enrollments")
+}
+
+// ----------------------------------------
+// Session 登入會話 (NextAuth)
+// ----------------------------------------
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expires      DateTime
+  ipAddress    String?
+  userAgent    String?
+  device       String?  // mobile/desktop/tablet
+  
+  @@index([userId])
+  @@map("sessions")
+}
+
+// ----------------------------------------
+// LoginLog 登入記錄 (安全稽核)
+// ----------------------------------------
+model LoginLog {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  success     Boolean
+  ipAddress   String?
+  userAgent   String?
+  failReason  String?
+  loggedAt    DateTime @default(now())
+  
+  @@index([userId, loggedAt])
+  @@map("login_logs")
+}
+
+// ----------------------------------------
+// 列舉
+// ----------------------------------------
+enum UserRole {
+  LEARNER          // 學員 (員工)
+  TEACHER          // 中文老師
+  FACILITY_MGR     // 養老院主管
+  HR               // 人資
+  ADMIN            // 系統管理員
+  SUPER_ADMIN      // 超級管理員
+}
+
+enum UserStatus {
+  ACTIVE           // 啟用
+  SUSPENDED        // 暫停
+  ON_LEAVE         // 請假
+  INACTIVE         // 停用
+  ARCHIVED         // 已歸檔
+}
+
+enum Nationality {
+  TW   // 台灣
+  TH   // 泰國
+  VN   // 越南
+  ID   // 印尼
+  PH   // 菲律賓
+  MY   // 馬來西亞
+  KH   // 柬埔寨
+  MM   // 緬甸
+  OTHER
+}
+
+enum Level {
+  ZHUYIN           // 0. 注音預備
+  A1_BEGINNER      // 1. 入門 (TOCFL 1)
+  A2_BASIC         // 2. 基礎 (TOCFL 2)
+  B1_INTERMEDIATE  // 3. 進階 (TOCFL 3)
+  B2_UPPER_INTER   // 4. 高階 (TOCFL 4)
+  C1_ADVANCED      // 5. 流利 (TOCFL 5)
+  C2_PROFICIENT    // 6. 精通 (TOCFL 6)
+}

@@ -1,0 +1,84 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/
+
+# Testing
+coverage/
+.nyc_output
+
+# Next.js
+.next/
+out/
+build/
+dist/
+
+# Production
+*.tgz
+*.tar.gz
+
+# Misc
+.DS_Store
+*.pem
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vercel
+.vercel
+
+# Typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Prisma
+prisma/migrations/dev/
+
+# Docker
+docker/data/
+docker/volumes/
+
+# Uploads & Generated
+public/uploads/
+public/audio/generated/
+public/handwriting/
+
+# Logs
+logs/
+*.log
+
+# Cache
+.cache/
+.turbo/
+.eslintcache
+
+# OS
+Thumbs.db
+
+# 個人筆記與內部文件 (避免上傳到公開 repo)
+NOTES.md
+TODO_PRIVATE.md
+*.pdf
+!docs/*.pdf
+
+# AI 模型快取
+.ai-cache/
+
+# 課本掃描檔 (敏感)
+content/scanned/
+content/raw-pdf/

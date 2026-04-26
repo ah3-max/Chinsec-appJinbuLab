@@ -1,0 +1,276 @@
+// ============================================
+// 06_exam_kpi.prisma — 模擬考、徽章、績效獎金
+// ============================================
+
+// ----------------------------------------
+// MockExam 模擬考試 (TOCFL 對應)
+// ----------------------------------------
+model MockExam {
+  id          String   @id @default(cuid())
+  code        String   @unique          // TOCFL-1-LISTENING / TOCFL-2-READING
+  title       String                    // TOCFL 入門級聽力模擬
+  titleI18n   Json?
+  description String?
+  
+  level       Level                     // 對應級別
+  type        ExamType                  // LISTENING/READING/WRITING/SPEAKING
+  
+  // 考試結構
+  totalQuestions Int
+  durationMin    Int                    // 限時
+  passingScore   Int
+  maxScore       Int
+  
+  // 題組
+  questions   ExamQuestion[]
+  
+  // 證書
+  issueCertificate Boolean @default(false)
+  certificateTemplate Json?
+  
+  isActive    Boolean  @default(true)
+  isPublished Boolean  @default(false)
+  
+  attempts    ExamAttempt[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([level])
+  @@index([type])
+  @@map("mock_exams")
+}
+
+model ExamQuestion {
+  id          String   @id @default(cuid())
+  examId      String
+  exam        MockExam @relation(fields: [examId], references: [id])
+  
+  type        ExerciseType              // 重用練習題型
+  prompt      Json
+  options     Json?
+  answer      Json
+  
+  audioUrl    String?
+  imageUrl    String?
+  
+  score       Int      @default(1)
+  orderIndex  Int      @default(0)
+  
+  createdAt   DateTime @default(now())
+
+  @@index([examId])
+  @@map("exam_questions")
+}
+
+// ----------------------------------------
+// ExamAttempt 考試嘗試記錄
+// ----------------------------------------
+model ExamAttempt {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  examId      String
+  exam        MockExam @relation(fields: [examId], references: [id])
+  
+  // 作答
+  answers     Json                      // 完整答案
+  
+  // 評分
+  totalScore     Int
+  listeningScore Int?
+  readingScore   Int?
+  writingScore   Int?
+  speakingScore  Int?
+  
+  passed         Boolean
+  certificateUrl String?                // 證書 PDF
+  
+  // 時間
+  startedAt      DateTime
+  finishedAt     DateTime?
+  durationSec    Int?
+  
+  // 防作弊
+  windowBlurCount Int @default(0)
+  suspicionFlags  Json?
+  
+  createdAt   DateTime @default(now())
+
+  @@index([userId, examId])
+  @@map("exam_attempts")
+}
+
+// ----------------------------------------
+// Achievement 成就/徽章
+// ----------------------------------------
+model Achievement {
+  id          String   @id @default(cuid())
+  code        String   @unique          // FIRST_LESSON / 7_DAY_STREAK / TOCFL_A1_PASS
+  name        String
+  nameI18n    Json?
+  description String
+  descriptionI18n Json?
+  iconUrl     String?
+  
+  category    String                    // streak/level/social/perfection
+  rarity      String   @default("common") // common/rare/epic/legendary
+  
+  xpReward    Int      @default(50)
+  
+  // 解鎖條件
+  unlockCriteria Json                   // {type, value}
+  
+  isActive    Boolean  @default(true)
+  
+  userAchievements UserAchievement[]
+  
+  createdAt   DateTime @default(now())
+
+  @@map("achievements")
+}
+
+model UserAchievement {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  achievementId   String
+  achievement     Achievement @relation(fields: [achievementId], references: [id])
+  
+  unlockedAt      DateTime @default(now())
+  shareCount      Int      @default(0)
+  
+  @@unique([userId, achievementId])
+  @@index([userId])
+  @@map("user_achievements")
+}
+
+// ----------------------------------------
+// DailyMission 每日任務
+// ----------------------------------------
+model DailyMission {
+  id          String   @id @default(cuid())
+  userId      String
+  
+  date        DateTime @db.Date
+  
+  missions    Json                      // [{type, target, current, completed}]
+  // 例：[{type: "complete_lessons", target: 3, current: 1}]
+  // 例：[{type: "earn_xp", target: 50, current: 30}]
+  // 例：[{type: "speaking_practice", target: 5, current: 2}]
+  
+  allCompleted Boolean @default(false)
+  bonusXp      Int     @default(0)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@map("daily_missions")
+}
+
+// ----------------------------------------
+// LeaderBoard 排行榜
+// ----------------------------------------
+model LeaderBoard {
+  id          String   @id @default(cuid())
+  
+  scope       LeaderBoardScope          // FACILITY/CLASS/GLOBAL
+  scopeId     String?                   // facilityId / classId
+  
+  period      String                    // 2026-W17 (週) / 2026-04 (月)
+  periodType  String                    // weekly/monthly/all_time
+  
+  rankings    Json                      // [{userId, name, xp, rank}]
+  
+  generatedAt DateTime @default(now())
+
+  @@unique([scope, scopeId, period])
+  @@index([generatedAt])
+  @@map("leaderboards")
+}
+
+// ----------------------------------------
+// PerformanceMetric 學習績效 (連動 HR 獎金)
+// ----------------------------------------
+model PerformanceMetric {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  
+  // 期間
+  period          String                // 2026-Q1 / 2026-04
+  periodType      String                // monthly/quarterly
+  periodStart     DateTime
+  periodEnd       DateTime
+  
+  // === 學習指標 ===
+  hoursStudied         Float            // 學習時數
+  lessonsCompleted     Int              // 完成單元數
+  exercisesAttempted   Int              // 嘗試題目數
+  exercisesCorrect     Int              // 答對數
+  accuracyRate         Float            // 正確率
+  
+  homeworkSubmitted    Int
+  homeworkAvgScore     Float?
+  homeworkOnTime       Int              // 準時繳交數
+  
+  speakingPractices    Int
+  writingPractices     Int
+  
+  // === 等級進度 ===
+  startLevel           Level
+  endLevel             Level
+  examsPassed          Json             // [{examCode, score, date}]
+  
+  // === 出勤 ===
+  activeDays           Int              // 有學習的天數
+  longestStreak        Int
+  
+  // === 績效評等 ===
+  performanceGrade     String?          // A+/A/B+/B/C/D
+  performanceScore     Float?           // 總分
+  
+  // === 獎金計算 ===
+  bonusEligibility     Boolean  @default(false)
+  bonusType            String?          // BASE/EXCELLENCE/MILESTONE
+  bonusAmount          Decimal? @db.Decimal(10, 2)
+  bonusCurrency        String   @default("TWD")
+  bonusJustification   String?
+  
+  // === HR 同步 ===
+  syncedToHrAt         DateTime?
+  hrSyncStatus         String?          // PENDING/SYNCED/FAILED
+  hrApprovalRequired   Boolean  @default(true)
+  hrApprovedBy         String?
+  hrApprovedAt         DateTime?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([userId, period])
+  @@index([userId])
+  @@index([period])
+  @@map("performance_metrics")
+}
+
+// ----------------------------------------
+// 列舉
+// ----------------------------------------
+enum ExamType {
+  LISTENING
+  READING
+  WRITING
+  SPEAKING
+  COMPREHENSIVE     // 綜合
+  PLACEMENT         // 分級
+  DIAGNOSTIC        // 診斷
+}
+
+enum LeaderBoardScope {
+  FACILITY     // 同養老院
+  CLASS        // 同班級
+  GLOBAL       // 全平台
+  NATIONALITY  // 同國籍 (e.g. 泰籍排行)
+}

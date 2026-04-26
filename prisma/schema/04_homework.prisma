@@ -1,0 +1,205 @@
+// ============================================
+// 04_homework.prisma — 作業繳交、批改、防抄襲
+// ============================================
+
+// ----------------------------------------
+// Homework 作業 (老師指派給班級)
+// ----------------------------------------
+model Homework {
+  id          String   @id @default(cuid())
+  
+  classId     String
+  class       Class    @relation(fields: [classId], references: [id])
+  
+  lessonId    String?
+  lesson      Lesson?  @relation(fields: [lessonId], references: [id])
+  
+  title       String
+  titleI18n   Json?
+  description String
+  descriptionI18n Json?
+  
+  type        HomeworkType
+  
+  // === 題目內容 ===
+  prompt      Json                      // 題目敘述 (text/audio/image)
+  attachments Json?                     // 附件
+  
+  // === 評分標準 ===
+  rubric      Json?                     // [{criterion, weight, maxScore}]
+  maxScore    Int      @default(100)
+  passingScore Int     @default(60)
+  
+  // === 限制 ===
+  minWords    Int?                      // 最少字數
+  maxWords    Int?                      // 最多字數
+  timeLimit   Int?                      // 限時 (分鐘)
+  allowLate   Boolean  @default(true)
+  latePenalty Float    @default(0.1)    // 遲交扣分比例
+  
+  // === 防抄襲設定 ===
+  antiCheatLevel    AntiCheatLevel @default(STANDARD)
+  forceHandwriting  Boolean        @default(false)  // 強制手寫
+  blockPaste        Boolean        @default(true)   // 禁止貼上
+  detectPlagiarism  Boolean        @default(true)
+  similarityThreshold Float        @default(0.85)
+  
+  // === 排程 ===
+  publishAt   DateTime?
+  dueDate     DateTime
+  
+  // === AI 自動批改 ===
+  aiAutoGrade       Boolean @default(true)  // 啟用 AI 初評
+  requireTeacherReview Boolean @default(true) // 仍需老師複核
+  
+  isPublished Boolean  @default(false)
+  
+  submissions Submission[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([classId])
+  @@index([dueDate])
+  @@map("homeworks")
+}
+
+// ----------------------------------------
+// Submission 作業繳交
+// ----------------------------------------
+model Submission {
+  id           String   @id @default(cuid())
+  homeworkId   String
+  homework     Homework @relation(fields: [homeworkId], references: [id])
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  
+  // === 繳交內容 ===
+  contentText      String?              // 文字答案
+  handwritingUrl   String?              // 手寫圖檔 (MinIO)
+  handwritingData  Json?                // 筆畫資料 (含時間戳)
+  audioUrl         String?              // 口說音檔
+  audioTranscript  String?              // 自動轉文字
+  attachments      Json?                // 其他附件
+  
+  // === 防抄襲指紋 ===
+  contentFingerprint String?            // SimHash
+  audioFingerprint   String?            // 音訊指紋
+  similarity         Float?             // 與其他繳交最高相似度
+  similarToSubmissionId String?         // 相似的繳交
+  plagiarismChecked  Boolean @default(false)
+  plagiarismReport   Json?              // 詳細抄襲報告
+  
+  // === 行為分析 ===
+  totalTimeSec     Int?                 // 總作答時間
+  pasteCount       Int      @default(0) // 貼上次數
+  windowBlurCount  Int      @default(0) // 視窗失焦次數
+  copyCount        Int      @default(0) // 複製次數
+  rightClickCount  Int      @default(0)
+  suspicionScore   Float?               // 0-1 可疑度
+  
+  // === 裝置資訊 ===
+  device       String?
+  ipAddress    String?
+  userAgent    String?
+  
+  // === AI 初評 ===
+  aiScore      Int?
+  aiFeedback   Json?                    // {criterion, score, comment}
+  aiModel      String?                  // 使用的模型
+  aiCheckedAt  DateTime?
+  
+  // === 老師批改 ===
+  teacherScore     Int?
+  teacherFeedback  String?
+  teacherFeedbackAudio String?          // 語音回饋
+  rubricScores     Json?                // 各項評分標準分數
+  gradedBy         String?              // teacher User ID
+  gradedAt         DateTime?
+  
+  // === 狀態 ===
+  status       SubmissionStatus @default(DRAFT)
+  isLate       Boolean   @default(false)
+  
+  submittedAt  DateTime?
+  returnedAt   DateTime?                // 發還時間
+  
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([homeworkId, userId])
+  @@index([homeworkId])
+  @@index([userId])
+  @@index([status])
+  @@map("submissions")
+}
+
+// ----------------------------------------
+// PlagiarismCheck 抄襲檢測記錄
+// ----------------------------------------
+model PlagiarismCheck {
+  id              String   @id @default(cuid())
+  submissionId    String
+  
+  checkType       PlagiarismCheckType
+  
+  // === 檢測結果 ===
+  matchedSubmissionId String?           // 匹配到的繳交
+  similarity      Float                 // 相似度 0-1
+  matchedSegments Json?                 // 匹配段落
+  
+  method          String                // simhash/cosine/ai-semantic
+  modelUsed       String?               // 若用 AI
+  
+  // === 處置 ===
+  isFlagged       Boolean  @default(false)
+  reviewedBy      String?
+  reviewDecision  String?               // CONFIRMED/FALSE_POSITIVE/UNCLEAR
+  reviewedAt      DateTime?
+  
+  checkedAt       DateTime @default(now())
+
+  @@index([submissionId])
+  @@index([isFlagged])
+  @@map("plagiarism_checks")
+}
+
+// ----------------------------------------
+// 列舉
+// ----------------------------------------
+enum HomeworkType {
+  WRITING_HANDWRITTEN  // 手寫作業
+  WRITING_TYPED        // 鍵盤作業
+  COMPOSITION          // 作文
+  AUDIO_RECORDING      // 錄音作業
+  TRANSLATION          // 翻譯作業
+  DICTATION            // 聽寫作業
+  CHARACTER_PRACTICE   // 漢字練習
+  MIXED                // 綜合作業
+}
+
+enum AntiCheatLevel {
+  NONE                 // 不檢測 (純練習)
+  STANDARD             // 標準檢測
+  STRICT               // 嚴格檢測 (考試級)
+  MAXIMUM              // 最高 (含 AI 語義檢測)
+}
+
+enum SubmissionStatus {
+  DRAFT                // 草稿 (未交)
+  SUBMITTED            // 已繳交
+  AI_GRADED            // AI 已初評
+  RETURNED             // 老師已批改發還
+  RESUBMITTED          // 重新繳交
+  FLAGGED              // 標記為可疑
+  REJECTED             // 駁回 (要求重做)
+}
+
+enum PlagiarismCheckType {
+  HASH_MATCH           // 雜湊比對 (完全相同)
+  SIMHASH              // 局部相似
+  COSINE_SIMILARITY    // 餘弦相似度
+  AI_SEMANTIC          // AI 語義抄襲
+  AUDIO_FINGERPRINT    // 音訊指紋
+  HANDWRITING_PATTERN  // 筆跡模式
+}
