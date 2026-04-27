@@ -33,6 +33,24 @@
       "forgotPassword": "Quên mật khẩu?",
       "errorInvalid": "Tên đăng nhập hoặc mật khẩu không đúng"
     },
+    "changePassword": {
+      "_todo": "TODO: cần người bản ngữ rà soát",
+      "title": "Đổi mật khẩu",
+      "subtitle": "Vì lý do bảo mật, hãy đặt mật khẩu mới",
+      "subtitleForced": "Đăng nhập lần đầu, vui lòng đổi mật khẩu",
+      "currentPassword": "Mật khẩu hiện tại",
+      "newPassword": "Mật khẩu mới",
+      "confirmPassword": "Nhập lại mật khẩu mới",
+      "rule": "Ít nhất 8 ký tự, gồm chữ hoa, chữ thường và số",
+      "submit": "Đổi mật khẩu",
+      "submitting": "Đang đổi…",
+      "success": "Đổi mật khẩu thành công",
+      "errorWeak": "Mật khẩu không đáp ứng quy tắc",
+      "errorMismatch": "Hai lần nhập không khớp",
+      "errorSameAsCurrent": "Mật khẩu mới không được trùng mật khẩu hiện tại",
+      "errorCurrentInvalid": "Mật khẩu hiện tại không đúng",
+      "errorGeneric": "Đổi mật khẩu thất bại, vui lòng thử lại"
+    },
     "roles": {
       "learner": "Học viên",
       "learnerDesc": "Nhân viên chăm sóc / văn phòng",

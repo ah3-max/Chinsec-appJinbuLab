@@ -1,31 +1,54 @@
 import { NextResponse, type NextRequest } from "next/server";
 import createIntlMiddleware from "next-intl/middleware";
+import { getToken } from "next-auth/jwt";
 import { routing } from "@/i18n/routing";
+import { authCookieName } from "@/lib/cookie-name";
 
 const intlMiddleware = createIntlMiddleware(routing);
 
 // 不需登入即可造訪的路徑（已含 /[locale] 前綴後綴的判斷）
 const PUBLIC_PATHS = ["/login", "/forgot-password"];
 
-function isPublic(pathname: string): boolean {
-  // 移除 locale 前綴後比對：/zh-TW/login → /login
+// 即使 mustChangePassword=true 也可以造訪的路徑：登出 / 改密碼頁本身。
+const CHANGE_PASSWORD_WHITELIST = ["/login", "/change-password"];
+
+function localeStrip(pathname: string): {
+  rest: string;
+  locale: string;
+  hasLocalePrefix: boolean;
+} {
   const segments = pathname.split("/").filter(Boolean);
-  if (segments.length === 0) return true; // 根路徑由 intl middleware 導向預設 locale
   const localeMaybe = segments[0];
-  const isLocalePrefixed = (routing.locales as readonly string[]).includes(
+  const hasLocalePrefix = (routing.locales as readonly string[]).includes(
     localeMaybe ?? "",
   );
-  const rest = "/" + (isLocalePrefixed ? segments.slice(1) : segments).join("/");
+  const rest =
+    "/" + (hasLocalePrefix ? segments.slice(1) : segments).join("/");
+  return {
+    rest,
+    locale: hasLocalePrefix ? (localeMaybe as string) : routing.defaultLocale,
+    hasLocalePrefix,
+  };
+}
+
+function isPublic(rest: string): boolean {
+  if (rest === "/") return true;
   return PUBLIC_PATHS.some((p) => rest === p || rest.startsWith(p + "/"));
+}
+
+function isChangePasswordWhitelisted(rest: string): boolean {
+  return CHANGE_PASSWORD_WHITELIST.some(
+    (p) => rest === p || rest.startsWith(p + "/"),
+  );
 }
 
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // 1. 多語系處理（補 locale 前綴、語言偵測）
+  // 1. 多語系處理
   const intlResponse = intlMiddleware(req);
 
-  // 2. 若是 API / 靜態資源，直接放行
+  // 2. API / 靜態資源直接放行
   if (
     pathname.startsWith("/api") ||
     pathname.startsWith("/_next") ||
@@ -34,8 +57,10 @@ export default async function middleware(req: NextRequest) {
     return intlResponse;
   }
 
+  const { rest, locale } = localeStrip(pathname);
+
   // 3. 公開路徑放行
-  if (isPublic(pathname)) {
+  if (isPublic(rest)) {
     return intlResponse;
   }
 
@@ -45,21 +70,34 @@ export default async function middleware(req: NextRequest) {
     req.cookies.get("__Secure-authjs.session-token")?.value;
 
   if (!sessionCookie) {
-    // 未登入 → 導向 /[locale]/login
-    const segments = pathname.split("/").filter(Boolean);
-    const locale =
-      (routing.locales as readonly string[]).includes(segments[0] ?? "")
-        ? segments[0]
-        : routing.defaultLocale;
     const loginUrl = new URL(`/${locale}/login`, req.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
+  }
+
+  // 5. mustChangePassword 強制導向（不騷擾 impersonating 中的管理員）
+  try {
+    const token = await getToken({
+      req,
+      secret: process.env.AUTH_SECRET,
+      salt: authCookieName(),
+    });
+    if (
+      token?.mustChangePassword &&
+      !token._impersonatedBy &&
+      !isChangePasswordWhitelisted(rest)
+    ) {
+      return NextResponse.redirect(
+        new URL(`/${locale}/change-password`, req.url),
+      );
+    }
+  } catch {
+    // Token decode failed — let downstream pages handle re-auth.
   }
 
   return intlResponse;
 }
 
 export const config = {
-  // 排除靜態資源 / API 之外，全部走 middleware
   matcher: ["/((?!api|_next|.*\\..*).*)"],
 };

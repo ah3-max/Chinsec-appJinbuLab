@@ -16,6 +16,7 @@ declare module "next-auth" {
       username: string;
       role: UserRole;
       uiLanguage: string;
+      mustChangePassword: boolean;
       // Set by /api/admin/impersonate/consume — when present, the session is an
       // admin impersonating the user identified by `id`. The original admin's
       // user id lives here.
@@ -27,6 +28,7 @@ declare module "next-auth" {
     username: string;
     role: UserRole;
     uiLanguage: string;
+    mustChangePassword: boolean;
   }
 }
 
@@ -35,6 +37,7 @@ interface AppToken {
   username?: string;
   role?: UserRole;
   uiLanguage?: string;
+  mustChangePassword?: boolean;
   _impersonatedBy?: string;
   [key: string]: unknown;
 }
@@ -73,6 +76,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             uiLanguage: true,
             status: true,
             avatarUrl: true,
+            mustChangePassword: true,
           },
         });
 
@@ -97,6 +101,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           username: user.username,
           role: user.role,
           uiLanguage: user.uiLanguage,
+          mustChangePassword: user.mustChangePassword,
         };
       },
     }),
@@ -109,6 +114,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         t.username = user.username;
         t.role = user.role;
         t.uiLanguage = user.uiLanguage;
+        t.mustChangePassword = user.mustChangePassword;
         // `_impersonatedBy` is never set by the credentials provider — only by
         // the impersonate consume route, which writes the JWT cookie directly.
         // Existing values flow through naturally on subsequent requests
@@ -122,6 +128,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       session.user.username = t.username ?? "";
       if (t.role) session.user.role = t.role;
       session.user.uiLanguage = t.uiLanguage ?? "zh-TW";
+      session.user.mustChangePassword = t.mustChangePassword ?? false;
       if (t._impersonatedBy) {
         session.user._impersonatedBy = t._impersonatedBy;
       }

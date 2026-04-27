@@ -33,6 +33,24 @@
       "forgotPassword": "Lupa kata sandi?",
       "errorInvalid": "Nama pengguna atau kata sandi salah"
     },
+    "changePassword": {
+      "_todo": "TODO: perlu ditinjau penutur asli",
+      "title": "Ubah Kata Sandi",
+      "subtitle": "Demi keamanan akun, silakan tetapkan kata sandi baru",
+      "subtitleForced": "Login pertama kali, silakan ubah kata sandi terlebih dahulu",
+      "currentPassword": "Kata sandi saat ini",
+      "newPassword": "Kata sandi baru",
+      "confirmPassword": "Konfirmasi kata sandi baru",
+      "rule": "Minimal 8 karakter, mengandung huruf besar, huruf kecil, dan angka",
+      "submit": "Ubah Kata Sandi",
+      "submitting": "Mengubah…",
+      "success": "Kata sandi berhasil diubah",
+      "errorWeak": "Kata sandi tidak memenuhi aturan",
+      "errorMismatch": "Dua input tidak cocok",
+      "errorSameAsCurrent": "Kata sandi baru tidak boleh sama dengan kata sandi saat ini",
+      "errorCurrentInvalid": "Kata sandi saat ini salah",
+      "errorGeneric": "Gagal mengubah kata sandi, silakan coba lagi"
+    },
     "roles": {
       "learner": "Pembelajar",
       "learnerDesc": "Pengasuh / staf kantor",

@@ -31,6 +31,10 @@ model User {
   role            UserRole  @default(LEARNER)
   status          UserStatus @default(ACTIVE)
 
+  // === 密碼管理 ===
+  mustChangePassword Boolean  @default(false) // 首次登入或重置後強制改密碼
+  passwordChangedAt  DateTime?
+
   // === 組織關聯 ===
   facilityId      String?
   facility        Facility? @relation(fields: [facilityId], references: [id])

@@ -68,6 +68,7 @@ async function main() {
       uiLanguage: "zh-TW",
       role: UserRole.SUPER_ADMIN,
       employeeId: "ADMIN-001",
+      mustChangePassword: true,
     },
   });
   console.log(`✓ 管理員帳號建立: ${admin.username} (預設密碼: ChangeMe@2026 — 請首次登入後立即修改)`);
