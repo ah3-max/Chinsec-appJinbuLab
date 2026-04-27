@@ -58,5 +58,27 @@
     "B2_UPPER_INTER": "B2 Trung cao cấp",
     "C1_ADVANCED": "C1 Cao cấp",
     "C2_PROFICIENT": "C2 Thành thạo"
+  },
+  "admin": {
+    "users": {
+      "_todo": "TODO: cần người bản ngữ rà soát",
+      "title": "Quản lý học viên",
+      "subtitle": "Tổng cộng {count} học viên. Nhấn \"Đăng nhập với danh tính này\" để tạm thời mạo danh học viên và kiểm tra UI đa ngôn ngữ.",
+      "username": "Tên đăng nhập",
+      "fullName": "Họ và tên",
+      "nationality": "Quốc tịch",
+      "level": "Cấp độ",
+      "status": "Trạng thái",
+      "actions": "Thao tác",
+      "impersonate": "Đăng nhập với danh tính này",
+      "impersonateFailed": "Không thể bắt đầu mạo danh",
+      "empty": "Chưa có học viên"
+    }
+  },
+  "impersonation": {
+    "_todo": "TODO: cần người bản ngữ rà soát",
+    "banner": "Đang đăng nhập với danh tính {target} (Quản trị viên: {admin})",
+    "stop": "Kết thúc mạo danh",
+    "stopFailed": "Không thể kết thúc mạo danh"
   }
 }

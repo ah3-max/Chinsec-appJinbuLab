@@ -16,6 +16,10 @@ declare module "next-auth" {
       username: string;
       role: UserRole;
       uiLanguage: string;
+      // Set by /api/admin/impersonate/consume — when present, the session is an
+      // admin impersonating the user identified by `id`. The original admin's
+      // user id lives here.
+      _impersonatedBy?: string;
     } & DefaultSession["user"];
   }
 
@@ -31,6 +35,7 @@ interface AppToken {
   username?: string;
   role?: UserRole;
   uiLanguage?: string;
+  _impersonatedBy?: string;
   [key: string]: unknown;
 }
 
@@ -104,6 +109,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         t.username = user.username;
         t.role = user.role;
         t.uiLanguage = user.uiLanguage;
+        // `_impersonatedBy` is never set by the credentials provider — only by
+        // the impersonate consume route, which writes the JWT cookie directly.
+        // Existing values flow through naturally on subsequent requests
+        // (when `user` is undefined).
       }
       return t;
     },
@@ -113,6 +122,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       session.user.username = t.username ?? "";
       if (t.role) session.user.role = t.role;
       session.user.uiLanguage = t.uiLanguage ?? "zh-TW";
+      if (t._impersonatedBy) {
+        session.user._impersonatedBy = t._impersonatedBy;
+      }
       return session;
     },
   },

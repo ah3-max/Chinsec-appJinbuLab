@@ -57,5 +57,25 @@
     "B2_UPPER_INTER": "B2 高階",
     "C1_ADVANCED": "C1 流利",
     "C2_PROFICIENT": "C2 精通"
+  },
+  "admin": {
+    "users": {
+      "title": "學員管理",
+      "subtitle": "共 {count} 名學員。點選「以此身份登入」可短暫模擬學員身份測試多語介面。",
+      "username": "帳號",
+      "fullName": "姓名",
+      "nationality": "國籍",
+      "level": "等級",
+      "status": "狀態",
+      "actions": "操作",
+      "impersonate": "以此身份登入",
+      "impersonateFailed": "無法開始模擬",
+      "empty": "尚無學員"
+    }
+  },
+  "impersonation": {
+    "banner": "正在以 {target} 的身份登入（管理員：{admin}）",
+    "stop": "結束模擬",
+    "stopFailed": "無法結束模擬"
   }
 }

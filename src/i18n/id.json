@@ -58,5 +58,27 @@
     "B2_UPPER_INTER": "B2 Menengah Atas",
     "C1_ADVANCED": "C1 Lanjut",
     "C2_PROFICIENT": "C2 Mahir"
+  },
+  "admin": {
+    "users": {
+      "_todo": "TODO: perlu ditinjau penutur asli",
+      "title": "Manajemen Pembelajar",
+      "subtitle": "Total {count} pembelajar. Klik \"Masuk sebagai pengguna ini\" untuk meniru pembelajar sementara dan menguji UI multibahasa.",
+      "username": "Nama pengguna",
+      "fullName": "Nama lengkap",
+      "nationality": "Kewarganegaraan",
+      "level": "Tingkat",
+      "status": "Status",
+      "actions": "Tindakan",
+      "impersonate": "Masuk sebagai pengguna ini",
+      "impersonateFailed": "Gagal memulai impersonasi",
+      "empty": "Belum ada pembelajar"
+    }
+  },
+  "impersonation": {
+    "_todo": "TODO: perlu ditinjau penutur asli",
+    "banner": "Sedang masuk sebagai {target} (Admin: {admin})",
+    "stop": "Akhiri impersonasi",
+    "stopFailed": "Gagal mengakhiri impersonasi"
   }
 }

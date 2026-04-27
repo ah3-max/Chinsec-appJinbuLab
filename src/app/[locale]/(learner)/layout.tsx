@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { BottomNav } from "@/components/learner/bottom-nav";
+import { ImpersonationBanner } from "@/components/impersonation-banner";
 
 export default async function LearnerLayout({
   children,
@@ -13,6 +14,7 @@ export default async function LearnerLayout({
 
   return (
     <div className="min-h-svh bg-muted/30">
+      <ImpersonationBanner />
       <main className="mx-auto max-w-md pb-20 pt-4">{children}</main>
       <BottomNav />
     </div>
