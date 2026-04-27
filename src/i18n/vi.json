@@ -68,6 +68,19 @@
     "continue": "Tiếp tục",
     "language": "Ngôn ngữ"
   },
+  "learn": {
+    "_todo": "TODO: cần người bản ngữ rà soát",
+    "startOrContinue": "Bắt đầu / Tiếp tục",
+    "review": "Ôn tập",
+    "comingSoon": "Sắp mở khóa",
+    "finishPrevToUnlock": "Hoàn thành {prev} trước",
+    "courseLocked": "Khóa học này chưa được mở khóa",
+    "levelUp": {
+      "title": "Lên cấp!",
+      "subtitle": "Chúc mừng bạn đạt cấp độ mới",
+      "continue": "Học tiếp"
+    }
+  },
   "levels": {
     "ZHUYIN": "Lớp dự bị Bopomofo",
     "A1_BEGINNER": "A1 Sơ cấp",

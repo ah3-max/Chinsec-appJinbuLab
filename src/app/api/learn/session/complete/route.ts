@@ -1,11 +1,64 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
+import { Level, type Prisma } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { detectSuspiciousSession } from "@/lib/anti-cheat";
 import { computeNewStreak } from "@/lib/streak";
+import { nextLevel } from "@/lib/level";
 
 export const runtime = "nodejs";
+
+const PROMOTION_PASS_SCORE = 80;
+
+// Has the user passed every published exercise of every published lesson of
+// every published course at this level? If so, they're ready to promote.
+async function hasMasteredLevel(
+  tx: Prisma.TransactionClient,
+  userId: string,
+  level: Level,
+): Promise<boolean> {
+  const courses = await tx.course.findMany({
+    where: { level, isPublished: true },
+    select: {
+      id: true,
+      stages: {
+        select: {
+          lessons: {
+            where: { isPublished: true },
+            select: {
+              exercises: {
+                where: { isActive: true },
+                select: { id: true },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  // No content at this level → nothing to verify, so don't auto-promote.
+  if (courses.length === 0) return false;
+
+  const exerciseIds = courses.flatMap((c) =>
+    c.stages.flatMap((s) => s.lessons.flatMap((l) => l.exercises.map((e) => e.id))),
+  );
+  if (exerciseIds.length === 0) return false;
+
+  // Find all exercises this user passed at the threshold.
+  const passed = await tx.userAttempt.findMany({
+    where: {
+      userId,
+      exerciseId: { in: exerciseIds },
+      score: { gte: PROMOTION_PASS_SCORE },
+    },
+    distinct: ["exerciseId"],
+    select: { exerciseId: true },
+  });
+
+  return passed.length === exerciseIds.length;
+}
 
 const schema = z.object({
   sessionKey: z.string().min(1).max(64),
@@ -67,11 +120,25 @@ export async function POST(req: NextRequest) {
         streakDays: true,
         lastStreakDate: true,
         totalStudyMin: true,
+        currentLevel: true,
       },
     });
     if (!me) throw new Error("user not found");
 
     const streak = computeNewStreak(me.streakDays, me.lastStreakDate);
+
+    // Promotion: check every published exercise at the user's current level
+    // for a passing attempt. Skip when the session was flagged so cheaters
+    // can't fast-track into the next level.
+    let leveledUp = false;
+    let promotedTo: Level | null = null;
+    if (!verdict.isSuspicious) {
+      const next = nextLevel(me.currentLevel);
+      if (next && (await hasMasteredLevel(tx, session.user.id, me.currentLevel))) {
+        leveledUp = true;
+        promotedTo = next;
+      }
+    }
 
     const updated = await tx.user.update({
       where: { id: session.user.id },
@@ -82,18 +149,20 @@ export async function POST(req: NextRequest) {
         lastStreakDate: streak.newLastStreakDate,
         totalStudyMin: { increment: studyMinutesDelta },
         lastActiveAt: new Date(),
+        ...(promotedTo ? { currentLevel: promotedTo } : {}),
       },
-      select: { totalXp: true, streakDays: true },
+      select: { totalXp: true, streakDays: true, currentLevel: true },
     });
 
-    return updated;
+    return { ...updated, leveledUp, promotedTo };
   });
 
   return NextResponse.json({
     ok: true,
     newTotalXp: result.totalXp,
     newStreak: result.streakDays,
-    leveledUp: false, // populated by Task 4
+    leveledUp: result.leveledUp,
+    newLevel: result.currentLevel,
     awardedXp,
     suspicious: verdict.isSuspicious,
     reasons: verdict.reasons,

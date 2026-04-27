@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { Check, X, Volume2, RotateCcw, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,6 +11,7 @@ import {
   ALL_ZHUYIN,
   type ZhuyinSymbol,
 } from "@/lib/zhuyin/data";
+import { LevelUpModal } from "@/components/learner/level-up-modal";
 
 const QUESTION_COUNT = 10;
 const CHOICE_COUNT = 4;
@@ -57,10 +59,13 @@ interface SessionFinishResult {
   newStreak: number;
   awardedXp: number;
   suspicious: boolean;
+  leveledUp?: boolean;
+  newLevel?: string;
   skipped?: string;
 }
 
 export function ZhuyinTapExercise() {
+  const tLevels = useTranslations("levels");
   const [questions, setQuestions] = useState<Question[]>(() => buildSession());
   const [index, setIndex] = useState(0);
   const [hearts, setHearts] = useState(5);
@@ -74,6 +79,7 @@ export function ZhuyinTapExercise() {
     null,
   );
   const [completionError, setCompletionError] = useState<string | null>(null);
+  const [showLevelUp, setShowLevelUp] = useState(false);
 
   const startRef = useRef<number>(Date.now());
   const blurCountRef = useRef<number>(0);
@@ -162,6 +168,7 @@ export function ZhuyinTapExercise() {
       }
       const json = (await res.json()) as SessionFinishResult;
       setFinishResult(json);
+      if (json.leveledUp) setShowLevelUp(true);
     } catch {
       setCompletionError("complete_failed");
     } finally {
@@ -276,6 +283,12 @@ export function ZhuyinTapExercise() {
             重新挑戰
           </Button>
         </CardContent>
+        {showLevelUp && finishResult?.newLevel && (
+          <LevelUpModal
+            newLevelLabel={tLevels(finishResult.newLevel)}
+            onClose={() => setShowLevelUp(false)}
+          />
+        )}
       </Card>
     );
   }

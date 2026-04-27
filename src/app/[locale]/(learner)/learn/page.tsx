@@ -1,7 +1,12 @@
+import Link from "next/link";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import { Lock, ArrowRight, Check, Sparkles } from "lucide-react";
+import { Level } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { classifyCourse, previousLevel } from "@/lib/level";
+import { LearnLockedToast } from "@/components/learner/learn-locked-toast";
 
 export default async function LearnPage({
   params,
@@ -14,8 +19,8 @@ export default async function LearnPage({
   const session = await auth();
   const t = await getTranslations("home");
   const tLevels = await getTranslations("levels");
+  const tLearn = await getTranslations("learn");
 
-  // 撈使用者進度（若已登入）
   const me = session?.user?.id
     ? await db.user.findUnique({
         where: { id: session.user.id },
@@ -28,8 +33,8 @@ export default async function LearnPage({
       })
     : null;
 
-  // 撈已開的課程作為闖關地圖入口
   const courses = await db.course.findMany({
+    where: { isPublished: true },
     orderBy: { orderIndex: "asc" },
     select: {
       id: true,
@@ -43,8 +48,20 @@ export default async function LearnPage({
     },
   });
 
+  const userLevel: Level = me?.currentLevel ?? Level.ZHUYIN;
+
+  // "Completed" heuristic: course is below user's current level → has been
+  // passed. Replace with real lesson-progress tracking once that exists.
+  function classify(courseLevel: Level) {
+    const userIdx = LEVEL_RANK[userLevel];
+    const courseIdx = LEVEL_RANK[courseLevel];
+    const completed = courseIdx < userIdx;
+    return classifyCourse(userLevel, courseLevel, completed);
+  }
+
   return (
     <div className="space-y-6 px-4">
+      <LearnLockedToast />
       {/* Header */}
       <header className="space-y-1">
         <p className="text-sm text-muted-foreground">
@@ -53,7 +70,6 @@ export default async function LearnPage({
         <h1 className="text-2xl font-bold">{t("subtitle")}</h1>
       </header>
 
-      {/* 學習狀態 */}
       {me && (
         <div className="grid grid-cols-3 gap-2">
           <StatBox label="XP" value={me.totalXp.toString()} />
@@ -65,41 +81,118 @@ export default async function LearnPage({
         </div>
       )}
 
-      {/* 課程入口（闖關地圖 placeholder） */}
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">{t("myCourses")}</h2>
         <div className="space-y-3">
-          {courses.map((c) => (
-            <Card key={c.id}>
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <div
-                    className="flex size-10 items-center justify-center rounded-lg text-lg font-bold text-white"
-                    style={{ backgroundColor: c.themeColor ?? "#3B82F6" }}
-                  >
-                    {c.code[0]}
-                  </div>
-                  <div>
-                    <CardTitle className="text-base">{c.title}</CardTitle>
-                    <p className="text-xs text-muted-foreground">
-                      {tLevels(c.level)} ・ {c.vocabularyCount} 字
-                      {c.estimatedHours ? ` ・ ${c.estimatedHours}h` : ""}
-                    </p>
-                  </div>
-                </div>
-              </CardHeader>
-              {c.description && (
-                <CardContent className="text-sm text-muted-foreground">
-                  {c.description}
-                </CardContent>
-              )}
-            </Card>
-          ))}
+          {courses.map((c) => {
+            const state = classify(c.level);
+            const locked = state === "locked";
+            const preview = state === "preview";
+            const completed = state === "completed";
+            const prevName = previousLevel(c.level);
+            const courseHref = `/${locale}/learn/${c.code}`;
+
+            const Wrapper: React.ElementType = locked || preview ? "div" : Link;
+            const wrapperProps =
+              locked || preview ? {} : ({ href: courseHref } as { href: string });
+
+            return (
+              <Wrapper
+                key={c.id}
+                {...wrapperProps}
+                className={
+                  locked || preview
+                    ? "block opacity-70"
+                    : "block transition-transform active:scale-[0.99]"
+                }
+              >
+                <Card
+                  className={
+                    locked
+                      ? "border-dashed bg-muted/40"
+                      : preview
+                        ? "border-dashed"
+                        : completed
+                          ? "border-emerald-200"
+                          : ""
+                  }
+                >
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="flex size-10 items-center justify-center rounded-lg text-lg font-bold text-white"
+                        style={{ backgroundColor: c.themeColor ?? "#3B82F6" }}
+                      >
+                        {locked ? (
+                          <Lock className="size-5" />
+                        ) : completed ? (
+                          <Check className="size-5" />
+                        ) : preview ? (
+                          <Sparkles className="size-5" />
+                        ) : (
+                          c.code[0]
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <CardTitle className="text-base">{c.title}</CardTitle>
+                        <p className="text-xs text-muted-foreground">
+                          {tLevels(c.level)} ・ {c.vocabularyCount} 字
+                          {c.estimatedHours
+                            ? ` ・ ${c.estimatedHours}h`
+                            : ""}
+                        </p>
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {state === "open" && (
+                          <span className="inline-flex items-center gap-0.5 text-primary">
+                            {tLearn("startOrContinue")}
+                            <ArrowRight className="size-3.5" />
+                          </span>
+                        )}
+                        {state === "completed" && (
+                          <span className="text-emerald-600">
+                            {tLearn("review")}
+                          </span>
+                        )}
+                        {state === "preview" && (
+                          <span className="text-amber-600">
+                            {tLearn("comingSoon")}
+                          </span>
+                        )}
+                        {state === "locked" && prevName && (
+                          <span>
+                            {tLearn("finishPrevToUnlock", {
+                              prev: tLevels(prevName),
+                            })}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </CardHeader>
+                  {c.description && (
+                    <CardContent className="text-sm text-muted-foreground">
+                      {c.description}
+                    </CardContent>
+                  )}
+                </Card>
+              </Wrapper>
+            );
+          })}
         </div>
       </section>
     </div>
   );
 }
+
+const LEVEL_RANK: Record<Level, number> = {
+  ZHUYIN: 0,
+  A1_BEGINNER: 1,
+  A2_BASIC: 2,
+  B1_INTERMEDIATE: 3,
+  B2_UPPER_INTER: 4,
+  C1_ADVANCED: 5,
+  C2_PROFICIENT: 6,
+};
 
 function StatBox({ label, value }: { label: string; value: string }) {
   return (

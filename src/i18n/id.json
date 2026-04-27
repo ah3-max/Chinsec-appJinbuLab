@@ -68,6 +68,19 @@
     "continue": "Lanjut",
     "language": "Bahasa"
   },
+  "learn": {
+    "_todo": "TODO: perlu ditinjau penutur asli",
+    "startOrContinue": "Mulai / Lanjutkan",
+    "review": "Tinjau",
+    "comingSoon": "Segera dibuka",
+    "finishPrevToUnlock": "Selesaikan {prev} terlebih dahulu",
+    "courseLocked": "Kursus ini belum terbuka",
+    "levelUp": {
+      "title": "Naik Tingkat!",
+      "subtitle": "Selamat, Anda telah mencapai tingkat baru",
+      "continue": "Lanjut Belajar"
+    }
+  },
   "levels": {
     "ZHUYIN": "Kelas Persiapan Zhuyin",
     "A1_BEGINNER": "A1 Pemula",

@@ -66,6 +66,18 @@
     "continue": "繼續",
     "language": "語言"
   },
+  "learn": {
+    "startOrContinue": "開始 / 繼續",
+    "review": "複習",
+    "comingSoon": "即將解鎖",
+    "finishPrevToUnlock": "先完成 {prev}",
+    "courseLocked": "此課程尚未解鎖",
+    "levelUp": {
+      "title": "升級了！",
+      "subtitle": "恭喜你達到新等級",
+      "continue": "繼續學習"
+    }
+  },
   "levels": {
     "ZHUYIN": "注音預備",
     "A1_BEGINNER": "A1 入門",

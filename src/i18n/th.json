@@ -68,6 +68,19 @@
     "continue": "ต่อไป",
     "language": "ภาษา"
   },
+  "learn": {
+    "_todo": "TODO: ต้องตรวจสอบโดยเจ้าของภาษา",
+    "startOrContinue": "เริ่ม / ดำเนินต่อ",
+    "review": "ทบทวน",
+    "comingSoon": "กำลังจะปลดล็อก",
+    "finishPrevToUnlock": "ทำ {prev} ให้เสร็จก่อน",
+    "courseLocked": "คอร์สนี้ยังไม่ปลดล็อก",
+    "levelUp": {
+      "title": "เลื่อนระดับแล้ว!",
+      "subtitle": "ยินดีด้วยที่ได้รับระดับใหม่",
+      "continue": "เรียนต่อ"
+    }
+  },
   "levels": {
     "ZHUYIN": "ระดับเตรียม จู้อิน",
     "A1_BEGINNER": "A1 เริ่มต้น",
