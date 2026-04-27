@@ -28,7 +28,8 @@
     "docker:dev:down": "docker compose -f docker/docker-compose.yml down",
     "docker:prod": "docker compose -f docker/docker-compose.prod.yml up -d",
     "test": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "claude:update": "tsx scripts/claude-update.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.0",
