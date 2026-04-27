@@ -47,7 +47,8 @@ async function ensureDir(dir: string) {
 async function runEdgeTts(text: string, outPath: string, rate?: string) {
   // Resolve `edge-tts` via `python3 -m edge_tts` so we don't depend on PATH.
   const args = ["-m", "edge_tts", "--text", text, "--voice", VOICE];
-  if (rate) args.push("--rate", rate);
+  // argparse treats a leading "-30%" as an option flag, so use `--rate=...`.
+  if (rate) args.push(`--rate=${rate}`);
   args.push("--write-media", outPath);
 
   await new Promise<void>((resolve, reject) => {
