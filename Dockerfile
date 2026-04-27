@@ -31,6 +31,10 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=prisma /app/node_modules/.prisma ./node_modules/.prisma
 COPY . .
 
+# Build-time flags（NEXT_PUBLIC_* 必須在 build 階段就決定）
+ARG NEXT_PUBLIC_ENABLE_QUICK_LOGIN=false
+ENV NEXT_PUBLIC_ENABLE_QUICK_LOGIN=$NEXT_PUBLIC_ENABLE_QUICK_LOGIN
+
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 RUN npm run build

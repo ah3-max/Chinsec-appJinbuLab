@@ -9,10 +9,16 @@ import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
+import { Zap } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
+// 由 build-time 環境變數決定是否顯示一鍵管理員登入按鈕
+// docker/docker-compose.app.yml 已設 NEXT_PUBLIC_ENABLE_QUICK_LOGIN=true
+const QUICK_LOGIN_ENABLED =
+  process.env.NEXT_PUBLIC_ENABLE_QUICK_LOGIN === "true";
 
 const schema = z.object({
   username: z.string().min(1, "username required").max(64),
@@ -37,24 +43,38 @@ export function LoginForm() {
     defaultValues: { username: "", password: "" },
   });
 
+  async function doSignIn(username: string, password: string) {
+    const callbackUrl =
+      searchParams.get("callbackUrl") || `/${params.locale}/learn`;
+    const res = await signIn("credentials", {
+      username,
+      password,
+      redirect: false,
+    });
+
+    if (res?.error) {
+      toast.error(t("errorInvalid"));
+      return false;
+    }
+
+    router.push(callbackUrl);
+    router.refresh();
+    return true;
+  }
+
   async function onSubmit(values: FormValues) {
     setSubmitting(true);
     try {
-      const callbackUrl =
-        searchParams.get("callbackUrl") || `/${params.locale}/learn`;
-      const res = await signIn("credentials", {
-        username: values.username,
-        password: values.password,
-        redirect: false,
-      });
+      await doSignIn(values.username, values.password);
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
-      if (res?.error) {
-        toast.error(t("errorInvalid"));
-        return;
-      }
-
-      router.push(callbackUrl);
-      router.refresh();
+  async function quickAdminLogin() {
+    setSubmitting(true);
+    try {
+      await doSignIn("shunyuan", "ChangeMe@2026");
     } finally {
       setSubmitting(false);
     }
@@ -93,6 +113,36 @@ export function LoginForm() {
       <Button type="submit" className="w-full" size="lg" disabled={submitting}>
         {submitting ? t("submitting") : t("submit")}
       </Button>
+
+      {QUICK_LOGIN_ENABLED && (
+        <>
+          <div className="relative py-1">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="bg-card px-2 text-muted-foreground">
+                本機開發
+              </span>
+            </div>
+          </div>
+
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100"
+            size="lg"
+            disabled={submitting}
+            onClick={quickAdminLogin}
+          >
+            <Zap className="size-4" />
+            超級管理員一鍵登入
+          </Button>
+          <p className="text-center text-[10px] text-muted-foreground">
+            shunyuan / ChangeMe@2026 — 此按鈕僅在開發環境顯示
+          </p>
+        </>
+      )}
     </form>
   );
 }
