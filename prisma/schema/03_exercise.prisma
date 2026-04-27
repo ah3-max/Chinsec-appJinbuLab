@@ -59,29 +59,39 @@ model UserAttempt {
   id          String   @id @default(cuid())
   userId      String
   user        User     @relation(fields: [userId], references: [id])
-  exerciseId  String
-  exercise    Exercise @relation(fields: [exerciseId], references: [id])
-  
+  // 注音/反白等臨時題目尚未對應到 Exercise 資料時可為空，題目快照存於
+  // exerciseSnapshot 以便日後分析。
+  exerciseId  String?
+  exercise    Exercise? @relation(fields: [exerciseId], references: [id])
+
+  // === 題型 / 會話 ===
+  exerciseType    ExerciseType
+  sessionKey      String?           // 同一輪練習共用，用來聚合 session 統計
+  exerciseSnapshot Json?            // 答題當下的題目資料（題目可能日後刪除）
+
   // === 學員作答 ===
   userAnswer  Json
   isCorrect   Boolean
   score       Int
-  
+
   // === 行為分析 (用於防作弊) ===
   timeSpentSec     Int               // 作答秒數
   attemptCount     Int      @default(1)  // 第幾次嘗試
   hintUsed         Boolean  @default(false)
   windowBlurCount  Int      @default(0)  // 視窗失焦次數
   pasteDetected    Boolean  @default(false) // 偵測到貼上
-  
+  suspicious       Boolean  @default(false) // anti-cheat 認定可疑
+  suspiciousReasons String[] @default([])
+
   // === 裝置資訊 ===
   device      String?                   // mobile/tablet/desktop
   ipAddress   String?
-  
+
   attemptedAt DateTime @default(now())
 
   @@index([userId, exerciseId])
   @@index([userId, attemptedAt])
+  @@index([userId, sessionKey])
   @@map("user_attempts")
 }
 

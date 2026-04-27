@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, X, Volume2, RotateCcw } from "lucide-react";
+import { Check, X, Volume2, RotateCcw, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -17,6 +17,13 @@ const CHOICE_COUNT = 4;
 type Question = {
   target: ZhuyinSymbol;
   choices: ZhuyinSymbol[];
+};
+
+type AttemptRecord = {
+  symbol: string;
+  pickedSymbol: string;
+  isCorrect: boolean;
+  timeSpentSec: number;
 };
 
 function shuffle<T>(arr: T[]): T[] {
@@ -38,6 +45,21 @@ function buildSession(): Question[] {
   return Array.from({ length: QUESTION_COUNT }, () => buildQuestion(ALL_ZHUYIN));
 }
 
+function newSessionKey(): string {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return crypto.randomUUID();
+  }
+  return Math.random().toString(36).slice(2) + Date.now().toString(36);
+}
+
+interface SessionFinishResult {
+  newTotalXp: number;
+  newStreak: number;
+  awardedXp: number;
+  suspicious: boolean;
+  skipped?: string;
+}
+
 export function ZhuyinTapExercise() {
   const [questions, setQuestions] = useState<Question[]>(() => buildSession());
   const [index, setIndex] = useState(0);
@@ -46,33 +68,147 @@ export function ZhuyinTapExercise() {
   const [picked, setPicked] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<"correct" | "wrong" | null>(null);
 
+  const [sessionKey, setSessionKey] = useState<string>(() => newSessionKey());
+  const [submitting, setSubmitting] = useState(false);
+  const [finishResult, setFinishResult] = useState<SessionFinishResult | null>(
+    null,
+  );
+  const [completionError, setCompletionError] = useState<string | null>(null);
+
+  const startRef = useRef<number>(Date.now());
+  const blurCountRef = useRef<number>(0);
+  const attemptsRef = useRef<AttemptRecord[]>([]);
+  const completedRef = useRef<boolean>(false);
+
   const current = questions[index];
   const progress = useMemo(
     () => Math.round((index / QUESTION_COUNT) * 100),
     [index],
   );
 
-  // 自動播音（題目切換時）：呼叫 Web Speech API（瀏覽器內建）
+  // Reset start timer at each new question + auto-play audio.
   useEffect(() => {
-    if (current) speak(current.target);
+    if (current) {
+      startRef.current = Date.now();
+      speak(current.target);
+    }
   }, [current]);
+
+  // Track window blur for anti-cheat — switching apps mid-question is a signal.
+  useEffect(() => {
+    const onBlur = () => {
+      blurCountRef.current += 1;
+    };
+    window.addEventListener("blur", onBlur);
+    return () => window.removeEventListener("blur", onBlur);
+  }, []);
 
   if (!current) return null;
 
   const finished = hearts <= 0 || index >= QUESTION_COUNT;
 
+  async function postAttempt(
+    q: Question,
+    choice: ZhuyinSymbol,
+    correct: boolean,
+    timeSpentSec: number,
+  ) {
+    try {
+      await fetch("/api/learn/attempt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          exerciseType: "ZHUYIN_RECOGNITION",
+          sessionKey,
+          questionData: {
+            mode: "tap_listen",
+            target: q.target.symbol,
+            targetPinyin: q.target.pinyin,
+            choices: q.choices.map((c) => c.symbol),
+          },
+          userAnswer: { picked: choice.symbol },
+          isCorrect: correct,
+          score: correct ? 10 : 0,
+          timeSpentSec,
+          windowBlurCount: blurCountRef.current,
+        }),
+      });
+    } catch {
+      // Network blip — keep the user playing, the lost attempt is acceptable
+      // since the local state still drives UX. The session/complete call will
+      // also continue to work because it aggregates from the DB attempts that
+      // did land.
+    }
+  }
+
+  async function completeSession(finalScore: number, allCorrect: boolean) {
+    if (completedRef.current) return;
+    completedRef.current = true;
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/learn/session/complete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionKey,
+          totalScore: finalScore,
+          totalXp: finalScore, // 1 score = 1 XP for now (10 per correct)
+          allCorrect,
+        }),
+      });
+      if (!res.ok) {
+        setCompletionError("complete_failed");
+        return;
+      }
+      const json = (await res.json()) as SessionFinishResult;
+      setFinishResult(json);
+    } catch {
+      setCompletionError("complete_failed");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   function pick(choice: ZhuyinSymbol) {
-    if (picked !== null) return;
+    if (picked !== null || submitting) return;
     setPicked(choice.symbol);
     const correct = choice.symbol === current!.target.symbol;
+    const timeSpentSec = Math.max(
+      0,
+      Math.round((Date.now() - startRef.current) / 1000),
+    );
     setFeedback(correct ? "correct" : "wrong");
     if (correct) setScore((s) => s + 10);
     else setHearts((h) => h - 1);
 
+    attemptsRef.current.push({
+      symbol: current!.target.symbol,
+      pickedSymbol: choice.symbol,
+      isCorrect: correct,
+      timeSpentSec,
+    });
+
+    // Fire-and-forget per-attempt POST.
+    postAttempt(current!, choice, correct, timeSpentSec);
+
     setTimeout(() => {
       setPicked(null);
       setFeedback(null);
-      setIndex((i) => i + 1);
+
+      const nextIdx = index + 1;
+      const heartsLeft = correct ? hearts : hearts - 1;
+      const willFinish =
+        heartsLeft <= 0 || nextIdx >= QUESTION_COUNT;
+
+      setIndex(nextIdx);
+
+      if (willFinish) {
+        const finalScore = score + (correct ? 10 : 0);
+        const allRight =
+          attemptsRef.current.length === QUESTION_COUNT &&
+          attemptsRef.current.every((a) => a.isCorrect);
+        completeSession(finalScore, allRight);
+      }
     }, 900);
   }
 
@@ -83,6 +219,13 @@ export function ZhuyinTapExercise() {
     setScore(0);
     setPicked(null);
     setFeedback(null);
+    setFinishResult(null);
+    setCompletionError(null);
+    setSessionKey(newSessionKey());
+    startRef.current = Date.now();
+    blurCountRef.current = 0;
+    attemptsRef.current = [];
+    completedRef.current = false;
   }
 
   if (finished) {
@@ -97,6 +240,37 @@ export function ZhuyinTapExercise() {
           <div className="text-sm text-muted-foreground">
             得分 {score} ・ 剩餘血量 {hearts}
           </div>
+
+          {submitting ? (
+            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+              <Loader2 className="size-4 animate-spin" />
+              紀錄中…
+            </div>
+          ) : finishResult ? (
+            <div className="space-y-1 rounded-lg bg-muted/50 p-3 text-sm">
+              {finishResult.skipped === "impersonation" ? (
+                <p className="text-muted-foreground">
+                  模擬登入中，本次練習不計入學員數據
+                </p>
+              ) : finishResult.suspicious ? (
+                <p className="text-amber-700">
+                  本次練習被標記為可疑，XP 暫不計入
+                </p>
+              ) : (
+                <>
+                  <p className="text-base font-semibold">
+                    +{finishResult.awardedXp} XP
+                  </p>
+                  <p className="text-muted-foreground">
+                    連續 {finishResult.newStreak} 天 🔥
+                  </p>
+                </>
+              )}
+            </div>
+          ) : completionError ? (
+            <p className="text-sm text-destructive">紀錄失敗，請稍後再試</p>
+          ) : null}
+
           <Button onClick={reset} className="w-full" size="lg">
             <RotateCcw className="size-4" />
             重新挑戰

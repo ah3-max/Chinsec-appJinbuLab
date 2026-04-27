@@ -16,26 +16,43 @@ export default async function ProfilePage({
   const session = await auth();
   if (!session?.user?.id) redirect(`/${locale}/login`);
 
-  const me = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: {
-      fullName: true,
-      username: true,
-      email: true,
-      role: true,
-      nationality: true,
-      currentLevel: true,
-      totalXp: true,
-      streakDays: true,
-      totalStudyMin: true,
-      facility: { select: { name: true, shortName: true } },
-    },
-  });
+  const userId = session.user.id;
+  const weekStart = new Date();
+  weekStart.setDate(weekStart.getDate() - 7);
+
+  const [me, totalAttempts, correctAttempts, weeklyAttempts] = await Promise.all([
+    db.user.findUnique({
+      where: { id: userId },
+      select: {
+        fullName: true,
+        username: true,
+        email: true,
+        role: true,
+        nationality: true,
+        currentLevel: true,
+        totalXp: true,
+        weeklyXp: true,
+        streakDays: true,
+        totalStudyMin: true,
+        facility: { select: { name: true, shortName: true } },
+      },
+    }),
+    db.userAttempt.count({ where: { userId } }),
+    db.userAttempt.count({ where: { userId, isCorrect: true } }),
+    db.userAttempt.count({
+      where: { userId, attemptedAt: { gte: weekStart } },
+    }),
+  ]);
 
   const tNav = await getTranslations("nav");
   const tLevels = await getTranslations("levels");
 
   if (!me) redirect(`/${locale}/login`);
+
+  const accuracy =
+    totalAttempts > 0
+      ? Math.round((correctAttempts / totalAttempts) * 100)
+      : 0;
 
   return (
     <div className="space-y-4 px-4">
@@ -57,13 +74,9 @@ export default async function ProfilePage({
           </div>
         </CardHeader>
         <CardContent className="space-y-2 text-sm">
-          {me.email && (
-            <Row label="Email" value={me.email} />
-          )}
+          {me.email && <Row label="Email" value={me.email} />}
           <Row label="國籍" value={me.nationality} />
-          {me.facility && (
-            <Row label="所屬機構" value={me.facility.name} />
-          )}
+          {me.facility && <Row label="所屬機構" value={me.facility.name} />}
           <Row label="目前等級" value={tLevels(me.currentLevel)} />
         </CardContent>
       </Card>
@@ -73,15 +86,20 @@ export default async function ProfilePage({
         <CardHeader>
           <CardTitle className="text-base">學習統計</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-3">
           <div className="grid grid-cols-3 gap-2 text-center">
-            <Stat label="XP" value={me.totalXp} />
-            <Stat label="連續天" value={me.streakDays} />
-            <Stat
-              label="學習分鐘"
-              value={me.totalStudyMin}
-            />
+            <Stat label="總 XP" value={me.totalXp} />
+            <Stat label="連續天" value={`${me.streakDays}🔥`} />
+            <Stat label="學習分鐘" value={me.totalStudyMin} />
           </div>
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <Stat label="本週 XP" value={me.weeklyXp} />
+            <Stat label="嘗試數" value={totalAttempts} />
+            <Stat label="正確率" value={`${accuracy}%`} />
+          </div>
+          <p className="text-center text-xs text-muted-foreground">
+            最近 7 天嘗試 {weeklyAttempts} 次
+          </p>
         </CardContent>
       </Card>
 
@@ -102,7 +120,7 @@ function Row({ label, value }: { label: string; value: string }) {
   );
 }
 
-function Stat({ label, value }: { label: string; value: number }) {
+function Stat({ label, value }: { label: string; value: number | string }) {
   return (
     <div className="rounded-lg border bg-muted/30 p-3">
       <div className="text-lg font-bold">{value}</div>
