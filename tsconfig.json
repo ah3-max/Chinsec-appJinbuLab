@@ -40,6 +40,8 @@
     ".next",
     "out",
     "dist",
-    "build"
+    "build",
+    "prisma/seed",
+    "scripts"
   ]
 }

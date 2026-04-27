@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 import { LoginForm } from "@/components/auth/login-form";
@@ -41,7 +42,9 @@ export default async function LoginPage({
             <CardDescription>{t("subtitle")}</CardDescription>
           </CardHeader>
           <CardContent>
-            <LoginForm />
+            <Suspense fallback={<div className="h-40" />}>
+              <LoginForm />
+            </Suspense>
           </CardContent>
         </Card>
       </div>

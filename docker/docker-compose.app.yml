@@ -1,0 +1,66 @@
+# ============================================
+# ChineseLearn — App Overlay
+# 疊加在 dev compose 上，新增 Next.js 容器並共用既有 postgres/redis/minio
+# 啟動：
+#   export $(grep AUTH_SECRET ../.env.local | xargs)
+#   docker compose -f docker-compose.yml -f docker-compose.app.yml up -d --build
+# ============================================
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: chinese-learn-app
+    restart: unless-stopped
+    ports:
+      - "3003:3003"
+    environment:
+      NODE_ENV: production
+      PORT: "3003"
+      HOSTNAME: "0.0.0.0"
+
+      # 資料庫 / Redis / MinIO 走容器內部網路
+      DATABASE_URL: postgresql://chinese_learn:chinese_learn_dev_pwd@postgres:5432/chinese_learn?schema=public
+      REDIS_URL: redis://:chinese_learn_redis_pwd@redis:6379
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: "9000"
+      MINIO_USE_SSL: "false"
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: chinese_learn_minio_pwd
+      MINIO_BUCKET_AUDIO: chinese-learn-audio
+      MINIO_BUCKET_HANDWRITING: chinese-learn-handwriting
+      MINIO_BUCKET_HOMEWORK: chinese-learn-homework
+
+      # NextAuth
+      AUTH_SECRET: ${AUTH_SECRET}
+      AUTH_TRUST_HOST: "true"
+      NEXTAUTH_URL: http://localhost:3003
+
+      # 應用設定
+      NEXT_PUBLIC_APP_NAME: ChineseLearn
+      NEXT_PUBLIC_APP_URL: http://localhost:3003
+      DEFAULT_LOCALE: zh-TW
+      SUPPORTED_LOCALES: zh-TW,th,vi,id
+
+      # AI（Phase 1 不必填，預留）
+      LM_STUDIO_BASE_URL: ${LM_STUDIO_BASE_URL:-http://192.168.1.214:1234/v1}
+      LM_STUDIO_API_KEY: ${LM_STUDIO_API_KEY:-lm-studio-placeholder}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://192.168.1.214:11434}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    networks:
+      - chinese-learn-net
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3003/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
