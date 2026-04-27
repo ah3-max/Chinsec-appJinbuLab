@@ -24,6 +24,8 @@
     "ingest:pdf": "tsx scripts/ingest-pdf.ts",
     "ingest:tocfl": "tsx scripts/seed-tocfl.ts",
     "ingest:audio": "tsx scripts/generate-audio.ts",
+    "audio:zhuyin": "tsx scripts/generate-zhuyin-audio.ts",
+    "audio:upload": "tsx scripts/upload-audio-to-minio.ts",
     "docker:dev": "docker compose -f docker/docker-compose.yml up -d",
     "docker:dev:down": "docker compose -f docker/docker-compose.yml down",
     "docker:prod": "docker compose -f docker/docker-compose.prod.yml up -d",

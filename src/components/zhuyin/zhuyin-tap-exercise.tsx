@@ -389,10 +389,31 @@ export function ZhuyinTapExercise() {
   );
 }
 
-// 使用瀏覽器內建 Web Speech API 暫代 TTS（後續換 Edge-TTS）
-function speak(s: ZhuyinSymbol) {
+// Edge-TTS pregenerated audio with Web Speech fallback.
+// The /api/audio/zhuyin/[symbol] endpoint redirects to MinIO (or the local
+// public/ fallback). If the file is missing or the network fails, we drop
+// back to the browser's built-in speech synthesis so the practice keeps
+// working.
+let activeAudio: HTMLAudioElement | null = null;
+
+function speak(s: ZhuyinSymbol, opts?: { slow?: boolean }) {
+  if (typeof window === "undefined") return;
+  const slow = opts?.slow ? "?slow=1" : "";
+  const url = `/api/audio/zhuyin/${encodeURIComponent(s.symbol)}${slow}`;
+
+  if (activeAudio) {
+    activeAudio.pause();
+    activeAudio = null;
+  }
+
+  const audio = new Audio(url);
+  activeAudio = audio;
+  audio.addEventListener("error", () => speakWebFallback(s));
+  audio.play().catch(() => speakWebFallback(s));
+}
+
+function speakWebFallback(s: ZhuyinSymbol) {
   if (typeof window === "undefined" || !window.speechSynthesis) return;
-  // 唸範例字會比注音本身清楚
   const text = s.example?.hanzi ?? s.pinyin;
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = "zh-TW";
