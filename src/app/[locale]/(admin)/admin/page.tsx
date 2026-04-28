@@ -1,15 +1,9 @@
 import Link from "next/link";
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import {
-  Users,
-  ScrollText,
-  ShieldCheck,
-  ArrowRight,
-  Sparkles,
-} from "lucide-react";
+import { Users, ScrollText, ShieldCheck, ArrowRight } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { Card, CardContent } from "@/components/ui/card";
+import { Logo } from "@/components/brand/logo";
 
 export default async function AdminHomePage({
   params,
@@ -58,28 +52,44 @@ export default async function AdminHomePage({
     ]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Hero */}
-      <section className="rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-5 text-white shadow-lg sm:p-8">
-        <div className="flex items-start justify-between gap-3">
+      <section
+        className="relative overflow-hidden rounded-2xl px-5 py-6 text-white shadow-sm sm:px-7 sm:py-7"
+        style={{
+          background:
+            "linear-gradient(135deg, var(--aiai-green-400) 0%, var(--aiai-green-600) 100%)",
+        }}
+      >
+        <div
+          className="absolute -right-10 -top-10 size-44 rounded-full opacity-20"
+          style={{ background: "var(--aiai-green-100)" }}
+          aria-hidden
+        />
+        <div className="relative flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <p className="flex items-center gap-1.5 text-xs font-medium opacity-90">
+            <p
+              className="flex items-center gap-1.5 text-[11px] font-medium uppercase opacity-90"
+              style={{ letterSpacing: "0.06em" }}
+            >
               <ShieldCheck className="size-3.5" />
               {me?.role === "SUPER_ADMIN"
                 ? t("badgeSuperAdmin")
                 : t("badgeAdmin")}
             </p>
-            <h1 className="mt-1 truncate text-2xl font-bold">
+            <h1 className="mt-1.5 truncate text-2xl font-bold">
               {t("welcome", { name: me?.fullName ?? "?" })}
             </h1>
             <p className="mt-1 text-sm opacity-90">{t("subtitle")}</p>
           </div>
-          <Sparkles className="size-7 shrink-0 opacity-80" />
+          <div className="hidden sm:block">
+            <Logo size={48} variant="inverted" />
+          </div>
         </div>
       </section>
 
       {/* Stats */}
-      <section className="grid grid-cols-3 gap-3">
+      <section className="grid grid-cols-3 gap-2 sm:gap-3">
         <StatCard label={t("statTotalLearners")} value={learnerCount} />
         <StatCard
           label={t("statActiveWeekly")}
@@ -90,22 +100,27 @@ export default async function AdminHomePage({
       </section>
 
       {/* Navigation cards */}
-      <section className="space-y-3">
-        <h2 className="text-base font-semibold">{t("manage")}</h2>
-        <div className="grid gap-3 sm:grid-cols-2">
+      <section className="space-y-2">
+        <h2
+          className="text-base font-semibold"
+          style={{ color: "var(--aiai-green-800)" }}
+        >
+          {t("manage")}
+        </h2>
+        <div className="grid gap-2 sm:grid-cols-2 sm:gap-3">
           <NavCard
             href={`/${locale}/users`}
             title={t("navUsers")}
             description={t("navUsersDesc")}
             Icon={Users}
-            color="bg-blue-100 text-blue-600"
+            tone="green"
           />
           <NavCard
             href={`/${locale}/admin/audits`}
             title={t("navAudits")}
             description={t("navAuditsDesc")}
             Icon={ScrollText}
-            color="bg-emerald-100 text-emerald-600"
+            tone="orange"
             disabled
             disabledLabel={t("comingSoon")}
           />
@@ -114,33 +129,51 @@ export default async function AdminHomePage({
 
       {/* Recent audits */}
       {recentAudits.length > 0 && (
-        <section className="space-y-3">
-          <h2 className="text-base font-semibold">{t("recentActivity")}</h2>
-          <Card>
-            <CardContent className="p-0">
-              <ul className="divide-y text-sm">
-                {recentAudits.map((a) => (
-                  <li
-                    key={a.id}
-                    className="flex items-center justify-between gap-3 px-4 py-3"
+        <section className="space-y-2">
+          <h2
+            className="text-base font-semibold"
+            style={{ color: "var(--aiai-green-800)" }}
+          >
+            {t("recentActivity")}
+          </h2>
+          <div
+            className="overflow-hidden rounded-xl border bg-white shadow-sm"
+            style={{ borderColor: "var(--aiai-green-100)" }}
+          >
+            <ul className="divide-y" style={{ borderColor: "var(--aiai-gray-200)" }}>
+              {recentAudits.map((a) => (
+                <li
+                  key={a.id}
+                  className="flex items-center justify-between gap-3 px-4 py-3"
+                >
+                  <div className="min-w-0">
+                    <p
+                      className="font-mono text-[11px] font-semibold uppercase tracking-wide"
+                      style={{
+                        color: "var(--aiai-green-600)",
+                        letterSpacing: "0.06em",
+                      }}
+                    >
+                      {a.action}
+                    </p>
+                    <p
+                      className="truncate text-xs"
+                      style={{ color: "var(--aiai-gray-400)" }}
+                    >
+                      {a.resource}
+                      {a.resourceId ? ` · ${a.resourceId.slice(0, 8)}` : ""}
+                    </p>
+                  </div>
+                  <time
+                    className="shrink-0 text-xs"
+                    style={{ color: "var(--aiai-gray-400)" }}
                   >
-                    <div className="min-w-0">
-                      <p className="font-mono text-xs font-medium uppercase text-foreground">
-                        {a.action}
-                      </p>
-                      <p className="truncate text-xs text-muted-foreground">
-                        {a.resource}
-                        {a.resourceId ? ` · ${a.resourceId.slice(0, 8)}` : ""}
-                      </p>
-                    </div>
-                    <time className="shrink-0 text-xs text-muted-foreground">
-                      {formatRelative(a.createdAt)}
-                    </time>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
+                    {formatRelative(a.createdAt)}
+                  </time>
+                </li>
+              ))}
+            </ul>
+          </div>
         </section>
       )}
     </div>
@@ -158,22 +191,24 @@ function StatCard({
 }) {
   return (
     <div
-      className={
-        accent
-          ? "rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-center sm:p-4"
-          : "rounded-xl border bg-card p-3 text-center sm:p-4"
-      }
+      className="rounded-xl border bg-white p-3 text-center shadow-sm sm:p-4"
+      style={{
+        borderColor: accent ? "var(--aiai-green-200)" : "var(--aiai-green-100)",
+        background: accent ? "var(--aiai-green-50)" : "#FFFFFF",
+      }}
     >
       <div
-        className={
-          accent
-            ? "text-2xl font-bold text-emerald-700 sm:text-3xl"
-            : "text-2xl font-bold sm:text-3xl"
-        }
+        className="text-2xl font-bold tabular-nums sm:text-3xl"
+        style={{
+          color: accent ? "var(--aiai-green-800)" : "var(--aiai-gray-800)",
+        }}
       >
         {value}
       </div>
-      <div className="mt-0.5 text-[11px] text-muted-foreground sm:text-xs">
+      <div
+        className="mt-0.5 text-[11px] sm:text-xs"
+        style={{ color: "var(--aiai-gray-600)" }}
+      >
         {label}
       </div>
     </div>
@@ -185,7 +220,7 @@ function NavCard({
   title,
   description,
   Icon,
-  color,
+  tone,
   disabled,
   disabledLabel,
 }: {
@@ -193,42 +228,71 @@ function NavCard({
   title: string;
   description: string;
   Icon: React.ComponentType<{ className?: string }>;
-  color: string;
+  tone: "green" | "orange";
   disabled?: boolean;
   disabledLabel?: string;
 }) {
+  const accent =
+    tone === "green" ? "var(--aiai-green-600)" : "var(--aiai-orange-600)";
+  const tint =
+    tone === "green" ? "var(--aiai-green-50)" : "var(--aiai-orange-50)";
+
   const inner = (
-    <Card
-      className={
-        disabled
-          ? "border-dashed opacity-60"
-          : "transition-all active:scale-[0.99] hover:shadow-md"
-      }
+    <article
+      className="rounded-xl border bg-white p-4 transition-shadow hover:shadow-md"
+      style={{
+        borderColor: disabled
+          ? "var(--aiai-gray-200)"
+          : "var(--aiai-green-100)",
+        borderStyle: disabled ? "dashed" : "solid",
+        opacity: disabled ? 0.65 : 1,
+      }}
     >
-      <CardContent className="flex items-start gap-3 p-4">
+      <div className="flex items-start gap-3">
         <div
-          className={`flex size-10 shrink-0 items-center justify-center rounded-lg ${color}`}
+          className="flex size-10 shrink-0 items-center justify-center rounded-xl"
+          style={{ background: tint, color: accent }}
         >
           <Icon className="size-5" />
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-2">
-            <h3 className="text-sm font-semibold">{title}</h3>
+            <h3
+              className="text-sm font-semibold"
+              style={{ color: "var(--aiai-gray-800)" }}
+            >
+              {title}
+            </h3>
             {disabled ? (
-              <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
+              <span
+                className="rounded px-1.5 py-0.5 text-[10px]"
+                style={{
+                  background: "var(--aiai-gray-50)",
+                  color: "var(--aiai-gray-400)",
+                }}
+              >
                 {disabledLabel}
               </span>
             ) : (
-              <ArrowRight className="size-4 text-muted-foreground" />
+              <ArrowRight className="size-4" style={{ color: accent }} />
             )}
           </div>
-          <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+          <p
+            className="mt-1 text-xs leading-relaxed"
+            style={{ color: "var(--aiai-gray-600)" }}
+          >
+            {description}
+          </p>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </article>
   );
   if (disabled) return <div>{inner}</div>;
-  return <Link href={href}>{inner}</Link>;
+  return (
+    <Link href={href} className="block transition-transform active:scale-[0.99]">
+      {inner}
+    </Link>
+  );
 }
 
 function formatRelative(date: Date): string {
