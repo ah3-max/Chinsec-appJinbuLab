@@ -57,6 +57,9 @@ docker/volumes/
 public/uploads/
 public/audio/generated/
 public/audio/zhuyin/
+public/audio/vocab/
+public/audio/dialogue/
+public/audio/sentence/
 public/handwriting/
 
 # Logs
