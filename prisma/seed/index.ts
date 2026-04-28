@@ -15,6 +15,7 @@ import { PrismaClient, Level, UserRole, Nationality, CourseCategory } from "@pri
 import bcrypt from "bcryptjs";
 import { seedZhuyinStages } from "./curriculum/zhuyin-stages";
 import { seedZhuyinLessons } from "./curriculum/zhuyin-lessons";
+import { seedZhuyinExercises } from "./curriculum/zhuyin-exercises";
 
 const prisma = new PrismaClient();
 
@@ -161,6 +162,15 @@ async function main() {
 
   const lessonCount = await seedZhuyinLessons(prisma);
   console.log(`✓ 注音預備班 ${lessonCount} 個課時建立完成`);
+
+  const exStats = await seedZhuyinExercises(prisma);
+  console.log(
+    `✓ 注音預備班 ${exStats.total} 個練習題建立完成 (${Object.entries(
+      exStats.byType,
+    )
+      .map(([k, v]) => `${k}=${v}`)
+      .join(", ")})`,
+  );
 
   // ----------------------------------------
   // 4. A1 入門級課程
