@@ -147,6 +147,7 @@ model Vocabulary {
   level        Level
   tocflBand    String?                   // A1/A2/B1...
   frequency    Int       @default(0)     // 詞頻排名
+  difficulty   Int       @default(1)     // 1-5,情境關卡用來決定出題難度
   
   // === 主題分類 ===
   category     String                    // greeting/eldercare/office/daily/family/food
@@ -168,7 +169,8 @@ model Vocabulary {
   
   // === 關聯 ===
   lessons      LessonVocabulary[]
-  
+  scenarios    ScenarioVocab[]
+
   // === 學習者進度 (反向關聯) ===
   srsSchedules SrsSchedule[]
   
@@ -312,6 +314,64 @@ model LessonDialogue {
   
   @@unique([lessonId, dialogueId])
   @@map("lesson_dialogues")
+}
+
+// ----------------------------------------
+// Scenario 養老院情境關卡 (L1-S01 ~ L6-S12)
+// ----------------------------------------
+// 每個 Level 內 12 個情境關卡,內容與情境緊密綁定。Scenario 跟 Stage 平行,
+// 不繼承 Stage 的 lesson 結構;直接掛詞彙、Hook 故事與練習題。
+// ----------------------------------------
+model Scenario {
+  id            String   @id @default(cuid())
+  code          String   @unique           // L1-S01
+
+  level         Level                       // 對應級別
+  orderIndex    Int                         // 1-12 在該 Level 內
+
+  title         String                      // 中文主標
+  titleI18n     Json                        // { "zh-TW": ..., "th": ..., "vi": ..., "id": ... }
+
+  // hook:情境引導 (圖片 / 短故事 / 音檔)
+  hookContent   Json?                       // { type, imageUrl?, storyTextI18n: { zh-TW, th, ... } }
+
+  // 對話腳本(JSON):[{speaker, hanzi, pinyin, translationI18n, audioUrl}, ...]
+  dialogue      Json?
+
+  estimatedMinutes Int       @default(25)
+  isPublished   Boolean    @default(false)
+
+  // 解鎖鏈:S02 必須 S01 通關
+  prerequisiteScenarioId String?
+  prerequisite  Scenario? @relation("ScenarioChain", fields: [prerequisiteScenarioId], references: [id])
+  unlocks       Scenario[] @relation("ScenarioChain")
+
+  vocabularies  ScenarioVocab[]
+  exercises     Exercise[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([level, orderIndex])
+  @@map("scenarios")
+}
+
+// ----------------------------------------
+// ScenarioVocab — Scenario 與 Vocabulary 的多對多
+// ----------------------------------------
+model ScenarioVocab {
+  id           String     @id @default(cuid())
+  scenarioId   String
+  scenario     Scenario   @relation(fields: [scenarioId], references: [id])
+  vocabularyId String
+  vocabulary   Vocabulary @relation(fields: [vocabularyId], references: [id])
+
+  isCore       Boolean    @default(true)    // false = 僅作分散練習,不列入核心詞彙卡
+  orderIndex   Int
+
+  @@unique([scenarioId, vocabularyId])
+  @@index([vocabularyId])
+  @@map("scenario_vocabularies")
 }
 
 // ----------------------------------------

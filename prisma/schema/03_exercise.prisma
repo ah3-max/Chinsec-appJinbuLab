@@ -7,9 +7,12 @@
 // ----------------------------------------
 model Exercise {
   id          String   @id @default(cuid())
-  lessonId    String
-  lesson      Lesson   @relation(fields: [lessonId], references: [id])
-  
+  // 練習題可掛在 Lesson 或 Scenario 上 (Path A 用 Lesson、Path B 用 Scenario)
+  lessonId    String?
+  lesson      Lesson?  @relation(fields: [lessonId], references: [id])
+  scenarioId  String?
+  scenario    Scenario? @relation(fields: [scenarioId], references: [id])
+
   type        ExerciseType
   difficulty  Int      @default(1)      // 1-5
   
@@ -48,6 +51,7 @@ model Exercise {
   updatedAt   DateTime @updatedAt
 
   @@index([lessonId])
+  @@index([scenarioId])
   @@index([type])
   @@map("exercises")
 }
