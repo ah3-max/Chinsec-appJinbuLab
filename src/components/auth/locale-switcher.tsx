@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const LOCALES = [
   { code: "zh-TW", flag: "🇹🇼", short: "中" },
@@ -12,15 +12,15 @@ const LOCALES = [
 export function LocaleSwitcher({ current }: { current: string }) {
   const pathname = usePathname();
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   function switchTo(locale: string) {
     if (locale === current) return;
-    // Replace the leading /<locale>/ in the path; pathname always begins with
-    // /<locale> after next-intl middleware.
+    // Replace the leading /<locale>/ in the path. We deliberately don't preserve
+    // the query string here — the auth pages (login / change-password) shouldn't
+    // forward callbackUrl across locale switches, and avoiding useSearchParams()
+    // keeps this component buildable without a Suspense wrapper.
     const next = pathname.replace(/^\/[^/]+/, `/${locale}`);
-    const qs = searchParams.toString();
-    router.push(qs ? `${next}?${qs}` : next);
+    router.push(next);
     router.refresh();
   }
 
