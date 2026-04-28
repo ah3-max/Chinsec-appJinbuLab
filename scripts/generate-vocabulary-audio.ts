@@ -19,13 +19,14 @@ import { mkdir } from "fs/promises";
 import * as path from "path";
 
 import { L1_S01 } from "../src/content/scenarios/L1-S01-self-introduction";
+import { L1_S02 } from "../src/content/scenarios/L1-S02-morning-greetings";
 import type { ScenarioDef } from "../src/content/scenarios/_types";
 
 const VOICE = "zh-TW-HsiaoChenNeural";
 const SLOW_RATE = "-30%";
 const ROOT = path.resolve(process.cwd(), "public/audio");
 
-const ALL_SCENARIOS: ScenarioDef[] = [L1_S01];
+const ALL_SCENARIOS: ScenarioDef[] = [L1_S01, L1_S02];
 
 interface Job {
   text: string;

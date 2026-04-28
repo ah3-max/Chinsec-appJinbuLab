@@ -18,6 +18,7 @@ import { seedZhuyinLessons } from "./curriculum/zhuyin-lessons";
 import { seedZhuyinExercises } from "./curriculum/zhuyin-exercises";
 import { seedZhuyinBossExam } from "./curriculum/zhuyin-boss";
 import { seedScenarioL1S01 } from "./scenarios/L1-S01";
+import { seedScenarioL1S02 } from "./scenarios/L1-S02";
 
 const prisma = new PrismaClient();
 
@@ -212,6 +213,10 @@ async function main() {
   const s01 = await seedScenarioL1S01(prisma);
   console.log(
     `✓ L1-S01 ${s01.vocabCount} 詞彙 + ${s01.exerciseCount} 練習題建立完成`,
+  );
+  const s02 = await seedScenarioL1S02(prisma);
+  console.log(
+    `✓ L1-S02 ${s02.vocabCount} 詞彙 + ${s02.exerciseCount} 練習題建立完成`,
   );
 
   // ----------------------------------------
