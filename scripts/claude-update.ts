@@ -116,7 +116,7 @@ function getPhaseStatuses(): PhaseStatus[] {
       inProgress: false,
     },
     {
-      name: "P0 進行中: Impersonation、強制改密、UserAttempt 寫入、Level 過濾、Edge-TTS",
+      name: "P0: Impersonation、強制改密、UserAttempt、Level 過濾、Edge-TTS",
       done: log.includes("super-admin impersonation") &&
             log.includes("force password") &&
             log.includes("persist attempts") &&
@@ -125,7 +125,15 @@ function getPhaseStatuses(): PhaseStatus[] {
       inProgress: true,
     },
     {
-      name: "P1 待辦: 注音 8 階段、3 種題型、手寫板、闖關地圖",
+      name: "Path A: 注音班完整化 (stages Z1-Z9 + 29 lessons + 249 exercises + Boss + 證書)",
+      done: log.includes("seed zhuyin stages Z1-Z9") &&
+            log.includes("seed zhuyin lessons") &&
+            log.includes("seed zhuyin exercises") &&
+            log.includes("zhuyin boss exam"),
+      inProgress: false,
+    },
+    {
+      name: "P1 待辦: 看符號選讀音、拼字、聽寫填空、Lesson player、手寫板、闖關地圖",
       done: false,
       inProgress: false,
     },

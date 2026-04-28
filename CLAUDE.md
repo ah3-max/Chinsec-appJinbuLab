@@ -207,8 +207,9 @@ scope 範例：admin / auth / learn / audio / ai / db / phase-N
 <!-- AUTO-GENERATED-START: progress -->
 - ✅ Phase 0: 基礎建設（Docker、Prisma、AI 路由）
 - ✅ Phase 1: i18n、Auth、Login、學員首頁、注音題型
-- 🔄 P0 進行中: Impersonation、強制改密、UserAttempt 寫入、Level 過濾、Edge-TTS
-- ⏳ P1 待辦: 注音 8 階段、3 種題型、手寫板、闖關地圖
+- ✅ P0: Impersonation、強制改密、UserAttempt、Level 過濾、Edge-TTS
+- ✅ Path A: 注音班完整化 (stages Z1-Z9 + 29 lessons + 249 exercises + Boss + 證書)
+- ⏳ P1 待辦: 看符號選讀音、拼字、聽寫填空、Lesson player、手寫板、闖關地圖
 - ⏳ P2 待辦: 84 情境關卡內容、AI 對話、Whisper、多語翻譯
 - ⏳ P3 待辦: 老師後台、HR 整合、TOCFL 模擬考、多租戶
 <!-- AUTO-GENERATED-END: progress -->

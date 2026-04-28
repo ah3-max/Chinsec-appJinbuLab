@@ -35,71 +35,43 @@
 - ✅ scripts/claude-update.ts 自動更新腳本
 - ✅ 課程架構 v2 設計（線性升級 + 84 情境）
 
----
+### Phase 2 P0：5 大基礎功能 (2026-04-27)
+- ✅ P0-1 超級管理員一鍵登入（impersonation + audit + 橙色橫幅）
+- ✅ P0-2 強制首次改密碼（middleware + zod 規則 + JWT 重簽）
+- ✅ P0-3 UserAttempt + XP/streak/anti-cheat（每題寫 DB + 升級判定）
+- ✅ P0-4 等級鎖定（lib/level + 課程地圖狀態 + Boss 觸發升級）
+- ✅ P0-5 Edge-TTS 預生成音檔（157 mp3 → MinIO,fallback Web Speech）
+- ✅ Bonus: 超管儀表板（/admin)、手機卡片版型、role-based 登入分流
+- ✅ Bonus: dev quick-login button（NEXT_PUBLIC_ENABLE_QUICK_LOGIN）
 
-## 🔄 進行中（P0）
-
-### P0-1：超級管理員一鍵登入（Impersonation）
-- [ ] `src/lib/auth-impersonate.ts`
-- [ ] `POST /api/admin/impersonate/start`
-- [ ] `GET /api/admin/impersonate/consume`
-- [ ] `POST /api/admin/impersonate/stop`
-- [ ] `src/app/[locale]/(admin)/users/page.tsx`
-- [ ] `src/components/impersonation-banner.tsx`
-- [ ] 安全限制 + AuditLog
-- [ ] commit `feat(admin): super-admin impersonation`
-
-### P0-2：強制首次改密碼
-- [ ] User schema 加 `mustChangePassword`, `passwordChangedAt`
-- [ ] Seed 帳號預設 mustChangePassword=true
-- [ ] middleware 偵測並 redirect
-- [ ] 改密頁 + API
-- [ ] i18n keys
-- [ ] commit `feat(auth): force password change on first login`
-
-### P0-3：UserAttempt 寫入 DB + XP/Streak
-- [ ] UserAttempt schema 改 exerciseId optional + exerciseSnapshot
-- [ ] `POST /api/learn/attempt`
-- [ ] `POST /api/learn/session/complete`
-- [ ] 前端整合（zhuyin-tap-exercise）
-- [ ] 個人頁即時數據
-- [ ] anti-cheat.ts
-- [ ] commit `feat(learn): persist attempts with xp streak`
-
-### P0-4：依使用者 level 過濾課程
-- [ ] `src/lib/level.ts`
-- [ ] 學員首頁顯示鎖定狀態
-- [ ] Server-side 守門
-- [ ] 升級慶祝 modal
-- [ ] commit `feat(learn): level-based course gating`
-
-### P0-5：Edge-TTS + MinIO 預載音檔
-- [ ] 安裝 edge-tts (pipx)
-- [ ] `scripts/generate-zhuyin-audio.ts`
-- [ ] `scripts/upload-audio-to-minio.ts`
-- [ ] `GET /api/audio/zhuyin/[symbol]`
-- [ ] zhuyin-tap-exercise 改用 MinIO 音檔
-- [ ] Fallback 到 Web Speech
-- [ ] commit `feat(audio): edge-tts pregenerated bopomofo audio`
+### Phase 2 Path A：注音班完整化 (2026-04-28)
+- ✅ Task 1 修 seed bug + Vocabulary.hanzi @unique 去重
+- ✅ Task 2 注音 Z1-Z9 stages 完整結構（韻母→聲符→聲調→Boss）
+- ✅ Task 3 29 個 lessons（Z1-L01 .. Z8-L05,4 語 contentI18n）
+- ✅ Task 4 249 個 exercises（ZHUYIN_RECOGNITION 157 / VOCAB_MCQ 74 / TONE_DISCRIMINATION 18)
+- ✅ Task 5 Z9 Boss 考試 + Certificate model + 自動升級到 A1
+- ✅ Task 6 testlearner_th 完整流程驗證(scripts/test-zhuyin-flow.ts 8/8 綠)
+- ✅ Task 7 PATH_A_REPORT + claude:update + 此進度區段
 
 ---
 
 ## ⏳ 待辦（P1：豐富課程體驗）
 
 ### 注音擴充
-- [ ] zhuyin-master.ts 完整 37 符號 + 22 結合韻 + 4 聲調
-- [ ] Z1-Z8 完整 8 階段資料灌入
-- [ ] Z9 Boss 通關設計
+- [x] zhuyin-master.ts 完整 37 符號 + 22 結合韻 + 4 聲調(在 src/lib/zhuyin/data.ts)
+- [x] Z1-Z8 完整 8 階段資料灌入(Path A Task 2-3)
+- [x] Z9 Boss 通關設計(Path A Task 5)
+- [ ] Lesson player UI(目前課程頁列出 lesson 但沒有實際播放器,只能透過 Boss 考)
 
 ### 題型擴充
 - [ ] 看符號選讀音（ZHUYIN_PRODUCTION）
 - [ ] 拼字組合（VOCAB_MATCH）
 - [ ] 聽寫填空（LISTEN_FILL）
-- [ ] 聲調辨識（TONE_DISCRIMINATION）
+- [x] 聲調辨識（TONE_DISCRIMINATION）— 資料已 seed,已在 Boss 渲染
 
 ### 互動體驗
 - [ ] 注音手寫板（Canvas + 筆畫記錄）
-- [ ] 闖關地圖視覺化（Duolingo 風）
+- [ ] 闖關地圖視覺化（Duolingo 風)
 - [ ] 每日任務系統
 - [ ] 成就徽章基礎版
 
@@ -191,10 +163,10 @@
 ## 📊 統計儀表板（自動更新）
 
 <!-- AUTO-GENERATED-START: stats -->
-- 總任務數：95
-- 已完成：0 (0%)
+- 總任務數：63
+- 已完成：4 (6%)
 - 進行中：0 (P0)
-- 待辦：95
+- 待辦：59
 
 按類別：
 - 基礎建設: ████████ 100% (8/8)
@@ -208,11 +180,11 @@
 - 商業化: ░░░░░░░░ 0% (0/2)
 
 最近活動：
-- 97128f3 feat(admin): super-admin impersonation with audit trail
-- 09dae38 feat(dev): quick admin login button gated by NEXT_PUBLIC_ENABLE_QUICK_LOGIN
-- 9ae2425 feat(phase-1): tab placeholders + Bopomofo keyboard + ZHUYIN_TAP exercise
-- e77ac59 feat(docker): production app container + ops runbook
-- f823559 feat(phase-1): i18n, auth, login, learner home
+- 337e796 test(zhuyin): full flow walkthrough with bug fixes
+- b43a6fc feat(learn): zhuyin boss exam with certificate issuance
+- 524d118 feat(curriculum): seed zhuyin exercises 100+ across 3 types
+- ee5d00a feat(curriculum): seed zhuyin lessons Z1-L01 to Z8-L05
+- 3bdc350 feat(curriculum): seed zhuyin stages Z1-Z9
 <!-- AUTO-GENERATED-END: stats -->
 
 ---
