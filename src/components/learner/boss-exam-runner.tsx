@@ -191,7 +191,10 @@ export function BossExamRunner({
     return (
       <Card>
         <CardContent className="space-y-4 p-6 text-center">
-          <ShieldAlert className="mx-auto size-12 text-amber-500" />
+          <ShieldAlert
+            className="mx-auto size-12"
+            style={{ color: "var(--aiai-orange-400)" }}
+          />
           <h2 className="text-xl font-bold">{t("title")}</h2>
           <p className="text-sm text-muted-foreground">
             {t("intro", { count: 50 })}
@@ -221,7 +224,10 @@ export function BossExamRunner({
     return (
       <Card>
         <CardContent className="space-y-3 p-6 text-center">
-          <Loader2 className="mx-auto size-8 animate-spin text-primary" />
+          <Loader2
+            className="mx-auto size-8 animate-spin"
+            style={{ color: "var(--aiai-green-400)" }}
+          />
           <p className="text-sm text-muted-foreground">{t("submitting")}</p>
         </CardContent>
       </Card>
@@ -294,8 +300,11 @@ export function BossExamRunner({
       <div className="flex items-center gap-3">
         <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
           <div
-            className="h-full bg-primary transition-all"
-            style={{ width: `${progress}%` }}
+            className="h-full transition-all"
+            style={{
+              width: `${progress}%`,
+              background: "var(--aiai-green-400)",
+            }}
           />
         </div>
         <div className="text-xs tabular-nums text-muted-foreground">
@@ -318,7 +327,11 @@ export function BossExamRunner({
             <button
               type="button"
               onClick={() => playAudio(audioToPlay)}
-              className="mx-auto flex size-20 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg active:scale-95"
+              className="mx-auto flex size-20 items-center justify-center rounded-full shadow-lg transition-transform active:scale-95"
+              style={{
+                background: "var(--aiai-green-400)",
+                color: "#FFFFFF",
+              }}
               aria-label="play audio"
             >
               <Volume2 className="size-8" />
@@ -357,11 +370,18 @@ export function BossExamRunner({
               onClick={() => pickAnswer(opt.value)}
               disabled={picked.has(currentQuestion.exerciseId)}
               className={cn(
-                "flex min-h-[3rem] items-center justify-center rounded-xl border-2 bg-card px-4 py-3 text-2xl font-bold shadow-sm transition-all active:scale-95",
-                !isPicked && "hover:border-primary",
-                isPicked && "border-primary bg-primary/10",
+                "flex min-h-[3rem] items-center justify-center rounded-xl border-2 bg-white px-4 py-3 text-2xl font-bold shadow-sm transition-all active:scale-95",
                 currentQuestion.options.length > 4 && "text-base",
               )}
+              style={{
+                borderColor: isPicked
+                  ? "var(--aiai-green-400)"
+                  : "var(--aiai-gray-200)",
+                background: isPicked
+                  ? "var(--aiai-green-50)"
+                  : "#FFFFFF",
+                color: "var(--aiai-gray-800)",
+              }}
             >
               {label}
             </button>
@@ -377,7 +397,10 @@ export function BossExamRunner({
             exit={{ opacity: 0 }}
             className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center"
           >
-            <div className="rounded-full bg-blue-500 p-6 shadow-xl">
+            <div
+              className="rounded-full p-6 shadow-xl"
+              style={{ background: "var(--aiai-green-400)" }}
+            >
               <ChevronRight className="size-12 text-white" />
             </div>
           </motion.div>

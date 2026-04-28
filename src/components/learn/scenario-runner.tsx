@@ -141,12 +141,22 @@ export function ScenarioRunner({
               onClick={() => setStage(s.id)}
               className={cn(
                 "flex flex-1 min-w-[5.5rem] items-center justify-center gap-1.5 rounded-md px-2 py-2 text-xs font-medium transition-colors",
-                isActive
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : isDone
-                    ? "bg-emerald-100 text-emerald-700"
-                    : "text-muted-foreground hover:bg-muted",
               )}
+              style={{
+                background: isActive
+                  ? "var(--aiai-green-400)"
+                  : isDone
+                    ? "var(--aiai-green-100)"
+                    : "transparent",
+                color: isActive
+                  ? "#FFFFFF"
+                  : isDone
+                    ? "var(--aiai-green-800)"
+                    : "var(--aiai-gray-400)",
+                boxShadow: isActive
+                  ? "0 1px 2px rgba(99, 153, 34, 0.2)"
+                  : "none",
+              }}
             >
               <s.Icon className="size-3.5" />
               <span className="truncate">{s.label}</span>
@@ -259,11 +269,17 @@ function VocabStage({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+      <div
+        className="flex items-center gap-2 text-xs"
+        style={{ color: "var(--aiai-gray-400)" }}
+      >
         <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
           <div
-            className="h-full bg-primary transition-all"
-            style={{ width: `${((idx + 1) / total) * 100}%` }}
+            className="h-full transition-all"
+            style={{
+              width: `${((idx + 1) / total) * 100}%`,
+              background: "var(--aiai-green-400)",
+            }}
           />
         </div>
         <span className="tabular-nums">{idx + 1} / {total}</span>
@@ -293,7 +309,13 @@ function VocabStage({
             </span>
           )}
           {v.isEldercareVocab && (
-            <span className="rounded bg-amber-100 px-1.5 py-0.5 text-amber-700">
+            <span
+              className="rounded px-1.5 py-0.5"
+              style={{
+                background: "var(--aiai-orange-50)",
+                color: "var(--aiai-orange-600)",
+              }}
+            >
               {t("eldercareLabel")}
             </span>
           )}
@@ -489,7 +511,9 @@ function PracticeStage({
               {t("impersonationSkipped")}
             </p>
           ) : result.suspicious ? (
-            <p className="text-sm text-amber-700">{t("suspicious")}</p>
+            <p className="text-sm" style={{ color: "var(--aiai-orange-600)" }}>
+              {t("suspicious")}
+            </p>
           ) : (
             <div className="space-y-1 rounded-lg bg-muted/50 p-3 text-sm">
               <p className="text-base font-semibold">+{result.awardedXp} XP</p>
@@ -594,11 +618,17 @@ function PracticeStage({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+      <div
+        className="flex items-center gap-2 text-xs"
+        style={{ color: "var(--aiai-gray-400)" }}
+      >
         <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
           <div
-            className="h-full bg-primary transition-all"
-            style={{ width: `${((idx + 1) / total) * 100}%` }}
+            className="h-full transition-all"
+            style={{
+              width: `${((idx + 1) / total) * 100}%`,
+              background: "var(--aiai-green-400)",
+            }}
           />
         </div>
         <span className="tabular-nums">{idx + 1} / {total}</span>
@@ -781,7 +811,11 @@ function ExerciseQuestionCard({
           <button
             type="button"
             onClick={playAudio}
-            className="mx-auto flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg active:scale-95"
+            className="mx-auto flex size-16 items-center justify-center rounded-full shadow-lg transition-transform active:scale-95"
+            style={{
+              background: "var(--aiai-green-400)",
+              color: "#FFFFFF",
+            }}
             aria-label={t("playAudio")}
           >
             <Volume2 className="size-7" />
@@ -794,7 +828,15 @@ function ExerciseQuestionCard({
               {sentenceParts.map((p, i) => (
                 <span
                   key={i}
-                  className={p === "___" ? "rounded bg-amber-100 px-2 text-amber-700" : ""}
+                  className={p === "___" ? "rounded px-2" : ""}
+                  style={
+                    p === "___"
+                      ? {
+                          background: "var(--aiai-orange-50)",
+                          color: "var(--aiai-orange-600)",
+                        }
+                      : undefined
+                  }
                 >
                   {p}
                 </span>

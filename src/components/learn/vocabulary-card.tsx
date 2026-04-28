@@ -84,7 +84,11 @@ export function VocabularyCard({
           <button
             type="button"
             onClick={() => playAudio(audioUrl)}
-            className="rounded-full p-2 text-primary hover:bg-primary/10"
+            className="rounded-full p-2 transition-colors hover:opacity-80"
+            style={{
+              color: "var(--aiai-green-600)",
+              background: "var(--aiai-green-50)",
+            }}
             aria-label={t("playAudio")}
           >
             <Volume2 className="size-5" />

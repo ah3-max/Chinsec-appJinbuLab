@@ -132,7 +132,9 @@ export function LessonRunner({
               {t("impersonationSkipped")}
             </p>
           ) : result.suspicious ? (
-            <p className="text-sm text-amber-700">{t("suspicious")}</p>
+            <p className="text-sm" style={{ color: "var(--aiai-orange-600)" }}>
+              {t("suspicious")}
+            </p>
           ) : (
             <div className="space-y-1 rounded-lg bg-muted/50 p-3 text-sm">
               <p className="text-base font-semibold">
@@ -275,8 +277,8 @@ export function LessonRunner({
         <span className="font-mono">{lessonCode}</span>
         <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
           <div
-            className="h-full bg-primary transition-all"
-            style={{ width: `${progress}%` }}
+            className="h-full transition-all"
+            style={{ width: `${progress}%`, background: "var(--aiai-green-400)" }}
           />
         </div>
         <span className="tabular-nums">
@@ -299,7 +301,11 @@ export function LessonRunner({
             <button
               type="button"
               onClick={() => playAudio(audio)}
-              className="mx-auto flex size-20 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg active:scale-95"
+              className="mx-auto flex size-20 items-center justify-center rounded-full shadow-lg transition-transform active:scale-95"
+              style={{
+                background: "var(--aiai-green-400)",
+                color: "#FFFFFF",
+              }}
               aria-label={t("playAudio")}
             >
               <Volume2 className="size-8" />

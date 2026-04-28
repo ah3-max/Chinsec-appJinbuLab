@@ -67,7 +67,11 @@ export function SentenceCard({
       seg.isHi ? (
         <span
           key={i}
-          className="rounded bg-amber-100 px-0.5 text-amber-800"
+          className="rounded px-0.5"
+          style={{
+            background: "var(--aiai-orange-50)",
+            color: "var(--aiai-orange-800)",
+          }}
         >
           {seg.text}
         </span>
@@ -101,7 +105,11 @@ export function SentenceCard({
           <button
             type="button"
             onClick={playAudio}
-            className="shrink-0 rounded-full p-1.5 text-primary hover:bg-primary/10"
+            className="shrink-0 rounded-full p-1.5 transition-colors hover:opacity-80"
+            style={{
+              color: "var(--aiai-green-600)",
+              background: "var(--aiai-green-50)",
+            }}
             aria-label={t("playAudio")}
           >
             <Volume2 className="size-4" />
