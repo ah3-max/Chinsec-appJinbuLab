@@ -13,7 +13,7 @@ export default async function LearnerLayout({
   setRequestLocale(locale);
 
   return (
-    <div className="min-h-svh bg-muted/30">
+    <div className="min-h-svh" style={{ background: "var(--aiai-bg-page)" }}>
       <ImpersonationBanner />
       <main className="mx-auto max-w-md pb-20 pt-4">{children}</main>
       <BottomNav />

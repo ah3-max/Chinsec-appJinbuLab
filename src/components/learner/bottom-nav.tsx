@@ -1,11 +1,9 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { usePathname } from "next/navigation";
-import { useParams } from "next/navigation";
+import { usePathname, useParams } from "next/navigation";
 import Link from "next/link";
 import { BookOpen, Dumbbell, ClipboardList, User } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const items = [
   { key: "learn", href: "learn", Icon: BookOpen },
@@ -20,7 +18,13 @@ export function BottomNav() {
   const params = useParams<{ locale: string }>();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 pb-[env(safe-area-inset-bottom)]">
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-40 border-t backdrop-blur pb-[env(safe-area-inset-bottom)]"
+      style={{
+        background: "rgba(255, 255, 255, 0.92)",
+        borderColor: "var(--aiai-green-100)",
+      }}
+    >
       <ul className="mx-auto flex h-16 max-w-md items-stretch">
         {items.map(({ key, href, Icon }) => {
           const fullHref = `/${params.locale}/${href}`;
@@ -30,12 +34,13 @@ export function BottomNav() {
             <li key={key} className="flex-1">
               <Link
                 href={fullHref}
-                className={cn(
-                  "flex h-full flex-col items-center justify-center gap-1 text-xs transition-colors",
-                  active
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground",
-                )}
+                className="flex h-full flex-col items-center justify-center gap-1 text-[11px] transition-colors"
+                style={{
+                  color: active
+                    ? "var(--aiai-green-600)"
+                    : "var(--aiai-gray-400)",
+                  fontWeight: active ? 600 : 400,
+                }}
               >
                 <Icon className="size-5" />
                 <span>{t(key)}</span>

@@ -1,12 +1,31 @@
 import Link from "next/link";
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import { Lock, ArrowRight, Check, Sparkles, MapPin, Clock } from "lucide-react";
+import {
+  Lock,
+  ArrowRight,
+  Check,
+  Sparkles,
+  MapPin,
+  Clock,
+  Flame,
+  BookOpen,
+} from "lucide-react";
 import { Level } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Logo } from "@/components/brand/logo";
 import { classifyCourse, previousLevel, canAccess } from "@/lib/level";
 import { LearnLockedToast } from "@/components/learner/learn-locked-toast";
+
+const LEVEL_RANK: Record<Level, number> = {
+  ZHUYIN: 0,
+  A1_BEGINNER: 1,
+  A2_BASIC: 2,
+  B1_INTERMEDIATE: 3,
+  B2_UPPER_INTER: 4,
+  C1_ADVANCED: 5,
+  C2_PROFICIENT: 6,
+};
 
 export default async function LearnPage({
   params,
@@ -48,8 +67,7 @@ export default async function LearnPage({
     },
   });
 
-  // 養老院情境關卡 — 顯示目前等級的所有 scenarios.
-  const userLvl = me?.currentLevel ?? Level.ZHUYIN;
+  const userLevel: Level = me?.currentLevel ?? Level.ZHUYIN;
   const scenarios = await db.scenario.findMany({
     where: { isPublished: true },
     orderBy: [{ level: "asc" }, { orderIndex: "asc" }],
@@ -65,10 +83,6 @@ export default async function LearnPage({
     },
   });
 
-  const userLevel: Level = me?.currentLevel ?? Level.ZHUYIN;
-
-  // "Completed" heuristic: course is below user's current level → has been
-  // passed. Replace with real lesson-progress tracking once that exists.
   function classify(courseLevel: Level) {
     const userIdx = LEVEL_RANK[userLevel];
     const courseIdx = LEVEL_RANK[courseLevel];
@@ -77,33 +91,74 @@ export default async function LearnPage({
   }
 
   return (
-    <div className="space-y-6 px-4">
+    <div className="space-y-5 px-4 pb-4">
       <LearnLockedToast />
-      {/* Header */}
-      <header className="space-y-1">
-        <p className="text-sm text-muted-foreground">
-          {me ? `Hi, ${me.fullName}` : t("welcome")}
-        </p>
-        <h1 className="text-2xl font-bold">{t("subtitle")}</h1>
+
+      {/* Brand-tinted hero header */}
+      <header
+        className="relative overflow-hidden rounded-2xl px-5 py-5 text-white shadow-sm"
+        style={{
+          background:
+            "linear-gradient(135deg, var(--aiai-green-400) 0%, var(--aiai-green-600) 100%)",
+        }}
+      >
+        <div
+          className="absolute -right-6 -top-6 size-32 rounded-full opacity-20"
+          style={{ background: "var(--aiai-green-100)" }}
+          aria-hidden
+        />
+        <div className="relative flex items-center gap-3">
+          <Logo size={48} />
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium opacity-90">
+              {me ? `${t("welcome")}, ${me.fullName}` : t("welcome")}
+            </p>
+            <p
+              className="text-[11px] uppercase tracking-wide opacity-80"
+              style={{ letterSpacing: "0.06em" }}
+            >
+              愛愛院 中文學習
+            </p>
+          </div>
+        </div>
       </header>
 
+      {/* Stats strip */}
       {me && (
         <div className="grid grid-cols-3 gap-2">
-          <StatBox label="XP" value={me.totalXp.toString()} />
           <StatBox
-            label={t("streak", { days: me.streakDays })}
-            value={`${me.streakDays}🔥`}
+            icon={<BookOpen className="size-3.5" />}
+            label="XP"
+            value={me.totalXp.toString()}
+            tone="green"
           />
-          <StatBox label="Level" value={tLevels(me.currentLevel)} />
+          <StatBox
+            icon={<Flame className="size-3.5" />}
+            label={t("streak", { days: me.streakDays })}
+            value={`${me.streakDays}`}
+            tone="orange"
+          />
+          <StatBox
+            icon={<Sparkles className="size-3.5" />}
+            label="Level"
+            value={tLevels(me.currentLevel)}
+            tone="green"
+          />
         </div>
       )}
 
+      {/* Scenarios — primary path for Path B learners (歐寶) */}
       {scenarios.length > 0 && (
-        <section className="space-y-3">
-          <h2 className="text-lg font-semibold">{tLearn("scenariosHeading")}</h2>
+        <section className="space-y-2">
+          <h2
+            className="text-base font-semibold"
+            style={{ color: "var(--aiai-green-800)" }}
+          >
+            {tLearn("scenariosHeading")}
+          </h2>
           <ScenarioList
             scenarios={scenarios}
-            userLevel={userLvl}
+            userLevel={userLevel}
             locale={locale}
             tLearn={tLearn}
             tLevels={tLevels}
@@ -111,14 +166,21 @@ export default async function LearnPage({
         </section>
       )}
 
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">{t("myCourses")}</h2>
-        <div className="space-y-3">
+      {/* Courses */}
+      <section className="space-y-2">
+        <h2
+          className="text-base font-semibold"
+          style={{ color: "var(--aiai-green-800)" }}
+        >
+          {t("myCourses")}
+        </h2>
+        <div className="space-y-2">
           {courses.map((c) => {
             const state = classify(c.level);
             const locked = state === "locked";
             const preview = state === "preview";
             const completed = state === "completed";
+            const open = state === "open";
             const prevName = previousLevel(c.level);
             const courseHref = `/${locale}/learn/${c.code}`;
 
@@ -132,79 +194,101 @@ export default async function LearnPage({
                 {...wrapperProps}
                 className={
                   locked || preview
-                    ? "block opacity-70"
+                    ? "block opacity-65"
                     : "block transition-transform active:scale-[0.99]"
                 }
               >
-                <Card
-                  className={
-                    locked
-                      ? "border-dashed bg-muted/40"
-                      : preview
-                        ? "border-dashed"
-                        : completed
-                          ? "border-emerald-200"
-                          : ""
-                  }
+                <article
+                  className="rounded-xl border bg-white p-3 shadow-sm transition-shadow hover:shadow-md"
+                  style={{
+                    borderColor: completed
+                      ? "var(--aiai-green-200)"
+                      : open
+                        ? "var(--aiai-green-100)"
+                        : "var(--aiai-gray-200)",
+                    borderStyle: locked || preview ? "dashed" : "solid",
+                    background: completed ? "var(--aiai-green-50)" : "#FFFFFF",
+                  }}
                 >
-                  <CardHeader>
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="flex size-10 items-center justify-center rounded-lg text-lg font-bold text-white"
-                        style={{ backgroundColor: c.themeColor ?? "#3B82F6" }}
-                      >
-                        {locked ? (
-                          <Lock className="size-5" />
-                        ) : completed ? (
-                          <Check className="size-5" />
-                        ) : preview ? (
-                          <Sparkles className="size-5" />
-                        ) : (
-                          c.code[0]
-                        )}
-                      </div>
-                      <div className="flex-1">
-                        <CardTitle className="text-base">{c.title}</CardTitle>
-                        <p className="text-xs text-muted-foreground">
-                          {tLevels(c.level)} ・ {c.vocabularyCount} 字
-                          {c.estimatedHours
-                            ? ` ・ ${c.estimatedHours}h`
-                            : ""}
-                        </p>
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {state === "open" && (
-                          <span className="inline-flex items-center gap-0.5 text-primary">
-                            {tLearn("startOrContinue")}
-                            <ArrowRight className="size-3.5" />
-                          </span>
-                        )}
-                        {state === "completed" && (
-                          <span className="text-emerald-600">
-                            {tLearn("review")}
-                          </span>
-                        )}
-                        {state === "preview" && (
-                          <span className="text-amber-600">
-                            {tLearn("comingSoon")}
-                          </span>
-                        )}
-                        {state === "locked" && prevName && (
-                          <span>
-                            {tLearn("finishPrevToUnlock", {
-                              prev: tLevels(prevName),
-                            })}
-                          </span>
-                        )}
-                      </div>
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="flex size-11 shrink-0 items-center justify-center rounded-xl text-base font-semibold"
+                      style={{
+                        background: completed
+                          ? "var(--aiai-green-400)"
+                          : open
+                            ? "var(--aiai-green-100)"
+                            : "var(--aiai-gray-200)",
+                        color: completed
+                          ? "#FFFFFF"
+                          : open
+                            ? "var(--aiai-green-800)"
+                            : "var(--aiai-gray-600)",
+                      }}
+                    >
+                      {locked ? (
+                        <Lock className="size-5" />
+                      ) : completed ? (
+                        <Check className="size-5" />
+                      ) : preview ? (
+                        <Sparkles className="size-5" />
+                      ) : (
+                        c.code[0]
+                      )}
                     </div>
-                  </CardHeader>
+                    <div className="min-w-0 flex-1">
+                      <p
+                        className="text-sm font-semibold"
+                        style={{ color: "var(--aiai-gray-800)" }}
+                      >
+                        {c.title}
+                      </p>
+                      <p
+                        className="mt-0.5 text-[11px]"
+                        style={{ color: "var(--aiai-gray-400)" }}
+                      >
+                        {tLevels(c.level)} · {c.vocabularyCount} 字
+                        {c.estimatedHours ? ` · ${c.estimatedHours}h` : ""}
+                      </p>
+                    </div>
+                    <div className="text-[11px]">
+                      {state === "open" && (
+                        <span
+                          className="inline-flex items-center gap-0.5 font-medium"
+                          style={{ color: "var(--aiai-green-600)" }}
+                        >
+                          {tLearn("startOrContinue")}
+                          <ArrowRight className="size-3.5" />
+                        </span>
+                      )}
+                      {state === "completed" && (
+                        <span style={{ color: "var(--aiai-green-600)" }}>
+                          {tLearn("review")}
+                        </span>
+                      )}
+                      {state === "preview" && (
+                        <span style={{ color: "var(--aiai-orange-600)" }}>
+                          {tLearn("comingSoon")}
+                        </span>
+                      )}
+                      {state === "locked" && prevName && (
+                        <span style={{ color: "var(--aiai-gray-400)" }}>
+                          {tLearn("finishPrevToUnlock", {
+                            prev: tLevels(prevName),
+                          })}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                   {c.description && (
-                    <CardContent className="text-sm text-muted-foreground">
+                    <p
+                      className="mt-2 text-xs leading-relaxed"
+                      style={{ color: "var(--aiai-gray-600)" }}
+                    >
                       {c.description}
-                    </CardContent>
+                    </p>
                   )}
-                </Card>
+                </article>
               </Wrapper>
             );
           })}
@@ -214,21 +298,37 @@ export default async function LearnPage({
   );
 }
 
-const LEVEL_RANK: Record<Level, number> = {
-  ZHUYIN: 0,
-  A1_BEGINNER: 1,
-  A2_BASIC: 2,
-  B1_INTERMEDIATE: 3,
-  B2_UPPER_INTER: 4,
-  C1_ADVANCED: 5,
-  C2_PROFICIENT: 6,
-};
-
-function StatBox({ label, value }: { label: string; value: string }) {
+function StatBox({
+  icon,
+  label,
+  value,
+  tone,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  tone: "green" | "orange";
+}) {
+  const accent =
+    tone === "green" ? "var(--aiai-green-600)" : "var(--aiai-orange-600)";
   return (
-    <div className="rounded-lg border bg-card p-3 text-center shadow-sm">
-      <div className="text-lg font-bold">{value}</div>
-      <div className="text-xs text-muted-foreground">{label}</div>
+    <div
+      className="rounded-xl border bg-white p-3 text-center shadow-sm"
+      style={{ borderColor: "var(--aiai-green-100)" }}
+    >
+      <div
+        className="flex items-center justify-center gap-1 text-[10px] font-medium uppercase"
+        style={{ color: accent, letterSpacing: "0.06em" }}
+      >
+        {icon}
+        {label}
+      </div>
+      <div
+        className="mt-0.5 text-lg font-bold tabular-nums"
+        style={{ color: "var(--aiai-gray-800)" }}
+      >
+        {value}
+      </div>
     </div>
   );
 }
@@ -281,20 +381,24 @@ function ScenarioList({
                 : "block opacity-60"
             }
           >
-            <Card
-              className={
-                accessible
-                  ? "border-emerald-200 hover:shadow-md"
-                  : "border-dashed bg-muted/30"
-              }
+            <article
+              className="rounded-xl border bg-white p-3 shadow-sm transition-shadow hover:shadow-md"
+              style={{
+                borderColor: accessible
+                  ? "var(--aiai-green-100)"
+                  : "var(--aiai-gray-200)",
+                borderStyle: accessible ? "solid" : "dashed",
+              }}
             >
-              <CardContent className="flex items-center gap-3 p-3">
+              <div className="flex items-center gap-3">
                 <div
-                  className={
-                    accessible
-                      ? "flex size-9 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white"
-                      : "flex size-9 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground"
-                  }
+                  className="flex size-10 shrink-0 items-center justify-center rounded-full"
+                  style={{
+                    background: accessible
+                      ? "var(--aiai-green-400)"
+                      : "var(--aiai-gray-200)",
+                    color: accessible ? "#FFFFFF" : "var(--aiai-gray-600)",
+                  }}
                 >
                   {accessible ? (
                     <MapPin className="size-4" />
@@ -303,34 +407,55 @@ function ScenarioList({
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="flex flex-wrap items-center gap-2 text-sm font-semibold">
-                    <span className="font-mono text-xs text-muted-foreground">
+                  <p
+                    className="flex flex-wrap items-center gap-2 text-sm font-semibold"
+                    style={{ color: "var(--aiai-gray-800)" }}
+                  >
+                    <span
+                      className="font-mono text-[10px]"
+                      style={{ color: "var(--aiai-green-600)" }}
+                    >
                       {s.code}
                     </span>
                     <span>{localizedTitle}</span>
                   </p>
-                  <p className="mt-0.5 flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
+                  <p
+                    className="mt-0.5 flex flex-wrap items-center gap-2 text-[11px]"
+                    style={{ color: "var(--aiai-gray-400)" }}
+                  >
                     <span className="inline-flex items-center gap-0.5">
                       <Clock className="size-3" />
                       {s.estimatedMinutes}min
                     </span>
                     <span>{tLevels(s.level)}</span>
                     {mtcLabel && (
-                      <span className="rounded bg-muted px-1 py-0.5">
+                      <span
+                        className="rounded px-1 py-0.5"
+                        style={{
+                          background: "var(--aiai-green-50)",
+                          color: "var(--aiai-green-600)",
+                        }}
+                      >
                         {tLearn("scenarioMtcLabel", { books: mtcLabel })}
                       </span>
                     )}
                   </p>
                 </div>
                 {accessible ? (
-                  <ArrowRight className="size-4 text-muted-foreground" />
+                  <ArrowRight
+                    className="size-4 shrink-0"
+                    style={{ color: "var(--aiai-green-600)" }}
+                  />
                 ) : (
-                  <span className="text-[10px] text-muted-foreground">
+                  <span
+                    className="text-[10px] shrink-0"
+                    style={{ color: "var(--aiai-gray-400)" }}
+                  >
                     {tLearn("scenarioLocked")}
                   </span>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            </article>
           </Wrapper>
         );
       })}
