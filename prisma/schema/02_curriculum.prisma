@@ -132,7 +132,7 @@ model Vocabulary {
   id           String   @id @default(cuid())
   
   // === 中文呈現 ===
-  hanzi        String                    // 漢字 (繁體)
+  hanzi        String   @unique          // 漢字 (繁體) — 同一個詞只記一次
   hanziSimplified String?                // 簡體 (預留)
   zhuyin       String                    // ㄋㄧˇ ㄏㄠˇ
   pinyin       String                    // nǐ hǎo

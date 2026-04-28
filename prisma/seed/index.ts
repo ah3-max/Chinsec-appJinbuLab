@@ -333,15 +333,27 @@ async function main() {
   ];
 
   for (const v of sampleVocabularies) {
-    await prisma.vocabulary.create({
-      data: {
+    await prisma.vocabulary.upsert({
+      where: { hanzi: v.hanzi },
+      update: {
+        // refresh translations / category / tags on every seed run.
+        zhuyin: v.zhuyin,
+        pinyin: v.pinyin,
+        partOfSpeech: v.partOfSpeech,
+        translations: v.translations,
+        category: v.category,
+        tags: v.tags,
+        level: Level.A1_BEGINNER,
+        tocflBand: "A1",
+      },
+      create: {
         ...v,
         level: Level.A1_BEGINNER,
         tocflBand: "A1",
       },
     });
   }
-  console.log(`✓ ${sampleVocabularies.length} 個起始詞彙建立完成`);
+  console.log(`✓ ${sampleVocabularies.length} 個起始詞彙建立完成 (idempotent upsert)`);
 
   // ----------------------------------------
   // 完成
