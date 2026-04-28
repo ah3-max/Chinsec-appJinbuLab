@@ -6,17 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useParams } from "next/navigation";
+import { useRouter, useSearchParams, useParams } from "next/navigation";
 import { toast } from "sonner";
-import { Zap } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Zap, Loader2 } from "lucide-react";
 
 // 由 build-time 環境變數決定是否顯示一鍵管理員登入按鈕
-// docker/docker-compose.app.yml 已設 NEXT_PUBLIC_ENABLE_QUICK_LOGIN=true
 const QUICK_LOGIN_ENABLED =
   process.env.NEXT_PUBLIC_ENABLE_QUICK_LOGIN === "true";
 
@@ -27,12 +21,55 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
+const inputBaseStyle: React.CSSProperties = {
+  width: "100%",
+  background: "#FFFFFF",
+  border: "0.5px solid var(--aiai-gray-200)",
+  borderRadius: 10,
+  padding: "12px 14px",
+  fontSize: 14,
+  minHeight: 44,
+  color: "var(--aiai-gray-800)",
+  outline: "none",
+  transition: "border-color 120ms ease, box-shadow 120ms ease",
+};
+
+const labelStyle: React.CSSProperties = {
+  display: "block",
+  fontSize: 11,
+  fontWeight: 500,
+  letterSpacing: "0.06em",
+  textTransform: "uppercase",
+  color: "var(--aiai-green-600)",
+  marginBottom: 6,
+};
+
+const primaryButtonStyle: React.CSSProperties = {
+  width: "100%",
+  background: "var(--aiai-green-400)",
+  color: "#FFFFFF",
+  border: "none",
+  borderRadius: 12,
+  padding: "14px 16px",
+  fontSize: 15,
+  fontWeight: 500,
+  minHeight: 48,
+  cursor: "pointer",
+  transition: "background-color 120ms ease",
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: 8,
+};
+
 export function LoginForm() {
   const t = useTranslations("auth.login");
   const router = useRouter();
   const searchParams = useSearchParams();
   const params = useParams<{ locale: string }>();
   const [submitting, setSubmitting] = useState(false);
+  const [usernameFocused, setUsernameFocused] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false);
 
   const {
     register,
@@ -57,7 +94,6 @@ export function LoginForm() {
     }
 
     let target = explicitCallback ?? `/${params.locale}/learn`;
-    // No explicit callback → route by role so admins land on the dashboard.
     if (!explicitCallback) {
       try {
         const sessionRes = await fetch("/api/auth/session", { cache: "no-store" });
@@ -73,7 +109,7 @@ export function LoginForm() {
           target = `/${params.locale}/admin`;
         }
       } catch {
-        // Fall back to default learner home on session-fetch failure.
+        /* fall back to default learner home */
       }
     }
 
@@ -102,66 +138,125 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="username">{t("username")}</Label>
-        <Input
+      <div>
+        <label htmlFor="username" style={labelStyle}>
+          {t("username")}
+        </label>
+        <input
           id="username"
           autoComplete="username"
           autoFocus
           placeholder={t("usernamePlaceholder")}
-          {...register("username")}
+          style={{
+            ...inputBaseStyle,
+            borderColor: usernameFocused
+              ? "var(--aiai-green-400)"
+              : "var(--aiai-gray-200)",
+            boxShadow: usernameFocused
+              ? "0 0 0 3px rgba(99, 153, 34, 0.12)"
+              : "none",
+          }}
+          {...register("username", {
+            onBlur: () => setUsernameFocused(false),
+          })}
+          onFocus={() => setUsernameFocused(true)}
         />
         {errors.username && (
-          <p className="text-sm text-destructive">{errors.username.message}</p>
+          <p className="mt-1 text-xs text-red-600">{errors.username.message}</p>
         )}
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="password">{t("password")}</Label>
-        <Input
+      <div>
+        <label htmlFor="password" style={labelStyle}>
+          {t("password")}
+        </label>
+        <input
           id="password"
           type="password"
           autoComplete="current-password"
           placeholder={t("passwordPlaceholder")}
-          {...register("password")}
+          style={{
+            ...inputBaseStyle,
+            borderColor: passwordFocused
+              ? "var(--aiai-green-400)"
+              : "var(--aiai-gray-200)",
+            boxShadow: passwordFocused
+              ? "0 0 0 3px rgba(99, 153, 34, 0.12)"
+              : "none",
+          }}
+          {...register("password", {
+            onBlur: () => setPasswordFocused(false),
+          })}
+          onFocus={() => setPasswordFocused(true)}
         />
         {errors.password && (
-          <p className="text-sm text-destructive">{errors.password.message}</p>
+          <p className="mt-1 text-xs text-red-600">{errors.password.message}</p>
         )}
       </div>
 
-      <Button type="submit" className="w-full" size="lg" disabled={submitting}>
+      <button
+        type="submit"
+        disabled={submitting}
+        style={{
+          ...primaryButtonStyle,
+          opacity: submitting ? 0.7 : 1,
+          background: submitting
+            ? "var(--aiai-green-600)"
+            : "var(--aiai-green-400)",
+        }}
+        onMouseEnter={(e) => {
+          if (!submitting)
+            (e.currentTarget as HTMLButtonElement).style.background =
+              "var(--aiai-green-600)";
+        }}
+        onMouseLeave={(e) => {
+          if (!submitting)
+            (e.currentTarget as HTMLButtonElement).style.background =
+              "var(--aiai-green-400)";
+        }}
+      >
+        {submitting && <Loader2 className="size-4 animate-spin" />}
         {submitting ? t("submitting") : t("submit")}
-      </Button>
+      </button>
 
       {QUICK_LOGIN_ENABLED && (
-        <>
-          <div className="relative py-1">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs">
-              <span className="bg-card px-2 text-muted-foreground">
-                本機開發
-              </span>
-            </div>
+        <div className="space-y-2 pt-1">
+          <div className="flex items-center gap-2">
+            <span
+              style={{
+                flex: 1,
+                height: 1,
+                background: "var(--aiai-gray-200)",
+              }}
+            />
+            <span className="text-[11px]" style={{ color: "var(--aiai-gray-400)" }}>
+              本機開發
+            </span>
+            <span
+              style={{
+                flex: 1,
+                height: 1,
+                background: "var(--aiai-gray-200)",
+              }}
+            />
           </div>
-
-          <Button
+          <button
             type="button"
-            variant="outline"
-            className="w-full border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100"
-            size="lg"
-            disabled={submitting}
             onClick={quickAdminLogin}
+            disabled={submitting}
+            className="flex w-full items-center justify-center gap-2 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900 hover:bg-amber-100 disabled:opacity-50"
+            style={{ minHeight: 44 }}
           >
             <Zap className="size-4" />
             超級管理員一鍵登入
-          </Button>
-          <p className="text-center text-[10px] text-muted-foreground">
-            shunyuan / ChangeMe@2026 — 此按鈕僅在開發環境顯示
+          </button>
+          <p
+            className="text-center"
+            style={{ fontSize: 10, color: "var(--aiai-gray-400)" }}
+          >
+            shunyuan / ChangeMe@2026 — 僅開發環境顯示
           </p>
-        </>
+        </div>
       )}
     </form>
   );

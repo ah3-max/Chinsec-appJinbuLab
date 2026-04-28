@@ -439,7 +439,7 @@ function PracticeStage({
   );
   const skippedCount = scenario.exercises.length - exercises.length;
 
-  const [sessionKey, setSessionKey] = useState(() => newSessionKey());
+  const [sessionKey] = useState(() => newSessionKey());
   const [idx, setIdx] = useState(0);
   const [picked, setPicked] = useState<unknown | null>(null);
   const [feedback, setFeedback] = useState<"correct" | "wrong" | null>(null);
