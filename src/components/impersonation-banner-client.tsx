@@ -38,7 +38,14 @@ export function ImpersonationBannerClient({
   }
 
   return (
-    <div className="sticky top-0 z-50 border-b border-amber-600 bg-amber-500 text-amber-50 shadow-md">
+    <div
+      className="sticky top-0 z-50 border-b shadow-md"
+      style={{
+        background: "var(--aiai-orange-400)",
+        borderColor: "var(--aiai-orange-600)",
+        color: "#FFFFFF",
+      }}
+    >
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-3 py-2 text-sm">
         <div className="flex min-w-0 items-center gap-2">
           <AlertTriangle className="size-4 shrink-0" />
@@ -50,7 +57,11 @@ export function ImpersonationBannerClient({
           type="button"
           onClick={stop}
           disabled={loading}
-          className="flex shrink-0 items-center gap-1 rounded bg-white/20 px-2.5 py-1 text-xs font-medium hover:bg-white/30 disabled:opacity-50"
+          className="flex shrink-0 items-center gap-1 rounded-md px-2.5 py-1 text-xs font-medium transition-colors disabled:opacity-50"
+          style={{
+            background: "rgba(255, 255, 255, 0.22)",
+            color: "#FFFFFF",
+          }}
         >
           {loading ? (
             <Loader2 className="size-3.5 animate-spin" />

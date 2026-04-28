@@ -244,10 +244,15 @@ export function LoginForm() {
             type="button"
             onClick={quickAdminLogin}
             disabled={submitting}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900 hover:bg-amber-100 disabled:opacity-50"
-            style={{ minHeight: 44 }}
+            className="flex w-full items-center justify-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition-colors disabled:opacity-50"
+            style={{
+              minHeight: 44,
+              borderColor: "var(--aiai-orange-200)",
+              background: "var(--aiai-orange-50)",
+              color: "var(--aiai-orange-800)",
+            }}
           >
-            <Zap className="size-4" />
+            <Zap className="size-4" style={{ color: "var(--aiai-orange-600)" }} />
             超級管理員一鍵登入
           </button>
           <p
