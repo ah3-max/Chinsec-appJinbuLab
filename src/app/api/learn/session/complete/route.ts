@@ -9,55 +9,49 @@ import { nextLevel } from "@/lib/level";
 
 export const runtime = "nodejs";
 
-const PROMOTION_PASS_SCORE = 80;
+const PROMOTION_PASS_RATIO = 0.8; // 80 % of an exercise's maxScore
 
 // Has the user passed every published exercise of every published lesson of
-// every published course at this level? If so, they're ready to promote.
+// every published course at this level? "Pass" = best attempt's score is at
+// least 80 % of the exercise's maxScore.
 async function hasMasteredLevel(
   tx: Prisma.TransactionClient,
   userId: string,
   level: Level,
 ): Promise<boolean> {
-  const courses = await tx.course.findMany({
-    where: { level, isPublished: true },
-    select: {
-      id: true,
-      stages: {
-        select: {
-          lessons: {
-            where: { isPublished: true },
-            select: {
-              exercises: {
-                where: { isActive: true },
-                select: { id: true },
-              },
-            },
-          },
+  const exercises = await tx.exercise.findMany({
+    where: {
+      isActive: true,
+      lesson: {
+        isPublished: true,
+        stage: {
+          course: { level, isPublished: true },
         },
       },
     },
+    select: { id: true, maxScore: true },
   });
-
   // No content at this level → nothing to verify, so don't auto-promote.
-  if (courses.length === 0) return false;
+  if (exercises.length === 0) return false;
 
-  const exerciseIds = courses.flatMap((c) =>
-    c.stages.flatMap((s) => s.lessons.flatMap((l) => l.exercises.map((e) => e.id))),
-  );
-  if (exerciseIds.length === 0) return false;
+  const exerciseIds = exercises.map((e) => e.id);
+  const maxByExercise = new Map(exercises.map((e) => [e.id, e.maxScore]));
 
-  // Find all exercises this user passed at the threshold.
-  const passed = await tx.userAttempt.findMany({
-    where: {
-      userId,
-      exerciseId: { in: exerciseIds },
-      score: { gte: PROMOTION_PASS_SCORE },
-    },
-    distinct: ["exerciseId"],
-    select: { exerciseId: true },
+  // Pull the best score per exercise this user has logged.
+  const groups = await tx.userAttempt.groupBy({
+    by: ["exerciseId"],
+    where: { userId, exerciseId: { in: exerciseIds } },
+    _max: { score: true },
   });
 
-  return passed.length === exerciseIds.length;
+  let passed = 0;
+  for (const g of groups) {
+    if (!g.exerciseId) continue;
+    const max = maxByExercise.get(g.exerciseId) ?? 10;
+    const best = g._max.score ?? 0;
+    if (best >= Math.ceil(max * PROMOTION_PASS_RATIO)) passed++;
+  }
+  return passed === exerciseIds.length;
 }
 
 const schema = z.object({

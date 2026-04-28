@@ -112,6 +112,26 @@
       "body": "Đã hoàn thành chứng nhận nội bộ cấp {level}",
       "score": "Điểm",
       "date": "Ngày cấp"
+    },
+    "lesson": {
+      "_todo": "TODO: cần người bản ngữ rà soát",
+      "estimatedMinutes": "Khoảng {minutes} phút",
+      "noExercises": "Bài học này chưa có câu hỏi",
+      "playAudio": "Phát âm thanh",
+      "tapReplay": "Nhấn để nghe lại",
+      "typeRecognition": "Nghe và chọn ký hiệu",
+      "typeVocab": "Nhìn ký hiệu chọn ví dụ",
+      "typeTone": "Nghe và xác định thanh",
+      "complete": "Hoàn thành bài học!",
+      "scoreLabel": "Điểm",
+      "streak": "Liên tục {days} ngày 🔥",
+      "suspicious": "Bị đánh dấu khả nghi — không tính XP",
+      "impersonationSkipped": "Đang mạo danh — không tính cho học viên",
+      "submitting": "Đang gửi…",
+      "submittingFailed": "Gửi thất bại",
+      "completeFailed": "Gửi thất bại, thử lại",
+      "backToCourse": "Về bản đồ khóa học",
+      "retry": "Làm lại"
     }
   },
   "levels": {

@@ -112,6 +112,26 @@
       "body": "ได้ผ่านการรับรองระดับ {level} ภายใน",
       "score": "คะแนน",
       "date": "วันที่ออก"
+    },
+    "lesson": {
+      "_todo": "TODO: ต้องตรวจสอบโดยเจ้าของภาษา",
+      "estimatedMinutes": "ประมาณ {minutes} นาที",
+      "noExercises": "บทเรียนนี้ยังไม่มีคำถาม",
+      "playAudio": "เล่นเสียง",
+      "tapReplay": "กดเพื่อฟังอีกครั้ง",
+      "typeRecognition": "ฟังแล้วเลือกสัญลักษณ์",
+      "typeVocab": "ดูสัญลักษณ์เลือกตัวอย่าง",
+      "typeTone": "ฟังแล้วบอกวรรณยุกต์",
+      "complete": "เสร็จสิ้นบทเรียน!",
+      "scoreLabel": "คะแนน",
+      "streak": "ต่อเนื่อง {days} วัน 🔥",
+      "suspicious": "บทเรียนนี้ถูกตั้งธงสงสัย — ไม่นับ XP",
+      "impersonationSkipped": "อยู่ในโหมดจำลอง — ไม่คิดคะแนนให้ผู้เรียน",
+      "submitting": "กำลังส่ง…",
+      "submittingFailed": "ส่งไม่สำเร็จ",
+      "completeFailed": "ส่งไม่สำเร็จ ลองอีกครั้ง",
+      "backToCourse": "กลับหน้าคอร์ส",
+      "retry": "ทำใหม่อีกครั้ง"
     }
   },
   "levels": {

@@ -107,6 +107,25 @@
       "body": "成功通過 {level} 內部認證",
       "score": "得分",
       "date": "發證日期"
+    },
+    "lesson": {
+      "estimatedMinutes": "預計 {minutes} 分鐘",
+      "noExercises": "本課時尚未配置題目",
+      "playAudio": "播放音檔",
+      "tapReplay": "點上方圖示再聽一次",
+      "typeRecognition": "聽音選符號",
+      "typeVocab": "看符號選範例字",
+      "typeTone": "聽音辨聲調",
+      "complete": "課時完成!",
+      "scoreLabel": "得分",
+      "streak": "連續 {days} 天 🔥",
+      "suspicious": "本次練習被標記為可疑,XP 暫不計入",
+      "impersonationSkipped": "模擬登入中,本次練習不計入學員數據",
+      "submitting": "送出中…",
+      "submittingFailed": "送出失敗",
+      "completeFailed": "送出失敗,請稍後再試",
+      "backToCourse": "回到課程地圖",
+      "retry": "再練一次"
     }
   },
   "levels": {

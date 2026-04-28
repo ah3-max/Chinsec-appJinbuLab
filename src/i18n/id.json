@@ -112,6 +112,26 @@
       "body": "Telah lulus sertifikasi tingkat {level}",
       "score": "Nilai",
       "date": "Tanggal terbit"
+    },
+    "lesson": {
+      "_todo": "TODO: perlu ditinjau penutur asli",
+      "estimatedMinutes": "Sekitar {minutes} menit",
+      "noExercises": "Belum ada soal di pelajaran ini",
+      "playAudio": "Putar audio",
+      "tapReplay": "Ketuk untuk dengar lagi",
+      "typeRecognition": "Dengar dan pilih simbol",
+      "typeVocab": "Lihat simbol pilih contoh",
+      "typeTone": "Dengar dan tentukan nada",
+      "complete": "Pelajaran selesai!",
+      "scoreLabel": "Nilai",
+      "streak": "Beruntun {days} hari 🔥",
+      "suspicious": "Ditandai mencurigakan — XP tidak dihitung",
+      "impersonationSkipped": "Sedang impersonasi — tidak masuk nilai pembelajar",
+      "submitting": "Mengirim…",
+      "submittingFailed": "Pengiriman gagal",
+      "completeFailed": "Pengiriman gagal, coba lagi",
+      "backToCourse": "Kembali ke peta kursus",
+      "retry": "Ulangi"
     }
   },
   "levels": {

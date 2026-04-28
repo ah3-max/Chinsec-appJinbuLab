@@ -159,19 +159,22 @@ export default async function CoursePage({
                 ) : (
                   <ul className="divide-y">
                     {stage.lessons.map((l) => (
-                      <li
-                        key={l.id}
-                        className="flex items-center justify-between py-2"
-                      >
-                        <span>
-                          <span className="font-mono text-xs text-muted-foreground">
-                            {l.code}
+                      <li key={l.id}>
+                        <Link
+                          href={`/${locale}/learn/${course.code}/lesson/${l.code}`}
+                          className="flex items-center justify-between gap-2 py-2 transition-colors hover:bg-muted/40"
+                        >
+                          <span className="min-w-0">
+                            <span className="font-mono text-xs text-muted-foreground">
+                              {l.code}
+                            </span>
+                            <span className="ml-2">{l.title}</span>
                           </span>
-                          <span className="ml-2">{l.title}</span>
-                        </span>
-                        <span className="text-xs text-muted-foreground">
-                          {l.estimatedMinutes}min ・ +{l.xpReward}XP
-                        </span>
+                          <span className="flex shrink-0 items-center gap-1 text-xs text-muted-foreground">
+                            {l.estimatedMinutes}min ・ +{l.xpReward}XP
+                            <ChevronRight className="size-3" />
+                          </span>
+                        </Link>
                       </li>
                     ))}
                   </ul>
