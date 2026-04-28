@@ -79,6 +79,39 @@
       "title": "Naik Tingkat!",
       "subtitle": "Selamat, Anda telah mencapai tingkat baru",
       "continue": "Lanjut Belajar"
+    },
+    "boss": {
+      "_todo": "TODO: perlu ditinjau penutur asli",
+      "title": "Ujian Akhir Boss",
+      "ctaSubtitle": "Lulus 80% untuk naik tingkat dan dapat sertifikat",
+      "intro": "Acak {count} soal dari semua materi tingkat ini — lulus 80% naik tingkat.",
+      "rule1": "Nilai lulus = 80% (40/50)",
+      "rule2": "Keluar di tengah ujian akan dicatat",
+      "rule3": "Lulus otomatis terbit sertifikat + naik tingkat",
+      "startBtn": "Mulai Ujian",
+      "submitting": "Mengirim jawaban…",
+      "submitFailed": "Gagal mengirim, coba lagi",
+      "resultPass": "Selamat, Anda lulus!",
+      "resultFail": "Coba lagi ya!",
+      "promotedTo": "Naik ke tingkat {level}",
+      "impersonationSkipped": "Sedang impersonasi — tidak masuk ke nilai pembelajar",
+      "backToLearn": "Kembali ke peta kursus",
+      "errorLevelMismatch": "Tingkat tidak cocok — hanya bisa ujian Boss tingkat saat ini",
+      "errorGeneric": "Tidak bisa memulai ujian, coba lagi",
+      "typeRecognition": "Dengar dan pilih simbol",
+      "typeVocab": "Lihat simbol pilih contoh",
+      "typeTone": "Dengar dan tentukan nada",
+      "tapReplay": "Ketuk untuk dengar lagi",
+      "hintAnswerLater": "{name}, semangat!"
+    },
+    "certificate": {
+      "_todo": "TODO: perlu ditinjau penutur asli",
+      "title": "Sertifikat Kelulusan",
+      "subtitle": "Certificate of Completion",
+      "recipient": "Diberikan kepada",
+      "body": "Telah lulus sertifikasi tingkat {level}",
+      "score": "Nilai",
+      "date": "Tanggal terbit"
     }
   },
   "levels": {

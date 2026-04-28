@@ -79,6 +79,39 @@
       "title": "Lên cấp!",
       "subtitle": "Chúc mừng bạn đạt cấp độ mới",
       "continue": "Học tiếp"
+    },
+    "boss": {
+      "_todo": "TODO: cần người bản ngữ rà soát",
+      "title": "Bài thi vượt ải Boss",
+      "ctaSubtitle": "Đạt 80% để lên cấp và nhận chứng chỉ",
+      "intro": "Lấy ngẫu nhiên {count} câu từ cấp này — đạt 80% sẽ lên cấp.",
+      "rule1": "Điểm đạt = 80% (40/50)",
+      "rule2": "Rời trang giữa chừng sẽ bị ghi nhận",
+      "rule3": "Đạt rồi tự động cấp chứng chỉ + lên cấp",
+      "startBtn": "Bắt đầu thi",
+      "submitting": "Đang nộp bài…",
+      "submitFailed": "Nộp thất bại, thử lại",
+      "resultPass": "Xin chúc mừng đã đạt!",
+      "resultFail": "Cố gắng thêm chút nhé!",
+      "promotedTo": "Đã lên cấp {level}",
+      "impersonationSkipped": "Đang mạo danh — không tính điểm cho học viên",
+      "backToLearn": "Về bản đồ khóa học",
+      "errorLevelMismatch": "Sai cấp — chỉ thi Boss của cấp hiện tại",
+      "errorGeneric": "Không thể bắt đầu, thử lại sau",
+      "typeRecognition": "Nghe và chọn ký hiệu",
+      "typeVocab": "Nhìn ký hiệu chọn từ ví dụ",
+      "typeTone": "Nghe và xác định thanh",
+      "tapReplay": "Nhấn để nghe lại",
+      "hintAnswerLater": "{name}, cố lên!"
+    },
+    "certificate": {
+      "_todo": "TODO: cần người bản ngữ rà soát",
+      "title": "Chứng chỉ hoàn thành",
+      "subtitle": "Certificate of Completion",
+      "recipient": "Chứng nhận",
+      "body": "Đã hoàn thành chứng nhận nội bộ cấp {level}",
+      "score": "Điểm",
+      "date": "Ngày cấp"
     }
   },
   "levels": {

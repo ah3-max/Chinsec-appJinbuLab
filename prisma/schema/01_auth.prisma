@@ -76,6 +76,7 @@ model User {
   submissions         Submission[]
   speakingRecords     SpeakingRecord[]
   examAttempts        ExamAttempt[]
+  certificates        Certificate[]
   achievements        UserAchievement[]
   performances        PerformanceMetric[]
   aiConversations     AiConversation[]

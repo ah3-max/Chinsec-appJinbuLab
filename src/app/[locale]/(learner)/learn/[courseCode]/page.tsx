@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ShieldAlert, ChevronRight } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { canAccess } from "@/lib/level";
@@ -72,6 +72,11 @@ export default async function CoursePage({
     redirect(`/${locale}/learn?error=locked`);
   }
 
+  // Show Boss link only for the course at the user's exact current level
+  // (i.e. they're ready to graduate this level).
+  const showBoss = me.currentLevel === course.level;
+  const tBoss = await getTranslations("learn.boss");
+
   return (
     <div className="space-y-4 px-4">
       <Link
@@ -102,6 +107,31 @@ export default async function CoursePage({
           <p className="text-sm text-muted-foreground">{course.description}</p>
         )}
       </header>
+
+      {showBoss && (
+        <Link
+          href={`/${locale}/learn/boss/${course.code}`}
+          className="block"
+        >
+          <Card className="border-amber-300 bg-gradient-to-br from-amber-50 to-orange-50 transition-all active:scale-[0.99] hover:shadow-md">
+            <CardContent className="flex items-center gap-3 p-4">
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-amber-500 text-white shadow-md">
+                <ShieldAlert className="size-6" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">
+                  BOSS
+                </p>
+                <p className="text-sm font-semibold">{tBoss("title")}</p>
+                <p className="text-xs text-muted-foreground">
+                  {tBoss("ctaSubtitle")}
+                </p>
+              </div>
+              <ChevronRight className="size-5 text-amber-700" />
+            </CardContent>
+          </Card>
+        </Link>
+      )}
 
       <section className="space-y-3">
         {course.stages.length === 0 ? (

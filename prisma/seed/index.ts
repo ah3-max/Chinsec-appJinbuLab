@@ -16,6 +16,7 @@ import bcrypt from "bcryptjs";
 import { seedZhuyinStages } from "./curriculum/zhuyin-stages";
 import { seedZhuyinLessons } from "./curriculum/zhuyin-lessons";
 import { seedZhuyinExercises } from "./curriculum/zhuyin-exercises";
+import { seedZhuyinBossExam } from "./curriculum/zhuyin-boss";
 
 const prisma = new PrismaClient();
 
@@ -171,6 +172,9 @@ async function main() {
       .map(([k, v]) => `${k}=${v}`)
       .join(", ")})`,
   );
+
+  await seedZhuyinBossExam(prisma);
+  console.log(`✓ 注音預備班 Boss 考試建立完成 (ZHUYIN-BOSS, 50 題, 80% 通過)`);
 
   // ----------------------------------------
   // 4. A1 入門級課程

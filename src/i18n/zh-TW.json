@@ -76,6 +76,37 @@
       "title": "升級了！",
       "subtitle": "恭喜你達到新等級",
       "continue": "繼續學習"
+    },
+    "boss": {
+      "title": "Boss 通關考試",
+      "ctaSubtitle": "通過 80% 升級下一個等級並拿證書",
+      "intro": "從本級所有題目隨機抽 {count} 題,通過 80% 升級。",
+      "rule1": "通過分數 = 80%(50 題答對 40 題)",
+      "rule2": "中途離開會被記錄為作弊",
+      "rule3": "通過後自動發證書 + 自動升級",
+      "startBtn": "開始考試",
+      "submitting": "送出評分中…",
+      "submitFailed": "送出失敗,請稍後再試",
+      "resultPass": "恭喜通過!",
+      "resultFail": "再加把勁!",
+      "promotedTo": "已升級到 {level}",
+      "impersonationSkipped": "模擬登入中,本次成績不計入學員",
+      "backToLearn": "回到課程地圖",
+      "errorLevelMismatch": "等級不符,只能考自己目前等級的 Boss",
+      "errorGeneric": "無法開始考試,請稍後再試",
+      "typeRecognition": "聽音選符號",
+      "typeVocab": "看符號選範例字",
+      "typeTone": "聽音辨聲調",
+      "tapReplay": "點上方圖示再聽一次",
+      "hintAnswerLater": "{name},加油!"
+    },
+    "certificate": {
+      "title": "結業證書",
+      "subtitle": "Certificate of Completion",
+      "recipient": "茲證明",
+      "body": "成功通過 {level} 內部認證",
+      "score": "得分",
+      "date": "發證日期"
     }
   },
   "levels": {

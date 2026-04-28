@@ -85,20 +85,53 @@ model ExamAttempt {
   
   passed         Boolean
   certificateUrl String?                // 證書 PDF
-  
+  certificate    Certificate?
+
+  // 動態抽題:Boss 開始時抽 N 個 Exercise，存 ID + 順序到這裡
+  questionSnapshot Json?                // [{ exerciseId, orderIndex }, ...]
+
   // 時間
   startedAt      DateTime
   finishedAt     DateTime?
   durationSec    Int?
-  
+
   // 防作弊
   windowBlurCount Int @default(0)
   suspicionFlags  Json?
-  
+
   createdAt   DateTime @default(now())
 
   @@index([userId, examId])
   @@map("exam_attempts")
+}
+
+// ----------------------------------------
+// Certificate 內部認證證書
+// ----------------------------------------
+// 通過 Boss 考試後發證,一個 user 一個 level 最多一張。
+// fullNameSnapshot / scoreSnapshot 是發證當下的學員資料,日後改名也不影響。
+// ----------------------------------------
+model Certificate {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+
+  level       Level                     // 通過的等級(ZHUYIN / A1 / A2 …)
+  courseCode  String                    // ZHUYIN / A1 / SCENARIO-…
+
+  examAttemptId String?  @unique
+  examAttempt   ExamAttempt? @relation(fields: [examAttemptId], references: [id])
+
+  fullNameSnapshot String
+  scoreSnapshot    Int                   // 0-100
+  maxScoreSnapshot Int
+
+  issuedAt    DateTime @default(now())
+  pdfUrl      String?
+
+  @@unique([userId, level])
+  @@index([userId])
+  @@map("certificates")
 }
 
 // ----------------------------------------
