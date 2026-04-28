@@ -1,14 +1,14 @@
 /**
  * scripts/upload-audio-to-minio.ts
  *
- * 將 public/audio/zhuyin 下所有 mp3 上傳到 MinIO bucket，並設置 bucket public-read
- * policy，讓 API 可以直接 redirect 到 MinIO URL。
+ * 將 public/audio 下所有 mp3 上傳到 MinIO bucket(zhuyin/, vocab/, dialogue/,
+ * sentence/),並設置 bucket public-read policy,讓 API 可以直接 redirect。
  *
- * 執行：
+ * 執行:
  *   npx tsx scripts/upload-audio-to-minio.ts
  *
- * 環境變數：MINIO_ENDPOINT / MINIO_PORT / MINIO_USE_SSL / MINIO_ACCESS_KEY /
- *           MINIO_SECRET_KEY / MINIO_BUCKET_AUDIO （都已在 .env.local 中）
+ * 環境變數:MINIO_ENDPOINT / MINIO_PORT / MINIO_USE_SSL / MINIO_ACCESS_KEY /
+ *          MINIO_SECRET_KEY / MINIO_BUCKET_AUDIO (都已在 .env.local 中)
  */
 
 import { Client } from "minio";
@@ -16,7 +16,11 @@ import { existsSync, statSync } from "fs";
 import { readdir } from "fs/promises";
 import * as path from "path";
 
-const ROOT = path.resolve(process.cwd(), "public/audio/zhuyin");
+// Walk the whole audio tree so we cover zhuyin/, vocab/, dialogue/, sentence/.
+const ROOT = path.resolve(process.cwd(), "public/audio");
+
+// Exclude any per-environment generated subdirs we never want to ship.
+const EXCLUDE_DIRS = new Set(["generated"]);
 
 function envOrDie(name: string): string {
   const v = process.env[name];
@@ -27,6 +31,7 @@ function envOrDie(name: string): string {
 async function* walk(dir: string): AsyncGenerator<string> {
   const entries = await readdir(dir, { withFileTypes: true });
   for (const e of entries) {
+    if (EXCLUDE_DIRS.has(e.name)) continue;
     const p = path.join(dir, e.name);
     if (e.isDirectory()) yield* walk(p);
     else if (e.isFile() && e.name.endsWith(".mp3")) yield p;
@@ -86,8 +91,9 @@ async function main() {
   let uploaded = 0;
   let skipped = 0;
   for await (const file of walk(ROOT)) {
-    const rel = path.relative(ROOT, file).split(path.sep).join("/");
-    const objectKey = `zhuyin/${rel}`;
+    // rel already starts with the top-level subfolder (zhuyin/ vocab/
+    // dialogue/ sentence/) so we use it directly as the object key.
+    const objectKey = path.relative(ROOT, file).split(path.sep).join("/");
 
     // Skip if same size already exists.
     try {
