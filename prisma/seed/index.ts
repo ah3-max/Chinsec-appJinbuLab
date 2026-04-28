@@ -246,22 +246,34 @@ async function main() {
   console.log("📚 建立 A1 入門級課程...");
   const a1Course = await prisma.course.upsert({
     where: { code: "A1" },
-    update: {},
+    // refresh description / tocflTarget on each seed run so brand changes
+    // (TOCFL → internal certification) propagate to existing rows.
+    update: {
+      title: "A1 入門 · 從零開始說中文",
+      titleI18n: {
+        th: "A1 เริ่มต้น · พูดจีนจากศูนย์",
+        vi: "A1 Khởi đầu · Nói tiếng Trung từ con số 0",
+        id: "A1 Pemula · Bicara Mandarin dari nol",
+        en: "Beginner A1 · Start Speaking Chinese from Zero",
+      },
+      description: "內部 A1 入門級 · 500 字詞彙 · 60 小時學習,完成後拿內部 A1 證書",
+      tocflTarget: null,
+    },
     create: {
       code: "A1",
-      title: "入門級 A1 — 從零開始說中文",
+      title: "A1 入門 · 從零開始說中文",
       titleI18n: {
-        th: "ระดับเริ่มต้น A1 — เริ่มพูดภาษาจีนจากศูนย์",
-        vi: "Cấp độ nhập môn A1 — Bắt đầu nói tiếng Trung từ con số 0",
-        id: "Tingkat Pemula A1 — Mulai Berbicara Mandarin dari Nol",
-        en: "Beginner A1 — Start Speaking Chinese from Zero",
+        th: "A1 เริ่มต้น · พูดจีนจากศูนย์",
+        vi: "A1 Khởi đầu · Nói tiếng Trung từ con số 0",
+        id: "A1 Pemula · Bicara Mandarin dari nol",
+        en: "Beginner A1 · Start Speaking Chinese from Zero",
       },
-      description: "對應 TOCFL 1，500 字詞彙，60 小時學習內容",
+      description: "內部 A1 入門級 · 500 字詞彙 · 60 小時學習,完成後拿內部 A1 證書",
       level: Level.A1_BEGINNER,
       category: CourseCategory.GENERAL,
       estimatedHours: 60,
       vocabularyCount: 500,
-      tocflTarget: "TOCFL 1 (A1)",
+      tocflTarget: null,
       themeColor: "#60A5FA",
       orderIndex: 1,
       isPublished: true,
