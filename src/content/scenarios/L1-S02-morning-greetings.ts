@@ -19,6 +19,10 @@ export const L1_S02: ScenarioDef = {
   },
   estimatedMinutes: 25,
   prerequisiteCode: "L1-S01",
+  mtcAlignment: {
+    books: ["B1-L01", "B1-L02", "B1-L05"],
+    topics: ["greeting", "time-of-day", "polite-request"],
+  },
   hookContent: {
     storyTextI18n: {
       "zh-TW":
@@ -39,6 +43,7 @@ export const L1_S02: ScenarioDef = {
       category: "eldercare",
       tags: ["essential", "eldercare", "taiwan-local"],
       difficulty: 1,
+      isEldercareVocab: true,
     },
     {
       hanzi: "阿嬤",
@@ -49,6 +54,7 @@ export const L1_S02: ScenarioDef = {
       category: "eldercare",
       tags: ["essential", "eldercare", "taiwan-local"],
       difficulty: 1,
+      isEldercareVocab: true,
     },
     {
       hanzi: "早安",
@@ -59,6 +65,7 @@ export const L1_S02: ScenarioDef = {
       category: "greeting",
       tags: ["essential", "greeting"],
       difficulty: 1,
+      mtcReference: { book: "B1", lesson: "L01" },
     },
     {
       hanzi: "午安",
@@ -69,6 +76,7 @@ export const L1_S02: ScenarioDef = {
       category: "greeting",
       tags: ["essential", "greeting"],
       difficulty: 2,
+      mtcReference: { book: "B1", lesson: "L01" },
     },
     {
       hanzi: "晚安",
@@ -79,6 +87,7 @@ export const L1_S02: ScenarioDef = {
       category: "greeting",
       tags: ["essential", "greeting"],
       difficulty: 1,
+      mtcReference: { book: "B1", lesson: "L01" },
     },
     {
       hanzi: "早上",
@@ -89,6 +98,7 @@ export const L1_S02: ScenarioDef = {
       category: "time",
       tags: ["essential", "time"],
       difficulty: 1,
+      mtcReference: { book: "B1", lesson: "L02" },
     },
     {
       hanzi: "今天",
@@ -99,6 +109,7 @@ export const L1_S02: ScenarioDef = {
       category: "time",
       tags: ["essential", "time"],
       difficulty: 1,
+      mtcReference: { book: "B1", lesson: "L02" },
     },
     {
       hanzi: "怎麼樣",
@@ -109,6 +120,7 @@ export const L1_S02: ScenarioDef = {
       category: "question",
       tags: ["essential"],
       difficulty: 2,
+      mtcReference: { book: "B1", lesson: "L05" },
     },
     {
       hanzi: "請坐",
@@ -119,6 +131,7 @@ export const L1_S02: ScenarioDef = {
       category: "polite",
       tags: ["essential", "polite", "eldercare"],
       difficulty: 2,
+      mtcReference: { book: "B1", lesson: "L02" },
     },
     {
       hanzi: "慢慢來",
@@ -129,6 +142,7 @@ export const L1_S02: ScenarioDef = {
       category: "eldercare",
       tags: ["essential", "eldercare"],
       difficulty: 3,
+      isEldercareVocab: true,
     },
   ],
 

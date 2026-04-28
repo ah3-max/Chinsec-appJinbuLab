@@ -148,6 +148,12 @@ model Vocabulary {
   tocflBand    String?                   // A1/A2/B1...
   frequency    Int       @default(0)     // 詞頻排名
   difficulty   Int       @default(1)     // 1-5,情境關卡用來決定出題難度
+
+  // === 對標《當代中文課程》(僅元資料,非內容) ===
+  // 標示這個詞首次出現在哪本當代教材的哪一課,讓 UI 可以顯示「對應 B1-L02」
+  // 但不嵌入課本對話/例句/音檔。
+  mtcReference     Json?                  // { book: "B1", lesson: "L02", orderInLesson?: number }
+  isEldercareVocab Boolean   @default(false)  // 養老院專業詞 (《當代》沒有)
   
   // === 主題分類 ===
   category     String                    // greeting/eldercare/office/daily/family/food
@@ -340,6 +346,10 @@ model Scenario {
 
   estimatedMinutes Int       @default(25)
   isPublished   Boolean    @default(false)
+
+  // 對標《當代》(僅參考用)
+  // 例:{ books: ["B1-L02", "B1-L03"], topics: ["greeting", "self-intro"] }
+  mtcAlignment  Json?
 
   // 解鎖鏈:S02 必須 S01 通關
   prerequisiteScenarioId String?

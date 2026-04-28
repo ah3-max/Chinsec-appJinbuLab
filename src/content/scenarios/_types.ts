@@ -4,6 +4,12 @@
 
 import type { ExerciseType, Level } from "@prisma/client";
 
+export interface MtcReference {
+  book: string; // B1..B6
+  lesson: string; // L01..L15
+  orderInLesson?: number;
+}
+
 export interface ScenarioVocabDef {
   hanzi: string;
   hanziSimplified?: string;
@@ -20,6 +26,10 @@ export interface ScenarioVocabDef {
   tags?: string[];
   difficulty?: number; // 1-5
   isCore?: boolean; // default true
+
+  // 對標《當代中文課程》(僅元資料)
+  mtcReference?: MtcReference;
+  isEldercareVocab?: boolean;
 }
 
 export interface ScenarioDialogueLine {
@@ -42,6 +52,11 @@ export interface ScenarioExerciseDef {
   skillsTrained?: string[];
 }
 
+export interface ScenarioMtcAlignment {
+  books: string[]; // ["B1-L02", "B1-L03"] — 對應的當代課次
+  topics: string[]; // ["greeting", "self-intro"]
+}
+
 export interface ScenarioDef {
   code: string; // L1-S01
   level: Level;
@@ -54,6 +69,7 @@ export interface ScenarioDef {
     imageUrl?: string;
   };
   prerequisiteCode?: string; // L1-S00 → L1-S01 etc
+  mtcAlignment?: ScenarioMtcAlignment;
 
   vocabularies: ScenarioVocabDef[]; // ordered
   dialogue: ScenarioDialogueLine[]; // ordered

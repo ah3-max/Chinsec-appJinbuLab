@@ -18,6 +18,10 @@ export const L1_S01: ScenarioDef = {
     id: "Hari pertama kerja — perkenalan diri",
   },
   estimatedMinutes: 25,
+  mtcAlignment: {
+    books: ["B1-L01", "B1-L02", "B1-L03"],
+    topics: ["greeting", "self-intro", "nationality"],
+  },
   hookContent: {
     storyTextI18n: {
       "zh-TW":
@@ -38,6 +42,7 @@ export const L1_S01: ScenarioDef = {
       category: "pronoun",
       tags: ["essential", "pronoun"],
       difficulty: 1,
+      mtcReference: { book: "B1", lesson: "L01" },
     },
     {
       hanzi: "你",
@@ -48,6 +53,7 @@ export const L1_S01: ScenarioDef = {
       category: "pronoun",
       tags: ["essential", "pronoun"],
       difficulty: 1,
+      mtcReference: { book: "B1", lesson: "L01" },
     },
     {
       hanzi: "您",
@@ -58,6 +64,7 @@ export const L1_S01: ScenarioDef = {
       category: "pronoun",
       tags: ["essential", "polite", "eldercare"],
       difficulty: 2,
+      mtcReference: { book: "B1", lesson: "L01" },
     },
     {
       hanzi: "是",
@@ -68,6 +75,7 @@ export const L1_S01: ScenarioDef = {
       category: "verb",
       tags: ["essential"],
       difficulty: 1,
+      mtcReference: { book: "B1", lesson: "L01" },
     },
     {
       hanzi: "好",
@@ -78,6 +86,7 @@ export const L1_S01: ScenarioDef = {
       category: "greeting",
       tags: ["essential"],
       difficulty: 1,
+      mtcReference: { book: "B1", lesson: "L01" },
     },
     {
       hanzi: "名字",
@@ -88,6 +97,7 @@ export const L1_S01: ScenarioDef = {
       category: "self",
       tags: ["essential", "self-intro"],
       difficulty: 2,
+      mtcReference: { book: "B1", lesson: "L02" },
     },
     {
       hanzi: "叫",
@@ -98,6 +108,7 @@ export const L1_S01: ScenarioDef = {
       category: "verb",
       tags: ["essential", "self-intro"],
       difficulty: 1,
+      mtcReference: { book: "B1", lesson: "L02" },
     },
     {
       hanzi: "來自",
@@ -108,6 +119,7 @@ export const L1_S01: ScenarioDef = {
       category: "verb",
       tags: ["essential", "self-intro"],
       difficulty: 2,
+      mtcReference: { book: "B1", lesson: "L03" },
     },
     {
       hanzi: "泰國",
@@ -118,16 +130,19 @@ export const L1_S01: ScenarioDef = {
       category: "country",
       tags: ["essential", "nationality"],
       difficulty: 2,
+      mtcReference: { book: "B1", lesson: "L02" },
     },
     {
-      hanzi: "工作",
-      zhuyin: "ㄍㄨㄥ ㄗㄨㄛˋ",
-      pinyin: "gōngzuò",
-      partOfSpeech: "n./v.",
-      translations: { th: "งาน / ทำงาน", en: "work / to work" },
-      category: "office",
-      tags: ["essential", "office"],
+      // 養老院專業詞 — 不在《當代》詞表內
+      hanzi: "照服員",
+      zhuyin: "ㄓㄠˋ ㄈㄨˊ ㄩㄢˊ",
+      pinyin: "zhàofúyuán",
+      partOfSpeech: "n.",
+      translations: { th: "ผู้ดูแลผู้สูงอายุ", en: "caregiver" },
+      category: "eldercare",
+      tags: ["essential", "eldercare", "job-title"],
       difficulty: 2,
+      isEldercareVocab: true,
     },
   ],
 

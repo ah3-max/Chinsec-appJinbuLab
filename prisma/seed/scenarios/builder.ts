@@ -33,7 +33,13 @@ export async function seedScenario(
 ): Promise<{ scenarioId: string; vocabCount: number; exerciseCount: number }> {
   // 1. Vocabulary upserts (global by hanzi).
   const vocabIdByHanzi = new Map<string, string>();
+  const tocflBand = def.level === "A1_BEGINNER"
+    ? "A1"
+    : def.level === "A2_BASIC"
+      ? "A2"
+      : undefined;
   for (const v of def.vocabularies) {
+    const mtcRef = (v.mtcReference ?? null) as Prisma.InputJsonValue;
     const upserted = await prisma.vocabulary.upsert({
       where: { hanzi: v.hanzi },
       update: {
@@ -45,9 +51,11 @@ export async function seedScenario(
         tags: v.tags ?? [],
         difficulty: v.difficulty ?? 1,
         level: def.level,
-        tocflBand: def.level === "A1_BEGINNER" ? "A1" : undefined,
+        tocflBand,
         audioUrl: audioUrlFor(v.hanzi, false),
         audioSlowUrl: audioUrlFor(v.hanzi, true),
+        mtcReference: mtcRef,
+        isEldercareVocab: v.isEldercareVocab ?? false,
       },
       create: {
         hanzi: v.hanzi,
@@ -60,9 +68,11 @@ export async function seedScenario(
         tags: v.tags ?? [],
         difficulty: v.difficulty ?? 1,
         level: def.level,
-        tocflBand: def.level === "A1_BEGINNER" ? "A1" : undefined,
+        tocflBand,
         audioUrl: audioUrlFor(v.hanzi, false),
         audioSlowUrl: audioUrlFor(v.hanzi, true),
+        mtcReference: mtcRef,
+        isEldercareVocab: v.isEldercareVocab ?? false,
       },
       select: { id: true },
     });
@@ -86,6 +96,7 @@ export async function seedScenario(
     audioUrl: `/api/audio/dialogue/${def.code}/${idx}`,
   }));
 
+  const mtcAlignment = (def.mtcAlignment ?? null) as Prisma.InputJsonValue;
   const scenario = await prisma.scenario.upsert({
     where: { code: def.code },
     update: {
@@ -98,6 +109,7 @@ export async function seedScenario(
       estimatedMinutes: def.estimatedMinutes ?? 25,
       isPublished: true,
       prerequisiteScenarioId: prerequisiteScenarioId ?? null,
+      mtcAlignment,
     },
     create: {
       code: def.code,
@@ -110,6 +122,7 @@ export async function seedScenario(
       estimatedMinutes: def.estimatedMinutes ?? 25,
       isPublished: true,
       prerequisiteScenarioId,
+      mtcAlignment,
     },
     select: { id: true },
   });
