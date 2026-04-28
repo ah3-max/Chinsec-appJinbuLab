@@ -24,6 +24,9 @@ import { L1_S03 } from "../src/content/scenarios/L1-S03-meeting-colleagues";
 import { L2_S01 } from "../src/content/scenarios/L2-S01-feeding-assistance";
 import { L2_S02 } from "../src/content/scenarios/L2-S02-medication-time";
 import { L2_S03 } from "../src/content/scenarios/L2-S03-diaper-care";
+import { L2_S04 } from "../src/content/scenarios/L2-S04-turning-positioning";
+import { L2_S05 } from "../src/content/scenarios/L2-S05-vital-signs";
+import { L2_S06 } from "../src/content/scenarios/L2-S06-toileting-help";
 import type { ScenarioDef } from "../src/content/scenarios/_types";
 
 const VOICE = "zh-TW-HsiaoChenNeural";
@@ -37,6 +40,9 @@ const ALL_SCENARIOS: ScenarioDef[] = [
   L2_S01,
   L2_S02,
   L2_S03,
+  L2_S04,
+  L2_S05,
+  L2_S06,
 ];
 
 interface Job {

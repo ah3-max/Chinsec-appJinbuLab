@@ -23,6 +23,9 @@ import { seedScenarioL1S03 } from "./scenarios/L1-S03";
 import { seedScenarioL2S01 } from "./scenarios/L2-S01";
 import { seedScenarioL2S02 } from "./scenarios/L2-S02";
 import { seedScenarioL2S03 } from "./scenarios/L2-S03";
+import { seedScenarioL2S04 } from "./scenarios/L2-S04";
+import { seedScenarioL2S05 } from "./scenarios/L2-S05";
+import { seedScenarioL2S06 } from "./scenarios/L2-S06";
 
 const prisma = new PrismaClient();
 
@@ -240,6 +243,18 @@ async function main() {
   const a2s03 = await seedScenarioL2S03(prisma);
   console.log(
     `✓ L2-S03 ${a2s03.vocabCount} 詞彙 + ${a2s03.exerciseCount} 練習題建立完成`,
+  );
+  const a2s04 = await seedScenarioL2S04(prisma);
+  console.log(
+    `✓ L2-S04 ${a2s04.vocabCount} 詞彙 + ${a2s04.exerciseCount} 練習題建立完成`,
+  );
+  const a2s05 = await seedScenarioL2S05(prisma);
+  console.log(
+    `✓ L2-S05 ${a2s05.vocabCount} 詞彙 + ${a2s05.exerciseCount} 練習題建立完成`,
+  );
+  const a2s06 = await seedScenarioL2S06(prisma);
+  console.log(
+    `✓ L2-S06 ${a2s06.vocabCount} 詞彙 + ${a2s06.exerciseCount} 練習題建立完成`,
   );
 
   // ----------------------------------------
