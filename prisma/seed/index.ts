@@ -17,6 +17,7 @@ import { seedZhuyinStages } from "./curriculum/zhuyin-stages";
 import { seedZhuyinLessons } from "./curriculum/zhuyin-lessons";
 import { seedZhuyinExercises } from "./curriculum/zhuyin-exercises";
 import { seedZhuyinBossExam } from "./curriculum/zhuyin-boss";
+import { seedScenarioL1S01 } from "./scenarios/L1-S01";
 
 const prisma = new PrismaClient();
 
@@ -203,6 +204,15 @@ async function main() {
 
   await seedZhuyinBossExam(prisma);
   console.log(`✓ 注音預備班 Boss 考試建立完成 (ZHUYIN-BOSS, 50 題, 80% 通過)`);
+
+  // ----------------------------------------
+  // Path B 情境關卡(歐寶 A1)— 灌入 L1-S01 ~ L1-S03
+  // ----------------------------------------
+  console.log("🏥 灌入 A1 養老院情境關卡 (歐寶體驗版)...");
+  const s01 = await seedScenarioL1S01(prisma);
+  console.log(
+    `✓ L1-S01 ${s01.vocabCount} 詞彙 + ${s01.exerciseCount} 練習題建立完成`,
+  );
 
   // ----------------------------------------
   // 4. A1 入門級課程
