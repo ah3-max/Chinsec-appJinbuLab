@@ -4,6 +4,26 @@
 
 @layer base {
   :root {
+    /* 愛愛院 中文學習 — 品牌色票(CSS variables) */
+    --aiai-green-50: #eaf3de;
+    --aiai-green-100: #c0dd97;
+    --aiai-green-200: #97c459;
+    --aiai-green-400: #639922;
+    --aiai-green-600: #3b6d11;
+    --aiai-green-800: #173404;
+    --aiai-orange-50: #faeeda;
+    --aiai-orange-200: #fac775;
+    --aiai-orange-400: #ef9f27;
+    --aiai-orange-600: #ba7517;
+    --aiai-orange-800: #633806;
+    --aiai-gray-50: #f1efe8;
+    --aiai-gray-200: #d3d1c7;
+    --aiai-gray-400: #888780;
+    --aiai-gray-600: #5f5e5a;
+    --aiai-gray-800: #2c2c2a;
+    --aiai-bg-page: var(--aiai-green-50);
+    --aiai-bg-card: #ffffff;
+
     /* shadcn/ui 預設色票（明亮模式） */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;

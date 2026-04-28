@@ -11,9 +11,16 @@ const notoSansTC = Noto_Sans_TC({
 });
 
 export const metadata: Metadata = {
-  title: "ChineseLearn",
-  description: "愛愛院員工繁體中文學習平台",
+  title: "愛愛院 中文學習",
+  description: "Aiai Care · Mandarin Learning",
   manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/icons/icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: "/icons/icon-192.png",
+  },
 };
 
 export const viewport: Viewport = {
@@ -21,7 +28,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: "#3B82F6",
+  themeColor: "#639922",
 };
 
 // Root layout 不指定 lang（由 [locale] layout 動態決定）

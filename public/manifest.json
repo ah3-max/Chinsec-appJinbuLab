@@ -1,0 +1,23 @@
+{
+  "name": "愛愛院 中文學習",
+  "short_name": "愛愛學習",
+  "description": "Aiai Care · Mandarin Learning",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#EAF3DE",
+  "theme_color": "#639922",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/icons/icon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/icons/icon-64.png", "sizes": "64x64", "type": "image/png" },
+    { "src": "/icons/icon-128.png", "sizes": "128x128", "type": "image/png" },
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    {
+      "src": "/icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
