@@ -20,6 +20,9 @@ import { seedZhuyinBossExam } from "./curriculum/zhuyin-boss";
 import { seedScenarioL1S01 } from "./scenarios/L1-S01";
 import { seedScenarioL1S02 } from "./scenarios/L1-S02";
 import { seedScenarioL1S03 } from "./scenarios/L1-S03";
+import { seedScenarioL2S01 } from "./scenarios/L2-S01";
+import { seedScenarioL2S02 } from "./scenarios/L2-S02";
+import { seedScenarioL2S03 } from "./scenarios/L2-S03";
 
 const prisma = new PrismaClient();
 
@@ -222,6 +225,19 @@ async function main() {
   const s03 = await seedScenarioL1S03(prisma);
   console.log(
     `✓ L1-S03 ${s03.vocabCount} 詞彙 + ${s03.exerciseCount} 練習題建立完成`,
+  );
+
+  const a2s01 = await seedScenarioL2S01(prisma);
+  console.log(
+    `✓ L2-S01 ${a2s01.vocabCount} 詞彙 + ${a2s01.exerciseCount} 練習題建立完成`,
+  );
+  const a2s02 = await seedScenarioL2S02(prisma);
+  console.log(
+    `✓ L2-S02 ${a2s02.vocabCount} 詞彙 + ${a2s02.exerciseCount} 練習題建立完成`,
+  );
+  const a2s03 = await seedScenarioL2S03(prisma);
+  console.log(
+    `✓ L2-S03 ${a2s03.vocabCount} 詞彙 + ${a2s03.exerciseCount} 練習題建立完成`,
   );
 
   // ----------------------------------------

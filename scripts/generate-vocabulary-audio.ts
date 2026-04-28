@@ -21,13 +21,23 @@ import * as path from "path";
 import { L1_S01 } from "../src/content/scenarios/L1-S01-self-introduction";
 import { L1_S02 } from "../src/content/scenarios/L1-S02-morning-greetings";
 import { L1_S03 } from "../src/content/scenarios/L1-S03-meeting-colleagues";
+import { L2_S01 } from "../src/content/scenarios/L2-S01-feeding-assistance";
+import { L2_S02 } from "../src/content/scenarios/L2-S02-medication-time";
+import { L2_S03 } from "../src/content/scenarios/L2-S03-diaper-care";
 import type { ScenarioDef } from "../src/content/scenarios/_types";
 
 const VOICE = "zh-TW-HsiaoChenNeural";
 const SLOW_RATE = "-30%";
 const ROOT = path.resolve(process.cwd(), "public/audio");
 
-const ALL_SCENARIOS: ScenarioDef[] = [L1_S01, L1_S02, L1_S03];
+const ALL_SCENARIOS: ScenarioDef[] = [
+  L1_S01,
+  L1_S02,
+  L1_S03,
+  L2_S01,
+  L2_S02,
+  L2_S03,
+];
 
 interface Job {
   text: string;
