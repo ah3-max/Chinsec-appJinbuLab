@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import { Lock, ArrowRight, Check, Sparkles } from "lucide-react";
+import { Lock, ArrowRight, Check, Sparkles, MapPin, Clock } from "lucide-react";
 import { Level } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { classifyCourse, previousLevel } from "@/lib/level";
+import { classifyCourse, previousLevel, canAccess } from "@/lib/level";
 import { LearnLockedToast } from "@/components/learner/learn-locked-toast";
 
 export default async function LearnPage({
@@ -48,6 +48,23 @@ export default async function LearnPage({
     },
   });
 
+  // 養老院情境關卡 — 顯示目前等級的所有 scenarios.
+  const userLvl = me?.currentLevel ?? Level.ZHUYIN;
+  const scenarios = await db.scenario.findMany({
+    where: { isPublished: true },
+    orderBy: [{ level: "asc" }, { orderIndex: "asc" }],
+    select: {
+      id: true,
+      code: true,
+      title: true,
+      titleI18n: true,
+      level: true,
+      orderIndex: true,
+      estimatedMinutes: true,
+      mtcAlignment: true,
+    },
+  });
+
   const userLevel: Level = me?.currentLevel ?? Level.ZHUYIN;
 
   // "Completed" heuristic: course is below user's current level → has been
@@ -79,6 +96,19 @@ export default async function LearnPage({
           />
           <StatBox label="Level" value={tLevels(me.currentLevel)} />
         </div>
+      )}
+
+      {scenarios.length > 0 && (
+        <section className="space-y-3">
+          <h2 className="text-lg font-semibold">{tLearn("scenariosHeading")}</h2>
+          <ScenarioList
+            scenarios={scenarios}
+            userLevel={userLvl}
+            locale={locale}
+            tLearn={tLearn}
+            tLevels={tLevels}
+          />
+        </section>
       )}
 
       <section className="space-y-3">
@@ -199,6 +229,111 @@ function StatBox({ label, value }: { label: string; value: string }) {
     <div className="rounded-lg border bg-card p-3 text-center shadow-sm">
       <div className="text-lg font-bold">{value}</div>
       <div className="text-xs text-muted-foreground">{label}</div>
+    </div>
+  );
+}
+
+interface ScenarioRow {
+  id: string;
+  code: string;
+  title: string;
+  titleI18n: unknown;
+  level: Level;
+  orderIndex: number;
+  estimatedMinutes: number;
+  mtcAlignment: unknown;
+}
+
+function ScenarioList({
+  scenarios,
+  userLevel,
+  locale,
+  tLearn,
+  tLevels,
+}: {
+  scenarios: ScenarioRow[];
+  userLevel: Level;
+  locale: string;
+  tLearn: (key: string, vars?: Record<string, string | number>) => string;
+  tLevels: (key: string) => string;
+}) {
+  return (
+    <div className="space-y-2">
+      {scenarios.map((s) => {
+        const accessible = canAccess(userLevel, s.level);
+        const titleI18n = s.titleI18n as Record<string, string> | null;
+        const localizedTitle = titleI18n?.[locale] ?? s.title;
+        const mtc = s.mtcAlignment as { books?: string[] } | null;
+        const mtcLabel = mtc?.books?.length ? mtc.books.join(" / ") : null;
+
+        const Wrapper: React.ElementType = accessible ? Link : "div";
+        const wrapperProps = accessible
+          ? ({ href: `/${locale}/learn/scenario/${s.code}` } as { href: string })
+          : {};
+
+        return (
+          <Wrapper
+            key={s.id}
+            {...wrapperProps}
+            className={
+              accessible
+                ? "block transition-all active:scale-[0.99]"
+                : "block opacity-60"
+            }
+          >
+            <Card
+              className={
+                accessible
+                  ? "border-emerald-200 hover:shadow-md"
+                  : "border-dashed bg-muted/30"
+              }
+            >
+              <CardContent className="flex items-center gap-3 p-3">
+                <div
+                  className={
+                    accessible
+                      ? "flex size-9 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white"
+                      : "flex size-9 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground"
+                  }
+                >
+                  {accessible ? (
+                    <MapPin className="size-4" />
+                  ) : (
+                    <Lock className="size-4" />
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="flex flex-wrap items-center gap-2 text-sm font-semibold">
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {s.code}
+                    </span>
+                    <span>{localizedTitle}</span>
+                  </p>
+                  <p className="mt-0.5 flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
+                    <span className="inline-flex items-center gap-0.5">
+                      <Clock className="size-3" />
+                      {s.estimatedMinutes}min
+                    </span>
+                    <span>{tLevels(s.level)}</span>
+                    {mtcLabel && (
+                      <span className="rounded bg-muted px-1 py-0.5">
+                        {tLearn("scenarioMtcLabel", { books: mtcLabel })}
+                      </span>
+                    )}
+                  </p>
+                </div>
+                {accessible ? (
+                  <ArrowRight className="size-4 text-muted-foreground" />
+                ) : (
+                  <span className="text-[10px] text-muted-foreground">
+                    {tLearn("scenarioLocked")}
+                  </span>
+                )}
+              </CardContent>
+            </Card>
+          </Wrapper>
+        );
+      })}
     </div>
   );
 }
