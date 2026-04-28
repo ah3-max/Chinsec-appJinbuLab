@@ -68,6 +68,32 @@
     "continue": "Tiếp tục",
     "language": "Ngôn ngữ"
   },
+  "vocabCard": {
+    "_todo": "TODO: cần người bản ngữ rà soát",
+    "playAudio": "Phát âm thanh",
+    "slowAudio": "Phát chậm",
+    "toggleEnglish": "Hiện tiếng Anh",
+    "englishHover": "Xem tiếng Anh"
+  },
+  "sentenceCard": {
+    "_todo": "TODO: cần người bản ngữ rà soát",
+    "playAudio": "Phát âm thanh"
+  },
+  "translationReport": {
+    "_todo": "TODO: cần người bản ngữ rà soát",
+    "title": "Báo cáo dịch sai",
+    "currentLabel": "Bản dịch hiện tại",
+    "suggestedLabel": "Đề xuất bản dịch",
+    "suggestedPlaceholder": "Viết bản dịch bạn cho là đúng…",
+    "commentLabel": "Ghi chú",
+    "commentPlaceholder": "Tùy chọn: vì sao bản dịch không đúng?",
+    "submit": "Gửi báo cáo",
+    "cancel": "Huỷ",
+    "close": "Đóng",
+    "submitted": "Đã gửi báo cáo, cảm ơn!",
+    "submitFailed": "Gửi thất bại, thử lại",
+    "emptyError": "Vui lòng điền bản dịch đề xuất hoặc ghi chú"
+  },
   "learn": {
     "_todo": "TODO: cần người bản ngữ rà soát",
     "startOrContinue": "Bắt đầu / Tiếp tục",

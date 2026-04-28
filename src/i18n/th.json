@@ -68,6 +68,29 @@
     "continue": "ต่อไป",
     "language": "ภาษา"
   },
+  "vocabCard": {
+    "playAudio": "เล่นเสียง",
+    "slowAudio": "เล่นช้า ๆ",
+    "toggleEnglish": "แสดงภาษาอังกฤษ",
+    "englishHover": "ดูภาษาอังกฤษ"
+  },
+  "sentenceCard": {
+    "playAudio": "เล่นเสียง"
+  },
+  "translationReport": {
+    "title": "แจ้งคำแปลไม่ถูกต้อง",
+    "currentLabel": "คำแปลปัจจุบัน",
+    "suggestedLabel": "คำแปลที่เสนอ",
+    "suggestedPlaceholder": "เขียนคำแปลที่คุณคิดว่าถูกต้อง…",
+    "commentLabel": "ข้อความเพิ่มเติม",
+    "commentPlaceholder": "ทำไมคำแปลเดิมไม่ถูก? (เลือกได้)",
+    "submit": "ส่งรายงาน",
+    "cancel": "ยกเลิก",
+    "close": "ปิด",
+    "submitted": "ส่งรายงานเรียบร้อย ขอบคุณค่ะ!",
+    "submitFailed": "ส่งไม่สำเร็จ ลองอีกครั้ง",
+    "emptyError": "กรุณากรอกคำแปลที่เสนอหรือข้อความเพิ่มเติม"
+  },
   "learn": {
     "_todo": "TODO: ต้องตรวจสอบโดยเจ้าของภาษา",
     "startOrContinue": "เริ่ม / ดำเนินต่อ",

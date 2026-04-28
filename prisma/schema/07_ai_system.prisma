@@ -196,3 +196,37 @@ model IntegrationSync {
   @@index([targetSystem, startedAt])
   @@map("integration_syncs")
 }
+
+// ----------------------------------------
+// TranslationReport — 學員回報翻譯有問題
+// ----------------------------------------
+// 歐寶 / 其他外籍學員看到不對的翻譯時可以即時標記。我們再批次審核後改回 DB
+// 或通過 generate-translations.ts 重跑。
+// ----------------------------------------
+model TranslationReport {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+
+  // contentType:vocabulary / sentence / ui_text / dialogue
+  contentType     String
+  // 對應的內容 ID(vocabulary.id, scenario.id 等)— 因為跨表所以是字串
+  contentId       String
+  // 該翻譯的目標語言 th / vi / id / en
+  language        String
+
+  originalText    String
+  suggestedText   String?
+  comment         String?
+
+  // pending → reviewed → applied  (also: rejected)
+  status          String   @default("pending")
+
+  createdAt       DateTime @default(now())
+  reviewedAt      DateTime?
+  reviewedBy      String?
+
+  @@index([userId, status])
+  @@index([contentType, contentId])
+  @@map("translation_reports")
+}

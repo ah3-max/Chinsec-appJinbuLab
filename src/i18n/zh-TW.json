@@ -66,6 +66,29 @@
     "continue": "繼續",
     "language": "語言"
   },
+  "vocabCard": {
+    "playAudio": "播放音檔",
+    "slowAudio": "慢速播放",
+    "toggleEnglish": "顯示英文",
+    "englishHover": "看英文"
+  },
+  "sentenceCard": {
+    "playAudio": "播放音檔"
+  },
+  "translationReport": {
+    "title": "標記翻譯有誤",
+    "currentLabel": "目前翻譯",
+    "suggestedLabel": "建議翻譯",
+    "suggestedPlaceholder": "請寫下你建議的翻譯…",
+    "commentLabel": "備註",
+    "commentPlaceholder": "可選:為什麼這個翻譯不對?",
+    "submit": "送出回報",
+    "cancel": "取消",
+    "close": "關閉",
+    "submitted": "回報已送出,謝謝!",
+    "submitFailed": "送出失敗,請稍後再試",
+    "emptyError": "請至少填寫建議翻譯或備註"
+  },
   "learn": {
     "startOrContinue": "開始 / 繼續",
     "review": "複習",

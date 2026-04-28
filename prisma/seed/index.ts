@@ -130,6 +130,34 @@ async function main() {
   }
   console.log(`✓ ${testLearners.length} 位測試學員建立 (密碼: Test@2026)`);
 
+  // Aobao — 順元的伴侶,Path B 的第一個真實使用者。跳過注音班直接 A1。
+  const aobaoPassword = await bcrypt.hash("Aobao@2026", 12);
+  await prisma.user.upsert({
+    where: { username: "aobao" },
+    update: {
+      fullName: "โอภาส (Aobao)",
+      nationality: Nationality.TH,
+      nativeLanguage: "th",
+      uiLanguage: "th",
+      currentLevel: Level.A1_BEGINNER,
+      facilityId: aayWh?.id,
+    },
+    create: {
+      username: "aobao",
+      email: "aobao@aiai.org.tw",
+      passwordHash: aobaoPassword,
+      fullName: "โอภาส (Aobao)",
+      nationality: Nationality.TH,
+      nativeLanguage: "th",
+      uiLanguage: "th",
+      role: UserRole.LEARNER,
+      currentLevel: Level.A1_BEGINNER,
+      mustChangePassword: true,
+      facilityId: aayWh?.id,
+    },
+  });
+  console.log("✓ 歐寶帳號建立 (aobao / Aobao@2026, A1_BEGINNER, uiLanguage=th)");
+
   // ----------------------------------------
   // 3. 注音符號課程 (Course → Stage → Lessons)
   // ----------------------------------------

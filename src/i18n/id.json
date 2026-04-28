@@ -68,6 +68,32 @@
     "continue": "Lanjut",
     "language": "Bahasa"
   },
+  "vocabCard": {
+    "_todo": "TODO: perlu ditinjau penutur asli",
+    "playAudio": "Putar audio",
+    "slowAudio": "Putar pelan",
+    "toggleEnglish": "Tampilkan Inggris",
+    "englishHover": "Lihat Inggris"
+  },
+  "sentenceCard": {
+    "_todo": "TODO: perlu ditinjau penutur asli",
+    "playAudio": "Putar audio"
+  },
+  "translationReport": {
+    "_todo": "TODO: perlu ditinjau penutur asli",
+    "title": "Laporkan terjemahan salah",
+    "currentLabel": "Terjemahan saat ini",
+    "suggestedLabel": "Saran terjemahan",
+    "suggestedPlaceholder": "Tulis terjemahan yang Anda anggap benar…",
+    "commentLabel": "Catatan",
+    "commentPlaceholder": "Opsional: kenapa terjemahan kurang tepat?",
+    "submit": "Kirim Laporan",
+    "cancel": "Batal",
+    "close": "Tutup",
+    "submitted": "Laporan terkirim, terima kasih!",
+    "submitFailed": "Gagal mengirim, coba lagi",
+    "emptyError": "Mohon isi saran terjemahan atau catatan"
+  },
   "learn": {
     "_todo": "TODO: perlu ditinjau penutur asli",
     "startOrContinue": "Mulai / Lanjutkan",
