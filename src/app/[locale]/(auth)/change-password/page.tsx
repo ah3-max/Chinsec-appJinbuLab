@@ -4,6 +4,7 @@ import { ShieldCheck } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { Logo } from "@/components/brand/logo";
 import { ChangePasswordForm } from "@/components/auth/change-password-form";
+import { SuperAdminSkipButton } from "@/components/auth/super-admin-skip-button";
 
 export default async function ChangePasswordPage({
   params,
@@ -20,6 +21,7 @@ export default async function ChangePasswordPage({
 
   const t = await getTranslations("auth.changePassword");
   const forced = !!session.user.mustChangePassword;
+  const isSuperAdmin = session.user.role === "SUPER_ADMIN";
 
   return (
     <main
@@ -83,6 +85,11 @@ export default async function ChangePasswordPage({
         <div className="mt-6 w-full">
           <ChangePasswordForm forced={forced} locale={locale} />
         </div>
+
+        {/* SUPER_ADMIN one-click escape from the forced flow */}
+        {forced && isSuperAdmin && (
+          <SuperAdminSkipButton locale={locale} />
+        )}
       </div>
     </main>
   );

@@ -67,7 +67,9 @@ async function main() {
 
   const admin = await prisma.user.upsert({
     where: { username: "shunyuan" },
-    update: {},
+    // SUPER_ADMIN(順元 / 業主)不強制改密 — 他自己知道密碼,要不要改自決,
+    // 改密頁也提供超管一鍵跳過按鈕。
+    update: { mustChangePassword: false },
     create: {
       username: "shunyuan",
       email: "shunyuan@example.com",
@@ -78,10 +80,10 @@ async function main() {
       uiLanguage: "zh-TW",
       role: UserRole.SUPER_ADMIN,
       employeeId: "ADMIN-001",
-      mustChangePassword: true,
+      mustChangePassword: false,
     },
   });
-  console.log(`✓ 管理員帳號建立: ${admin.username} (預設密碼: ChangeMe@2026 — 請首次登入後立即修改)`);
+  console.log(`✓ 管理員帳號建立: ${admin.username} (預設密碼: ChangeMe@2026)`);
 
   // ----------------------------------------
   // 2b. 測試學員帳號 (供 impersonation / 多語介面測試用)
