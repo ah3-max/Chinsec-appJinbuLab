@@ -13,6 +13,7 @@
 
 import { PrismaClient, Level, UserRole, Nationality, CourseCategory } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { seedZhuyinStages } from "./curriculum/zhuyin-stages";
 
 const prisma = new PrismaClient();
 
@@ -154,29 +155,8 @@ async function main() {
     },
   });
 
-  // 注音 4 個階段
-  const zhuyinStages = [
-    { code: "Z1", title: "聲母 ㄅㄆㄇㄈ ㄉㄊㄋㄌ", description: "21 個聲母分組學習" },
-    { code: "Z2", title: "介音 ㄧㄨㄩ", description: "3 個介音的拼讀" },
-    { code: "Z3", title: "韻母 ㄚㄛㄜㄝ ㄞㄟㄠㄡ", description: "13 個韻母" },
-    { code: "Z4", title: "聲調與綜合練習", description: "四聲與輕聲、完整拼讀" },
-  ];
-
-  for (let i = 0; i < zhuyinStages.length; i++) {
-    const s = zhuyinStages[i];
-    await prisma.stage.upsert({
-      where: { courseId_code: { courseId: zhuyinCourse.id, code: s.code } },
-      update: {},
-      create: {
-        courseId: zhuyinCourse.id,
-        code: s.code,
-        title: s.title,
-        description: s.description,
-        orderIndex: i,
-      },
-    });
-  }
-  console.log(`✓ 注音預備班 + ${zhuyinStages.length} 個階段建立完成`);
+  const stageCount = await seedZhuyinStages(prisma, zhuyinCourse.id);
+  console.log(`✓ 注音預備班 + ${stageCount} 個階段建立完成 (Z1-Z9)`);
 
   // ----------------------------------------
   // 4. A1 入門級課程
