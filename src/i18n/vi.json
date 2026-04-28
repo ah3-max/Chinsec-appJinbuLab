@@ -91,6 +91,25 @@
     "C2_PROFICIENT": "C2 Thành thạo"
   },
   "admin": {
+    "dashboard": {
+      "_todo": "TODO: cần người bản ngữ rà soát",
+      "badgeAdmin": "Quản trị viên",
+      "badgeSuperAdmin": "Quản trị tối cao",
+      "welcome": "Xin chào, {name}",
+      "subtitle": "Quản lý học viên của Viện Ai-Ai, mạo danh để kiểm thử và xem nhật ký kiểm toán.",
+      "statTotalLearners": "Tổng học viên",
+      "statActiveWeekly": "Hoạt động tuần này",
+      "statAttemptsWeekly": "Câu trả lời tuần này",
+      "manage": "Công cụ quản lý",
+      "navUsers": "Quản lý học viên",
+      "navUsersDesc": "Xem / Mạo danh / Đặt lại mật khẩu",
+      "navAudits": "Nhật ký kiểm toán",
+      "navAuditsDesc": "Đăng nhập, đổi mật khẩu, mạo danh",
+      "comingSoon": "Sắp ra mắt",
+      "recentActivity": "Hoạt động gần đây",
+      "backToDashboard": "Về trang chính",
+      "logout": "Đăng xuất"
+    },
     "users": {
       "_todo": "TODO: cần người bản ngữ rà soát",
       "title": "Quản lý học viên",
@@ -103,7 +122,8 @@
       "actions": "Thao tác",
       "impersonate": "Đăng nhập với danh tính này",
       "impersonateFailed": "Không thể bắt đầu mạo danh",
-      "empty": "Chưa có học viên"
+      "empty": "Chưa có học viên",
+      "searchPlaceholder": "Tìm tên đăng nhập / họ tên / quốc tịch…"
     }
   },
   "impersonation": {

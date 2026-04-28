@@ -91,6 +91,25 @@
     "C2_PROFICIENT": "C2 เชี่ยวชาญ"
   },
   "admin": {
+    "dashboard": {
+      "_todo": "TODO: ต้องตรวจสอบโดยเจ้าของภาษา",
+      "badgeAdmin": "ผู้ดูแลระบบ",
+      "badgeSuperAdmin": "ผู้ดูแลระบบสูงสุด",
+      "welcome": "สวัสดี {name}",
+      "subtitle": "จัดการผู้เรียนของบ้านพักไอ่ไอ่ จำลองตัวตน และตรวจสอบบันทึก",
+      "statTotalLearners": "ผู้เรียนทั้งหมด",
+      "statActiveWeekly": "ใช้งานสัปดาห์นี้",
+      "statAttemptsWeekly": "ตอบคำถามสัปดาห์นี้",
+      "manage": "เครื่องมือ",
+      "navUsers": "จัดการผู้เรียน",
+      "navUsersDesc": "ดู / จำลองตัวตน / รีเซ็ตรหัสผ่าน",
+      "navAudits": "บันทึกการตรวจสอบ",
+      "navAuditsDesc": "บันทึกการเข้าสู่ระบบ เปลี่ยนรหัสผ่าน จำลองตัวตน",
+      "comingSoon": "เร็ว ๆ นี้",
+      "recentActivity": "กิจกรรมล่าสุด",
+      "backToDashboard": "กลับหน้าหลัก",
+      "logout": "ออกจากระบบ"
+    },
     "users": {
       "_todo": "TODO: ต้องตรวจสอบโดยเจ้าของภาษา",
       "title": "จัดการผู้เรียน",
@@ -103,7 +122,8 @@
       "actions": "การกระทำ",
       "impersonate": "เข้าสู่ระบบในชื่อนี้",
       "impersonateFailed": "ไม่สามารถเริ่มการจำลองได้",
-      "empty": "ยังไม่มีผู้เรียน"
+      "empty": "ยังไม่มีผู้เรียน",
+      "searchPlaceholder": "ค้นหาชื่อผู้ใช้ / ชื่อ / สัญชาติ…"
     }
   },
   "impersonation": {

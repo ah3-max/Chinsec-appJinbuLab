@@ -44,8 +44,7 @@ export function LoginForm() {
   });
 
   async function doSignIn(username: string, password: string) {
-    const callbackUrl =
-      searchParams.get("callbackUrl") || `/${params.locale}/learn`;
+    const explicitCallback = searchParams.get("callbackUrl");
     const res = await signIn("credentials", {
       username,
       password,
@@ -57,7 +56,28 @@ export function LoginForm() {
       return false;
     }
 
-    router.push(callbackUrl);
+    let target = explicitCallback ?? `/${params.locale}/learn`;
+    // No explicit callback → route by role so admins land on the dashboard.
+    if (!explicitCallback) {
+      try {
+        const sessionRes = await fetch("/api/auth/session", { cache: "no-store" });
+        const session = (await sessionRes.json()) as {
+          user?: { role?: string; mustChangePassword?: boolean };
+        } | null;
+        if (session?.user?.mustChangePassword) {
+          target = `/${params.locale}/change-password`;
+        } else if (
+          session?.user?.role === "ADMIN" ||
+          session?.user?.role === "SUPER_ADMIN"
+        ) {
+          target = `/${params.locale}/admin`;
+        }
+      } catch {
+        // Fall back to default learner home on session-fetch failure.
+      }
+    }
+
+    router.push(target);
     router.refresh();
     return true;
   }

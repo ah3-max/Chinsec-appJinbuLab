@@ -74,6 +74,59 @@ async function main() {
   console.log(`✓ 管理員帳號建立: ${admin.username} (預設密碼: ChangeMe@2026 — 請首次登入後立即修改)`);
 
   // ----------------------------------------
+  // 2b. 測試學員帳號 (供 impersonation / 多語介面測試用)
+  // ----------------------------------------
+  console.log("👥 建立測試學員帳號...");
+  const learnerPassword = await bcrypt.hash("Test@2026", 12);
+  const aayWh = facilities.find((f) => f.code === "AAY-WH");
+  const testLearners = [
+    {
+      username: "testlearner_th",
+      fullName: "ทดสอบ ภาษาไทย",
+      nationality: Nationality.TH,
+      nativeLanguage: "th",
+      uiLanguage: "th",
+    },
+    {
+      username: "testlearner_vi",
+      fullName: "Kiểm Tra Tiếng Việt",
+      nationality: Nationality.VN,
+      nativeLanguage: "vi",
+      uiLanguage: "vi",
+    },
+    {
+      username: "testlearner_id",
+      fullName: "Tes Bahasa Indonesia",
+      nationality: Nationality.ID,
+      nativeLanguage: "id",
+      uiLanguage: "id",
+    },
+  ];
+  for (const l of testLearners) {
+    await prisma.user.upsert({
+      where: { username: l.username },
+      update: {
+        // refresh names + facility on every seed run so spec changes land
+        // without requiring a wipe.
+        fullName: l.fullName,
+        nationality: l.nationality,
+        nativeLanguage: l.nativeLanguage,
+        uiLanguage: l.uiLanguage,
+        facilityId: aayWh?.id,
+      },
+      create: {
+        ...l,
+        passwordHash: learnerPassword,
+        role: UserRole.LEARNER,
+        currentLevel: Level.ZHUYIN,
+        mustChangePassword: true,
+        facilityId: aayWh?.id,
+      },
+    });
+  }
+  console.log(`✓ ${testLearners.length} 位測試學員建立 (密碼: Test@2026)`);
+
+  // ----------------------------------------
   // 3. 注音符號課程 (Course → Stage → Lessons)
   // ----------------------------------------
   console.log("📚 建立注音預備班課程...");

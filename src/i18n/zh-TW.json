@@ -88,6 +88,24 @@
     "C2_PROFICIENT": "C2 精通"
   },
   "admin": {
+    "dashboard": {
+      "badgeAdmin": "管理員",
+      "badgeSuperAdmin": "超級管理員",
+      "welcome": "你好,{name}",
+      "subtitle": "管理愛愛院學員、模擬登入測試多語介面、稽核操作紀錄。",
+      "statTotalLearners": "學員總數",
+      "statActiveWeekly": "本週活躍",
+      "statAttemptsWeekly": "本週答題",
+      "manage": "管理工具",
+      "navUsers": "學員管理",
+      "navUsersDesc": "查看 / 模擬登入 / 重設密碼",
+      "navAudits": "稽核日誌",
+      "navAuditsDesc": "登入、改密、模擬登入紀錄",
+      "comingSoon": "即將推出",
+      "recentActivity": "最近操作",
+      "backToDashboard": "返回首頁",
+      "logout": "登出"
+    },
     "users": {
       "title": "學員管理",
       "subtitle": "共 {count} 名學員。點選「以此身份登入」可短暫模擬學員身份測試多語介面。",
@@ -99,7 +117,8 @@
       "actions": "操作",
       "impersonate": "以此身份登入",
       "impersonateFailed": "無法開始模擬",
-      "empty": "尚無學員"
+      "empty": "尚無學員",
+      "searchPlaceholder": "搜尋帳號 / 姓名 / 國籍…"
     }
   },
   "impersonation": {

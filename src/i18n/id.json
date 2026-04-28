@@ -91,6 +91,25 @@
     "C2_PROFICIENT": "C2 Mahir"
   },
   "admin": {
+    "dashboard": {
+      "_todo": "TODO: perlu ditinjau penutur asli",
+      "badgeAdmin": "Admin",
+      "badgeSuperAdmin": "Super Admin",
+      "welcome": "Halo, {name}",
+      "subtitle": "Kelola pembelajar Panti Ai-Ai, lakukan impersonasi untuk pengujian, dan tinjau log audit.",
+      "statTotalLearners": "Total Pembelajar",
+      "statActiveWeekly": "Aktif Minggu Ini",
+      "statAttemptsWeekly": "Jawaban Minggu Ini",
+      "manage": "Alat Pengelolaan",
+      "navUsers": "Manajemen Pembelajar",
+      "navUsersDesc": "Lihat / Impersonasi / Reset kata sandi",
+      "navAudits": "Log Audit",
+      "navAuditsDesc": "Login, ubah kata sandi, impersonasi",
+      "comingSoon": "Segera Hadir",
+      "recentActivity": "Aktivitas Terbaru",
+      "backToDashboard": "Ke Beranda",
+      "logout": "Keluar"
+    },
     "users": {
       "_todo": "TODO: perlu ditinjau penutur asli",
       "title": "Manajemen Pembelajar",
@@ -103,7 +122,8 @@
       "actions": "Tindakan",
       "impersonate": "Masuk sebagai pengguna ini",
       "impersonateFailed": "Gagal memulai impersonasi",
-      "empty": "Belum ada pembelajar"
+      "empty": "Belum ada pembelajar",
+      "searchPlaceholder": "Cari nama pengguna / nama / kewarganegaraan…"
     }
   },
   "impersonation": {

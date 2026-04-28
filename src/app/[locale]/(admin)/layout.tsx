@@ -1,7 +1,9 @@
 import { redirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
 import { ImpersonationBanner } from "@/components/impersonation-banner";
+import { AdminHeader } from "@/components/admin/admin-header";
 
 export default async function AdminLayout({
   children,
@@ -32,10 +34,19 @@ export default async function AdminLayout({
     redirect(`/${locale}/learn`);
   }
 
+  const me = await db.user.findUnique({
+    where: { id: session.user.id },
+    select: { fullName: true },
+  });
+
   return (
     <div className="min-h-svh bg-muted/30">
       <ImpersonationBanner />
-      <main className="mx-auto max-w-5xl space-y-6 p-4 md:p-6">
+      <AdminHeader
+        fullName={me?.fullName ?? session.user.username}
+        isSuperAdmin={session.user.role === "SUPER_ADMIN"}
+      />
+      <main className="mx-auto max-w-5xl space-y-6 p-3 sm:p-6">
         {children}
       </main>
     </div>
