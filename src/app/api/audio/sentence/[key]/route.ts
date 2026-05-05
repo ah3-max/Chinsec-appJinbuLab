@@ -1,11 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { existsSync } from "fs";
-import * as path from "path";
-import { minio, minioPublicUrl } from "@/lib/minio";
+import { serveAudioObject } from "@/lib/audio-serve";
 
 export const runtime = "nodejs";
-
-const PUBLIC_ROOT = path.resolve(process.cwd(), "public/audio");
 
 export async function GET(
   req: NextRequest,
@@ -18,24 +14,5 @@ export async function GET(
   }
 
   const objectKey = `sentence/${key}.mp3`;
-
-  const bucket = process.env.MINIO_BUCKET_AUDIO;
-  if (bucket && process.env.MINIO_ACCESS_KEY) {
-    try {
-      await minio().statObject(bucket, objectKey);
-      return NextResponse.redirect(minioPublicUrl(bucket, objectKey), 302);
-    } catch {
-      /* fall through */
-    }
-  }
-
-  const localPath = path.join(PUBLIC_ROOT, objectKey);
-  if (existsSync(localPath)) {
-    return NextResponse.redirect(new URL(`/audio/${objectKey}`, req.url), 302);
-  }
-
-  return NextResponse.json(
-    { error: "audio not found", key: objectKey },
-    { status: 404 },
-  );
+  return serveAudioObject(req, objectKey);
 }

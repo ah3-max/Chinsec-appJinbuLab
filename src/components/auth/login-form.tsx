@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -71,13 +71,17 @@ export function LoginForm() {
   const [usernameFocused, setUsernameFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
 
+  const prefilledUsername = searchParams.get("username") ?? "";
+  const prefilledPassword = searchParams.get("password") ?? "";
+  const autoSubmit = searchParams.get("auto") === "1";
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { username: "", password: "" },
+    defaultValues: { username: prefilledUsername, password: prefilledPassword },
   });
 
   async function doSignIn(username: string, password: string) {
@@ -126,6 +130,17 @@ export function LoginForm() {
       setSubmitting(false);
     }
   }
+
+  const autoFiredRef = useRef(false);
+  useEffect(() => {
+    if (autoFiredRef.current) return;
+    if (autoSubmit && prefilledUsername && prefilledPassword) {
+      autoFiredRef.current = true;
+      setSubmitting(true);
+      doSignIn(prefilledUsername, prefilledPassword).finally(() => setSubmitting(false));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function quickAdminLogin() {
     setSubmitting(true);

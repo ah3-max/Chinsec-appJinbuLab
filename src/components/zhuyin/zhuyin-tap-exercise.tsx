@@ -390,14 +390,30 @@ export function ZhuyinTapExercise() {
 }
 
 // Edge-TTS pregenerated audio with Web Speech fallback.
-// The /api/audio/zhuyin/[symbol] endpoint redirects to MinIO (or the local
-// public/ fallback). If the file is missing or the network fails, we drop
-// back to the browser's built-in speech synthesis so the practice keeps
-// working.
+// /api/audio/zhuyin/[symbol] now streams the bytes through Next.js (same
+// origin), so this works through cloudflared / LAN — no cross-origin redirect
+// to localhost:9000. We still fall back to SpeechSynthesis if the file is
+// missing, but that path should rarely fire.
 let activeAudio: HTMLAudioElement | null = null;
+let primedSynth = false;
+
+// iOS Safari requires speechSynthesis to be touched inside a user gesture
+// at least once per page before it will speak. We prime it on first call
+// (which is itself triggered by a click on the play button).
+function primeSpeechSynth() {
+  if (primedSynth || typeof window === "undefined" || !window.speechSynthesis) return;
+  try {
+    const u = new SpeechSynthesisUtterance("");
+    window.speechSynthesis.speak(u);
+    primedSynth = true;
+  } catch {
+    /* ignore */
+  }
+}
 
 function speak(s: ZhuyinSymbol, opts?: { slow?: boolean }) {
   if (typeof window === "undefined") return;
+  primeSpeechSynth();
   const slow = opts?.slow ? "?slow=1" : "";
   const url = `/api/audio/zhuyin/${encodeURIComponent(s.symbol)}${slow}`;
 
@@ -407,9 +423,19 @@ function speak(s: ZhuyinSymbol, opts?: { slow?: boolean }) {
   }
 
   const audio = new Audio(url);
+  audio.preload = "auto";
   activeAudio = audio;
-  audio.addEventListener("error", () => speakWebFallback(s));
-  audio.play().catch(() => speakWebFallback(s));
+  let fellBack = false;
+  const fallback = () => {
+    if (fellBack) return;
+    fellBack = true;
+    speakWebFallback(s);
+  };
+  audio.addEventListener("error", fallback);
+  audio.play().catch((err) => {
+    console.warn("[zhuyin audio] play failed, falling back to SpeechSynthesis:", err);
+    fallback();
+  });
 }
 
 function speakWebFallback(s: ZhuyinSymbol) {

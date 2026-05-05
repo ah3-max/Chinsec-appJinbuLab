@@ -4,7 +4,8 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { ChevronLeft, ShieldAlert, ChevronRight } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { canAccess } from "@/lib/level";
+import { canAccess, isLevelBypassRole } from "@/lib/level";
+import { SkillPath, type PathStage } from "@/components/learner/skill-path";
 
 export default async function CoursePage({
   params,
@@ -61,14 +62,67 @@ export default async function CoursePage({
   });
   if (!me) redirect(`/${locale}/login`);
 
-  if (!canAccess(me.currentLevel, course.level)) {
+  if (!canAccess(me.currentLevel, course.level, session.user.role)) {
     redirect(`/${locale}/learn?error=locked`);
   }
 
-  // Show Boss link only for the course at the user's exact current level
-  // (i.e. they're ready to graduate this level).
-  const showBoss = me.currentLevel === course.level;
+  // Show Boss link to admins (testing) and to learners at the exact level.
+  const showBoss =
+    isLevelBypassRole(session.user.role) || me.currentLevel === course.level;
   const tBoss = await getTranslations("learn.boss");
+
+  // Build set of completed lesson IDs based on UserAttempt history.
+  // A lesson counts as completed if the user has any successful attempt
+  // (score > 0) on any of its exercises.
+  const allLessonIds = course.stages.flatMap((s) => s.lessons.map((l) => l.id));
+  const completedExerciseGroups = await db.userAttempt.findMany({
+    where: {
+      userId: session.user.id,
+      isCorrect: true,
+      exercise: { lessonId: { in: allLessonIds } },
+    },
+    select: { exercise: { select: { lessonId: true } } },
+    distinct: ["exerciseId"],
+  });
+  const completedLessonIds = new Set(
+    completedExerciseGroups.map((g) => g.exercise?.lessonId).filter(Boolean) as string[],
+  );
+
+  // Sequential unlock: a lesson is "available" only when every previous lesson
+  // (across stages, in order) has been completed. Admins/level-bypass roles
+  // see everything unlocked so they can spot-check any lesson.
+  const adminBypass =
+    isLevelBypassRole(session.user.role) ||
+    session.user.username?.startsWith("testlearner_") === true;
+  const flatLessonIds = course.stages.flatMap((s) => s.lessons.map((l) => l.id));
+  const lessonStatus = new Map<string, "completed" | "available" | "locked">();
+  let allPrevDone = true;
+  for (const id of flatLessonIds) {
+    if (completedLessonIds.has(id)) {
+      lessonStatus.set(id, "completed");
+    } else if (adminBypass || allPrevDone) {
+      lessonStatus.set(id, "available");
+      allPrevDone = false; // first not-completed lesson is the only one unlocked
+    } else {
+      lessonStatus.set(id, "locked");
+    }
+  }
+
+  const pathStages: PathStage[] = course.stages.map((stage) => ({
+    id: stage.id,
+    code: stage.code,
+    title: stage.title,
+    description: stage.description,
+    lessons: stage.lessons.map((l) => ({
+      id: l.id,
+      code: l.code,
+      title: l.title,
+      type: l.type,
+      estimatedMinutes: l.estimatedMinutes,
+      xpReward: l.xpReward,
+      status: lessonStatus.get(l.id) ?? "locked",
+    })),
+  }));
 
   return (
     <div className="space-y-4 px-4 pb-4">
@@ -171,94 +225,104 @@ export default async function CoursePage({
         </Link>
       )}
 
-      {/* Stages */}
-      <section className="space-y-2">
-        {course.stages.length === 0 ? (
-          <div
-            className="rounded-xl border bg-white py-8 text-center text-sm"
-            style={{
-              borderColor: "var(--aiai-gray-200)",
-              borderStyle: "dashed",
-              color: "var(--aiai-gray-400)",
-            }}
-          >
-            本課程尚無單元,敬請期待。
-          </div>
-        ) : (
-          course.stages.map((stage) => (
-            <article
-              key={stage.id}
-              className="overflow-hidden rounded-xl border bg-white shadow-sm"
-              style={{ borderColor: "var(--aiai-green-100)" }}
-            >
-              <header
-                className="border-b px-4 py-3"
-                style={{ borderColor: "var(--aiai-green-100)" }}
-              >
-                <h2
-                  className="text-sm font-semibold"
-                  style={{ color: "var(--aiai-green-800)" }}
+      {/* Skill Path (Duolingo-style) */}
+      {course.stages.length === 0 ? (
+        <div
+          className="rounded-xl border bg-white py-8 text-center text-sm"
+          style={{
+            borderColor: "var(--aiai-gray-200)",
+            borderStyle: "dashed",
+            color: "var(--aiai-gray-400)",
+          }}
+        >
+          本課程尚無單元,敬請期待。
+        </div>
+      ) : course.code === "MY-SCHOOL" ? (
+        // Chapter-card layout for MY-SCHOOL: click a chapter to see its 5 lessons
+        <ul className="space-y-2">
+          {pathStages.map((stage, idx) => {
+            const completed = stage.lessons.filter((l) => l.status === "completed").length;
+            const total = stage.lessons.length;
+            const allDone = total > 0 && completed === total;
+            const empty = total === 0;
+            return (
+              <li key={stage.id}>
+                <Link
+                  href={`/${locale}/learn/${course.code}/chapter/${stage.code}`}
+                  className={empty ? "block opacity-60 cursor-not-allowed pointer-events-none" : "block transition-all active:scale-[0.99] hover:shadow-md"}
                 >
-                  <span
-                    className="font-mono text-[11px]"
-                    style={{ color: "var(--aiai-green-600)" }}
+                  <article
+                    className="flex items-center gap-3 rounded-2xl border-2 p-3 shadow-sm"
+                    style={{
+                      borderColor: allDone ? "#22c55e" : "var(--aiai-green-100)",
+                      background: allDone
+                        ? "linear-gradient(135deg, #f0fdf4 0%, #fff 100%)"
+                        : "linear-gradient(135deg, #ecfdf5 0%, #fff 100%)",
+                    }}
                   >
-                    {stage.code}
-                  </span>
-                  <span className="ml-2">{stage.title}</span>
-                </h2>
-                {stage.description && (
-                  <p
-                    className="mt-0.5 text-[11px]"
-                    style={{ color: "var(--aiai-gray-400)" }}
-                  >
-                    {stage.description}
-                  </p>
-                )}
-              </header>
-              <div className="text-sm">
-                {stage.lessons.length === 0 ? (
-                  <p
-                    className="px-4 py-3"
-                    style={{ color: "var(--aiai-gray-400)" }}
-                  >
-                    尚無課時
-                  </p>
-                ) : (
-                  <ul className="divide-y" style={{ borderColor: "var(--aiai-gray-200)" }}>
-                    {stage.lessons.map((l) => (
-                      <li key={l.id}>
-                        <Link
-                          href={`/${locale}/learn/${course.code}/lesson/${l.code}`}
-                          className="flex items-center justify-between gap-2 px-4 py-2.5 transition-colors hover:bg-aiai-green-50"
-                          style={{ color: "var(--aiai-gray-800)" }}
-                        >
-                          <span className="min-w-0">
-                            <span
-                              className="font-mono text-[10px]"
-                              style={{ color: "var(--aiai-green-600)" }}
-                            >
-                              {l.code}
-                            </span>
-                            <span className="ml-2">{l.title}</span>
-                          </span>
+                    <div
+                      className="flex size-12 shrink-0 items-center justify-center rounded-2xl text-base font-bold shadow-sm"
+                      style={{
+                        background: allDone ? "#22c55e" : "var(--aiai-green-400)",
+                        color: "#fff",
+                      }}
+                    >
+                      {idx + 1}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p
+                        className="text-[10px] font-bold uppercase tracking-widest"
+                        style={{ color: "var(--aiai-green-600)" }}
+                      >
+                        {stage.code} · 第{idx + 1}課 Chapter
+                      </p>
+                      <h3 className="truncate text-sm font-semibold" style={{ color: "var(--aiai-gray-800)" }}>
+                        {stage.title}
+                      </h3>
+                      {stage.description && (
+                        <p className="truncate text-[11px]" style={{ color: "var(--aiai-gray-400)" }}>
+                          {stage.description}
+                        </p>
+                      )}
+                      {!empty && (
+                        <div className="mt-1.5 flex items-center gap-2">
+                          <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-gray-100">
+                            <div
+                              className="h-full rounded-full transition-all"
+                              style={{
+                                width: `${(completed / Math.max(1, total)) * 100}%`,
+                                background: allDone ? "#22c55e" : "var(--aiai-green-400)",
+                              }}
+                            />
+                          </div>
                           <span
-                            className="flex shrink-0 items-center gap-1 text-[11px]"
-                            style={{ color: "var(--aiai-gray-400)" }}
+                            className="font-mono text-[10px] tabular-nums"
+                            style={{ color: allDone ? "#15803d" : "var(--aiai-gray-500)" }}
                           >
-                            {l.estimatedMinutes}min · +{l.xpReward}XP
-                            <ChevronRight className="size-3" />
+                            {completed}/{total}
                           </span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </article>
-          ))
-        )}
-      </section>
+                        </div>
+                      )}
+                      {empty && (
+                        <p className="mt-1 text-[10px]" style={{ color: "var(--aiai-gray-400)" }}>
+                          📝 即將推出 / Coming soon
+                        </p>
+                      )}
+                    </div>
+                    <ChevronRight className="size-5 shrink-0" style={{ color: "var(--aiai-green-600)" }} />
+                  </article>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <SkillPath
+          courseCode={course.code}
+          locale={locale}
+          stages={pathStages}
+        />
+      )}
     </div>
   );
 }

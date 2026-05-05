@@ -73,6 +73,7 @@ model User {
   // === 反向關聯 ===
   enrollments         Enrollment[]
   attempts            UserAttempt[]
+  vocabBookmarks      VocabBookmark[]
   submissions         Submission[]
   speakingRecords     SpeakingRecord[]
   examAttempts        ExamAttempt[]

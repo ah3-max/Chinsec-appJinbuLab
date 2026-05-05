@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { detectSuspiciousSession } from "@/lib/anti-cheat";
 import { computeNewStreak } from "@/lib/streak";
 import { nextLevel } from "@/lib/level";
+import { bumpMissionProgress } from "@/lib/daily-missions";
 
 export const runtime = "nodejs";
 
@@ -151,6 +152,21 @@ export async function POST(req: NextRequest) {
     return { ...updated, leveledUp, promotedTo };
   });
 
+  // Update daily missions (best-effort; don't fail the response on errors)
+  let missionsCompleted = false;
+  if (!verdict.isSuspicious && awardedXp > 0) {
+    try {
+      const m = await bumpMissionProgress(session.user.id, {
+        earn_xp: awardedXp,
+        complete_lessons: 1,
+        vocab_cards: attempts.length,
+      });
+      missionsCompleted = m.flipped;
+    } catch (err) {
+      console.error("[session/complete] mission bump failed:", err);
+    }
+  }
+
   return NextResponse.json({
     ok: true,
     newTotalXp: result.totalXp,
@@ -160,5 +176,6 @@ export async function POST(req: NextRequest) {
     awardedXp,
     suspicious: verdict.isSuspicious,
     reasons: verdict.reasons,
+    dailyMissionsCompleted: missionsCompleted,
   });
 }

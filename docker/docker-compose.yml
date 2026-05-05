@@ -105,6 +105,7 @@ services:
       mc mb -p local/chinese-learn-handwriting || true;
       mc mb -p local/chinese-learn-homework || true;
       mc mb -p local/chinese-learn-textbook-pdf || true;
+      mc mb -p local/chinese-learn-vocab-images || true;
       mc anonymous set download local/chinese-learn-audio;
       echo 'MinIO buckets ready';
       exit 0;

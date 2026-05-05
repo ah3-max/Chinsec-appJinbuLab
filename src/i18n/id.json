@@ -1,19 +1,20 @@
 {
   "_todo": "TODO: perlu ditinjau oleh penutur asli bahasa Indonesia sebelum digunakan (terjemahan awal oleh Claude)",
   "app": {
-    "name": "ChineseLearn",
+    "name": "JinBuLap",
     "tagline": "Platform belajar bahasa Mandarin untuk staf Panti Jompo Ai-Ai"
   },
   "nav": {
     "home": "Beranda",
     "learn": "Belajar",
     "practice": "Latihan",
+    "mywork": "Pekerjaan",
     "homework": "Pekerjaan rumah",
     "profile": "Profil",
     "logout": "Keluar"
   },
   "home": {
-    "welcome": "Selamat datang di ChineseLearn",
+    "welcome": "Selamat datang di JinBuLap",
     "subtitle": "Dari Bopomofo hingga sertifikasi internal lancar",
     "startLearning": "Mulai belajar",
     "myCourses": "Kursus saya",

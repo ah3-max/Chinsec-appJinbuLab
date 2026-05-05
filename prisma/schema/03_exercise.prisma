@@ -207,3 +207,23 @@ enum SrsStatus {
   SUSPENDED    // 暫停
   LEECH        // 頻繁答錯
 }
+
+// ----------------------------------------
+// VocabBookmark — user-starred vocabulary for quick review
+// ----------------------------------------
+model VocabBookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // hanzi is logically a foreign key to Vocabulary.hanzi (which is @unique),
+  // but kept as a plain string so a bookmark survives if the vocab record is
+  // ever renamed/removed. Cleanup is the caller's responsibility.
+  hanzi     String
+  note      String?
+  createdAt DateTime @default(now())
+
+  @@unique([userId, hanzi])
+  @@index([userId])
+  @@index([hanzi])
+  @@map("vocab_bookmarks")
+}

@@ -11,18 +11,18 @@ export default async function LoginPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  await getTranslations("auth.login");
+  const t = await getTranslations("common");
 
   return (
     <main
       className="flex min-h-svh w-full items-stretch justify-center"
       style={{ background: "var(--aiai-bg-page)" }}
     >
-      <div className="flex w-full max-w-[380px] flex-col items-center px-6 pb-8 pt-[20%] sm:pt-24">
+      <div className="flex w-full max-w-[380px] flex-col items-center px-6 pb-8 pt-[12%] sm:pt-16">
         {/* Logo + brand wordmark */}
-        <Logo size={80} />
+        <Logo size={64} />
         <h1
-          className="mt-4 text-center"
+          className="mt-3 text-center"
           style={{
             fontSize: 22,
             fontWeight: 500,
@@ -31,7 +31,7 @@ export default async function LoginPage({
             margin: 0,
           }}
         >
-          愛愛院 中文學習
+          JinBuLap
         </h1>
         <p
           style={{
@@ -41,19 +41,27 @@ export default async function LoginPage({
             letterSpacing: "0.04em",
           }}
         >
-          Aiai Care · Mandarin Learning
+          JinBuLap · Mandarin Learning
         </p>
 
-        {/* Form */}
-        <div className="mt-9 w-full">
-          <Suspense fallback={<div className="h-48" />}>
-            <LoginForm />
+        {/* Prominent language selector — top of screen */}
+        <div className="mt-6 w-full">
+          <p
+            className="mb-2 text-center text-[11px] font-semibold uppercase tracking-widest"
+            style={{ color: "var(--aiai-green-600)" }}
+          >
+            {t("language")}
+          </p>
+          <Suspense fallback={<div className="h-14" />}>
+            <LocaleSwitcher current={locale} variant="prominent" />
           </Suspense>
         </div>
 
-        {/* Locale switcher */}
-        <div className="mt-6">
-          <LocaleSwitcher current={locale} />
+        {/* Form */}
+        <div className="mt-6 w-full">
+          <Suspense fallback={<div className="h-48" />}>
+            <LoginForm />
+          </Suspense>
         </div>
       </div>
     </main>

@@ -1,0 +1,1581 @@
+{
+  "courseCode": "AAY-FINANCE",
+  "titleZh": "愛愛院財務報表中文",
+  "titleI18n": {
+    "zh-TW": "愛愛院財務報表中文",
+    "th": "ภาษาจีนสำหรับงบการเงินบ้านพักคนชราอ้ายอ้าย",
+    "vi": "Tiếng Trung báo cáo tài chính nhà dưỡng lão Aiai",
+    "id": "Mandarin Laporan Keuangan Aiai",
+    "en": "Aiai Care Financial Statements (Mandarin)"
+  },
+  "descriptionI18n": {
+    "zh-TW": "【必修課程】207 個機構財務常用詞彙(中泰拼音對照),包含收支報表、人事費、設備資產與業務常用詞。",
+    "th": "【วิชาบังคับ】 ศัพท์การเงินองค์กร 207 คำ (จีน-ไทย-พินอิน) รวมหมวดรายรับ-รายจ่าย ค่าใช้จ่ายบุคลากร ทรัพย์สิน และคำศัพท์ที่พบบ่อย",
+    "vi": "【Bắt buộc】 207 thuật ngữ tài chính tổ chức (Trung-Việt-Pinyin), gồm thu chi, nhân sự, tài sản và thuật ngữ thường dùng",
+    "id": "【Wajib】 207 istilah keuangan organisasi (Tionghoa-Indonesia-Pinyin), mencakup pendapatan-pengeluaran, biaya personalia, aset, dan istilah umum",
+    "en": "【Required】 207 institutional finance terms (Chinese-Thai-Pinyin) covering income/expense statements, personnel costs, assets, and common operations vocabulary."
+  },
+  "stages": [
+    {
+      "code": "F01-ORG",
+      "titleZh": "機構與單位",
+      "titleEn": "Organizations & Units",
+      "titleTh": "สถาบันและหน่วยงาน",
+      "items": [
+        {
+          "idx": 1,
+          "hanzi": "財團法人",
+          "pinyin": "Cáituán fǎrén",
+          "thai": "มูลนิธิ (นิติบุคคล)",
+          "note": ""
+        },
+        {
+          "idx": 2,
+          "hanzi": "臺北市私立愛愛院",
+          "pinyin": "Táiběi shì sīlì Àiʼài yuàn",
+          "thai": "บ้านพักคนชราเอกชนอ้ายอ้าย เมืองไทเป",
+          "note": ""
+        },
+        {
+          "idx": 3,
+          "hanzi": "院本部",
+          "pinyin": "Yuàn běnbù",
+          "thai": "สำนักงานใหญ่",
+          "note": "หน่วยหลักของบ้านพักคนชรา"
+        },
+        {
+          "idx": 4,
+          "hanzi": "東明",
+          "pinyin": "Dōngmíng",
+          "thai": "สาขาตงหมิง",
+          "note": "หน่วยสาขาในเขตหนานก่าง 南港"
+        },
+        {
+          "idx": 5,
+          "hanzi": "愛力勇",
+          "pinyin": "Àilìyǒng",
+          "thai": "อ้ายลี่หย่ง",
+          "note": "ศูนย์ดูแลกลางวัน 日照"
+        },
+        {
+          "idx": 6,
+          "hanzi": "A單位",
+          "pinyin": "A dānwèi",
+          "thai": "หน่วย A",
+          "note": "หน่วยบริการดูแลที่บ้าน"
+        },
+        {
+          "idx": 7,
+          "hanzi": "日照中心",
+          "pinyin": "Rìzhào zhōngxīn",
+          "thai": "ศูนย์ดูแลกลางวัน (Day Care Center)",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "code": "F02-REPORT",
+      "titleZh": "報表類型",
+      "titleEn": "Report Types",
+      "titleTh": "ประเภทรายงาน",
+      "items": [
+        {
+          "idx": 8,
+          "hanzi": "收支表",
+          "pinyin": "Shōuzhī biǎo",
+          "thai": "งบรายรับรายจ่าย",
+          "note": ""
+        },
+        {
+          "idx": 9,
+          "hanzi": "收支餘絀表",
+          "pinyin": "Shōuzhī yú chù biǎo",
+          "thai": "งบกำไรขาดทุน",
+          "note": "สำหรับองค์กรไม่แสวงหากำไร"
+        },
+        {
+          "idx": 10,
+          "hanzi": "全年度收支餘絀表",
+          "pinyin": "Quán niándù shōuzhī yú chù biǎo",
+          "thai": "งบรายรับรายจ่ายและกำไรขาดทุนประจำปี",
+          "note": ""
+        },
+        {
+          "idx": 11,
+          "hanzi": "合併",
+          "pinyin": "Hébìng",
+          "thai": "รวม / Combined",
+          "note": ""
+        },
+        {
+          "idx": 12,
+          "hanzi": "初版",
+          "pinyin": "Chūbǎn",
+          "thai": "ฉบับร่างแรก / Draft",
+          "note": ""
+        },
+        {
+          "idx": 13,
+          "hanzi": "單位：元",
+          "pinyin": "Dānwèi: yuán",
+          "thai": "หน่วย: ดอลลาร์ไต้หวัน (TWD)",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "code": "F03-PERIOD",
+      "titleZh": "期別與表頭",
+      "titleEn": "Periods & Headers",
+      "titleTh": "งวดและหัวตาราง",
+      "items": [
+        {
+          "idx": 14,
+          "hanzi": "科目編號",
+          "pinyin": "Kēmù biānhào",
+          "thai": "รหัสบัญชี",
+          "note": "เลขรหัสตามผังบัญชี"
+        },
+        {
+          "idx": 15,
+          "hanzi": "項目",
+          "pinyin": "Xiàngmù",
+          "thai": "รายการ",
+          "note": ""
+        },
+        {
+          "idx": 16,
+          "hanzi": "01期",
+          "pinyin": "Líng yī qí",
+          "thai": "งวดที่ 1 (มกราคม)",
+          "note": ""
+        },
+        {
+          "idx": 17,
+          "hanzi": "02期",
+          "pinyin": "Líng èr qí",
+          "thai": "งวดที่ 2 (กุมภาพันธ์)",
+          "note": ""
+        },
+        {
+          "idx": 18,
+          "hanzi": "03期",
+          "pinyin": "Líng sān qí",
+          "thai": "งวดที่ 3 (มีนาคม)",
+          "note": ""
+        },
+        {
+          "idx": 19,
+          "hanzi": "合計",
+          "pinyin": "Héjì",
+          "thai": "รวม / Total",
+          "note": ""
+        },
+        {
+          "idx": 20,
+          "hanzi": "小計",
+          "pinyin": "Xiǎojì",
+          "thai": "รวมย่อย / Subtotal",
+          "note": ""
+        },
+        {
+          "idx": 21,
+          "hanzi": "總額",
+          "pinyin": "Zǒngʼé",
+          "thai": "ยอดรวมทั้งหมด",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "code": "F04-INCOME",
+      "titleZh": "收入科目",
+      "titleEn": "Income Items",
+      "titleTh": "หมวดรายรับ",
+      "items": [
+        {
+          "idx": 22,
+          "hanzi": "收入",
+          "pinyin": "Shōurù",
+          "thai": "รายรับ",
+          "note": ""
+        },
+        {
+          "idx": 23,
+          "hanzi": "收入合計",
+          "pinyin": "Shōurù héjì",
+          "thai": "รวมรายรับ",
+          "note": ""
+        },
+        {
+          "idx": 24,
+          "hanzi": "政府補助款",
+          "pinyin": "Zhèngfǔ bǔzhù kuǎn",
+          "thai": "เงินอุดหนุนจากรัฐบาล",
+          "note": ""
+        },
+        {
+          "idx": 25,
+          "hanzi": "社會局補助款",
+          "pinyin": "Shèhuì jú bǔzhù kuǎn",
+          "thai": "เงินอุดหนุนจากกรมสวัสดิการสังคม",
+          "note": ""
+        },
+        {
+          "idx": 26,
+          "hanzi": "衛福部補助款",
+          "pinyin": "Wèi fú bù bǔzhù kuǎn",
+          "thai": "เงินอุดหนุนจากกระทรวงสาธารณสุข",
+          "note": ""
+        },
+        {
+          "idx": 27,
+          "hanzi": "加菜金補助",
+          "pinyin": "Jiācài jīn bǔzhù",
+          "thai": "เงินอุดหนุนค่าอาหารเพิ่มเติม",
+          "note": ""
+        },
+        {
+          "idx": 28,
+          "hanzi": "特別處遇費",
+          "pinyin": "Tèbié chǔyù fèi",
+          "thai": "ค่าดูแลพิเศษ",
+          "note": ""
+        },
+        {
+          "idx": 29,
+          "hanzi": "專業服務人員補助",
+          "pinyin": "Zhuānyè fúwù rényuán bǔzhù",
+          "thai": "เงินอุดหนุนบุคลากรวิชาชีพ",
+          "note": ""
+        },
+        {
+          "idx": 30,
+          "hanzi": "其他補助收入",
+          "pinyin": "Qítā bǔzhù shōurù",
+          "thai": "รายรับเงินอุดหนุนอื่นๆ",
+          "note": ""
+        },
+        {
+          "idx": 31,
+          "hanzi": "捐款收入",
+          "pinyin": "Juānkuǎn shōurù",
+          "thai": "รายรับเงินบริจาค",
+          "note": ""
+        },
+        {
+          "idx": 32,
+          "hanzi": "一般捐款",
+          "pinyin": "Yībān juānkuǎn",
+          "thai": "เงินบริจาคทั่วไป",
+          "note": ""
+        },
+        {
+          "idx": 33,
+          "hanzi": "勸募捐款",
+          "pinyin": "Quànmù juānkuǎn",
+          "thai": "เงินบริจาคจากการระดมทุน",
+          "note": ""
+        },
+        {
+          "idx": 34,
+          "hanzi": "實物捐贈",
+          "pinyin": "Shíwù juānzèng",
+          "thai": "การบริจาคในรูปสิ่งของ",
+          "note": ""
+        },
+        {
+          "idx": 35,
+          "hanzi": "安養護收入",
+          "pinyin": "Ān yǎnghù shōurù",
+          "thai": "รายรับค่าดูแลผู้สูงอายุ",
+          "note": "รายรับหลักของบ้านพัก"
+        },
+        {
+          "idx": 36,
+          "hanzi": "安養護月費收入",
+          "pinyin": "Ān yǎnghù yuè fèi shōurù",
+          "thai": "รายรับค่าธรรมเนียมรายเดือน",
+          "note": ""
+        },
+        {
+          "idx": 37,
+          "hanzi": "安養護耗材收入",
+          "pinyin": "Ān yǎnghù hàocái shōurù",
+          "thai": "รายรับค่าวัสดุสิ้นเปลือง",
+          "note": ""
+        },
+        {
+          "idx": 38,
+          "hanzi": "愛心扶助",
+          "pinyin": "Àixīn fúzhù",
+          "thai": "เงินสงเคราะห์เมตตา (ส่วนลดการกุศล)",
+          "note": ""
+        },
+        {
+          "idx": 39,
+          "hanzi": "日照收入",
+          "pinyin": "Rìzhào shōurù",
+          "thai": "รายรับศูนย์ดูแลกลางวัน",
+          "note": ""
+        },
+        {
+          "idx": 40,
+          "hanzi": "日照服務收入",
+          "pinyin": "Rìzhào fúwù shōurù",
+          "thai": "รายรับค่าบริการดูแลกลางวัน",
+          "note": ""
+        },
+        {
+          "idx": 41,
+          "hanzi": "A單位服務收入",
+          "pinyin": "A dānwèi fúwù shōurù",
+          "thai": "รายรับค่าบริการหน่วย A",
+          "note": ""
+        },
+        {
+          "idx": 42,
+          "hanzi": "利息收入",
+          "pinyin": "Lìxí shōurù",
+          "thai": "รายรับดอกเบี้ย",
+          "note": ""
+        },
+        {
+          "idx": 43,
+          "hanzi": "其他收入",
+          "pinyin": "Qítā shōurù",
+          "thai": "รายรับอื่นๆ",
+          "note": ""
+        },
+        {
+          "idx": 44,
+          "hanzi": "其他雜項收入",
+          "pinyin": "Qítā záxiàng shōurù",
+          "thai": "รายรับเบ็ดเตล็ดอื่นๆ",
+          "note": ""
+        },
+        {
+          "idx": 45,
+          "hanzi": "優免",
+          "pinyin": "Yōumiǎn",
+          "thai": "ส่วนลด/ยกเว้น",
+          "note": "ปรากฏใน 安養護耗材優免, 雜項優免"
+        }
+      ]
+    },
+    {
+      "code": "F05-PERSONNEL",
+      "titleZh": "支出科目-人事費",
+      "titleEn": "Personnel Expenses",
+      "titleTh": "ค่าใช้จ่ายบุคลากร",
+      "items": [
+        {
+          "idx": 46,
+          "hanzi": "支出",
+          "pinyin": "Zhīchū",
+          "thai": "รายจ่าย",
+          "note": ""
+        },
+        {
+          "idx": 47,
+          "hanzi": "支出總額",
+          "pinyin": "Zhīchū zǒngʼé",
+          "thai": "รวมรายจ่ายทั้งหมด",
+          "note": ""
+        },
+        {
+          "idx": 48,
+          "hanzi": "人事費",
+          "pinyin": "Rénshì fèi",
+          "thai": "ค่าใช้จ่ายบุคลากร",
+          "note": "รวมเงินเดือนและสวัสดิการทั้งหมด"
+        },
+        {
+          "idx": 49,
+          "hanzi": "人事費-1",
+          "pinyin": "Rénshì fèi - 1",
+          "thai": "ค่าใช้จ่ายบุคลากร-1 (ฝ่ายบริหาร)",
+          "note": "5111"
+        },
+        {
+          "idx": 50,
+          "hanzi": "人事費-2",
+          "pinyin": "Rénshì fèi - 2",
+          "thai": "ค่าใช้จ่ายบุคลากร-2 (ฝ่ายปฏิบัติงาน)",
+          "note": "5231"
+        },
+        {
+          "idx": 51,
+          "hanzi": "薪資",
+          "pinyin": "Xīnzī",
+          "thai": "เงินเดือน",
+          "note": ""
+        },
+        {
+          "idx": 52,
+          "hanzi": "薪資支出-應稅",
+          "pinyin": "Xīnzī zhīchū - yìng shuì",
+          "thai": "เงินเดือน - เสียภาษี",
+          "note": ""
+        },
+        {
+          "idx": 53,
+          "hanzi": "薪資支出-免稅",
+          "pinyin": "Xīnzī zhīchū - miǎn shuì",
+          "thai": "เงินเดือน - ยกเว้นภาษี",
+          "note": ""
+        },
+        {
+          "idx": 54,
+          "hanzi": "伙食津貼",
+          "pinyin": "Huǒshí jīntiē",
+          "thai": "เบี้ยเลี้ยงค่าอาหาร",
+          "note": ""
+        },
+        {
+          "idx": 55,
+          "hanzi": "加班費",
+          "pinyin": "Jiābān fèi",
+          "thai": "ค่าล่วงเวลา (OT)",
+          "note": ""
+        },
+        {
+          "idx": 56,
+          "hanzi": "加班費-免稅",
+          "pinyin": "Jiābān fèi - miǎn shuì",
+          "thai": "ค่าล่วงเวลา - ยกเว้นภาษี",
+          "note": ""
+        },
+        {
+          "idx": 57,
+          "hanzi": "職工福利",
+          "pinyin": "Zhígōng fúlì",
+          "thai": "สวัสดิการพนักงาน",
+          "note": ""
+        },
+        {
+          "idx": 58,
+          "hanzi": "訓練費",
+          "pinyin": "Xùnliàn fèi",
+          "thai": "ค่าอบรม",
+          "note": ""
+        },
+        {
+          "idx": 59,
+          "hanzi": "外勞就業安定費",
+          "pinyin": "Wàiláo jiùyè āndìng fèi",
+          "thai": "ค่าธรรมเนียมแรงงานต่างชาติ",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "code": "F06-OPERATING",
+      "titleZh": "支出科目-事務維護費",
+      "titleEn": "Office & Maintenance",
+      "titleTh": "ค่าสำนักงานและบำรุงรักษา",
+      "items": [
+        {
+          "idx": 60,
+          "hanzi": "事務費",
+          "pinyin": "Shìwù fèi",
+          "thai": "ค่าใช้จ่ายสำนักงาน",
+          "note": "5112"
+        },
+        {
+          "idx": 61,
+          "hanzi": "交通費",
+          "pinyin": "Jiāotōng fèi",
+          "thai": "ค่าเดินทาง",
+          "note": ""
+        },
+        {
+          "idx": 62,
+          "hanzi": "文具用品",
+          "pinyin": "Wénjù yòngpǐn",
+          "thai": "ค่าเครื่องเขียน",
+          "note": ""
+        },
+        {
+          "idx": 63,
+          "hanzi": "印刷費",
+          "pinyin": "Yìnshuā fèi",
+          "thai": "ค่าพิมพ์เอกสาร",
+          "note": ""
+        },
+        {
+          "idx": 64,
+          "hanzi": "運費",
+          "pinyin": "Yùnfèi",
+          "thai": "ค่าขนส่ง",
+          "note": ""
+        },
+        {
+          "idx": 65,
+          "hanzi": "郵電費",
+          "pinyin": "Yóudiàn fèi",
+          "thai": "ค่าไปรษณีย์และโทรคมนาคม",
+          "note": ""
+        },
+        {
+          "idx": 66,
+          "hanzi": "交際費",
+          "pinyin": "Jiāojì fèi",
+          "thai": "ค่ารับรอง",
+          "note": ""
+        },
+        {
+          "idx": 67,
+          "hanzi": "書報雜誌",
+          "pinyin": "Shū bào zázhì",
+          "thai": "ค่าหนังสือและวารสาร",
+          "note": ""
+        },
+        {
+          "idx": 68,
+          "hanzi": "水費",
+          "pinyin": "Shuǐ fèi",
+          "thai": "ค่าน้ำ",
+          "note": ""
+        },
+        {
+          "idx": 69,
+          "hanzi": "電費",
+          "pinyin": "Diàn fèi",
+          "thai": "ค่าไฟ",
+          "note": ""
+        },
+        {
+          "idx": 70,
+          "hanzi": "瓦斯費",
+          "pinyin": "Wǎsī fèi",
+          "thai": "ค่าแก๊ส",
+          "note": ""
+        },
+        {
+          "idx": 71,
+          "hanzi": "租金支出",
+          "pinyin": "Zūjīn zhīchū",
+          "thai": "ค่าเช่า",
+          "note": ""
+        },
+        {
+          "idx": 72,
+          "hanzi": "稅捐",
+          "pinyin": "Shuìjuān",
+          "thai": "ค่าภาษี",
+          "note": ""
+        },
+        {
+          "idx": 73,
+          "hanzi": "團體會費",
+          "pinyin": "Tuántǐ huìfèi",
+          "thai": "ค่าสมาชิกสมาคม",
+          "note": ""
+        },
+        {
+          "idx": 74,
+          "hanzi": "募款活動支出",
+          "pinyin": "Mùkuǎn huódòng zhīchū",
+          "thai": "ค่าใช้จ่ายกิจกรรมระดมทุน",
+          "note": ""
+        },
+        {
+          "idx": 75,
+          "hanzi": "設施器具費",
+          "pinyin": "Shèshī qìjù fèi",
+          "thai": "ค่าอุปกรณ์และเครื่องมือ",
+          "note": ""
+        },
+        {
+          "idx": 76,
+          "hanzi": "雜項購置",
+          "pinyin": "Záxiàng gòuzhì",
+          "thai": "ค่าจัดซื้อเบ็ดเตล็ด",
+          "note": ""
+        },
+        {
+          "idx": 77,
+          "hanzi": "維護費",
+          "pinyin": "Wéihù fèi",
+          "thai": "ค่าบำรุงรักษา",
+          "note": "5114"
+        },
+        {
+          "idx": 78,
+          "hanzi": "修繕費",
+          "pinyin": "Xiūshàn fèi",
+          "thai": "ค่าซ่อมแซม",
+          "note": ""
+        },
+        {
+          "idx": 79,
+          "hanzi": "院舍修繕費",
+          "pinyin": "Yuàn shè xiūshàn fèi",
+          "thai": "ค่าซ่อมแซมอาคารบ้านพัก",
+          "note": ""
+        },
+        {
+          "idx": 80,
+          "hanzi": "公共安全費",
+          "pinyin": "Gōnggòng ānquán fèi",
+          "thai": "ค่าความปลอดภัยสาธารณะ",
+          "note": ""
+        },
+        {
+          "idx": 81,
+          "hanzi": "折舊",
+          "pinyin": "Zhéjiù",
+          "thai": "ค่าเสื่อมราคา",
+          "note": "Depreciation"
+        },
+        {
+          "idx": 82,
+          "hanzi": "各項耗竭及攤提",
+          "pinyin": "Gè xiàng hàojié jí tāntí",
+          "thai": "ค่าใช้สิ้นเปลืองและค่าตัดจำหน่าย",
+          "note": "Amortization"
+        }
+      ]
+    },
+    {
+      "code": "F07-INSURANCE",
+      "titleZh": "支出科目-保險與其他",
+      "titleEn": "Insurance & Others",
+      "titleTh": "ประกันและอื่นๆ",
+      "items": [
+        {
+          "idx": 83,
+          "hanzi": "保險退休金",
+          "pinyin": "Bǎoxiǎn tuìxiū jīn",
+          "thai": "ประกันและเงินบำนาญ",
+          "note": "5115/5235"
+        },
+        {
+          "idx": 84,
+          "hanzi": "勞健保",
+          "pinyin": "Láo jiàn bǎo",
+          "thai": "ประกันแรงงานและประกันสุขภาพ",
+          "note": "ระบบประกันบังคับของไต้หวัน"
+        },
+        {
+          "idx": 85,
+          "hanzi": "勞工退休金",
+          "pinyin": "Láogōng tuìxiū jīn",
+          "thai": "เงินบำนาญแรงงาน",
+          "note": "นายจ้างจ่ายสมทบ 6%"
+        },
+        {
+          "idx": 86,
+          "hanzi": "保險費",
+          "pinyin": "Bǎoxiǎn fèi",
+          "thai": "ค่าเบี้ยประกัน",
+          "note": "ประกันอื่นๆ เช่น ประกันอาคาร"
+        },
+        {
+          "idx": 87,
+          "hanzi": "其他成本",
+          "pinyin": "Qítā chéngběn",
+          "thai": "ต้นทุนอื่นๆ",
+          "note": "5900"
+        },
+        {
+          "idx": 88,
+          "hanzi": "雜項支出",
+          "pinyin": "Záxiàng zhīchū",
+          "thai": "ค่าใช้จ่ายเบ็ดเตล็ด",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "code": "F08-MATERIAL",
+      "titleZh": "支出科目-業務材料費",
+      "titleEn": "Operations & Materials",
+      "titleTh": "ดำเนินงานและวัสดุ",
+      "items": [
+        {
+          "idx": 89,
+          "hanzi": "業務費",
+          "pinyin": "Yèwù fèi",
+          "thai": "ค่าใช้จ่ายดำเนินงาน",
+          "note": "5232"
+        },
+        {
+          "idx": 90,
+          "hanzi": "住民活動費",
+          "pinyin": "Zhùmín huódòng fèi",
+          "thai": "ค่ากิจกรรมผู้พักอาศัย",
+          "note": ""
+        },
+        {
+          "idx": 91,
+          "hanzi": "住民交通費",
+          "pinyin": "Zhùmín jiāotōng fèi",
+          "thai": "ค่าเดินทางผู้พักอาศัย",
+          "note": ""
+        },
+        {
+          "idx": 92,
+          "hanzi": "材料費",
+          "pinyin": "Cáiliào fèi",
+          "thai": "ค่าวัสดุ",
+          "note": "5233"
+        },
+        {
+          "idx": 93,
+          "hanzi": "主副食費",
+          "pinyin": "Zhǔ fùshí fèi",
+          "thai": "ค่าอาหารหลักและอาหารเสริม",
+          "note": ""
+        },
+        {
+          "idx": 94,
+          "hanzi": "被服費",
+          "pinyin": "Bèifú fèi",
+          "thai": "ค่าเครื่องนอนและเครื่องแบบ",
+          "note": ""
+        },
+        {
+          "idx": 95,
+          "hanzi": "住民用品費",
+          "pinyin": "Zhùmín yòngpǐn fèi",
+          "thai": "ค่าของใช้ผู้พักอาศัย",
+          "note": ""
+        },
+        {
+          "idx": 96,
+          "hanzi": "住民醫藥保健費",
+          "pinyin": "Zhùmín yīyào bǎojiàn fèi",
+          "thai": "ค่ายาและสาธารณสุขผู้พักอาศัย",
+          "note": ""
+        },
+        {
+          "idx": 97,
+          "hanzi": "住民就醫門診費",
+          "pinyin": "Zhùmín jiùyī ménzhěn fèi",
+          "thai": "ค่าตรวจรักษาผู้ป่วยนอก",
+          "note": ""
+        },
+        {
+          "idx": 98,
+          "hanzi": "醫療耗材",
+          "pinyin": "Yīliáo hàocái",
+          "thai": "วัสดุสิ้นเปลืองทางการแพทย์",
+          "note": ""
+        },
+        {
+          "idx": 99,
+          "hanzi": "消耗品費",
+          "pinyin": "Xiāohào pǐn fèi",
+          "thai": "ค่าวัสดุสิ้นเปลือง",
+          "note": ""
+        },
+        {
+          "idx": 100,
+          "hanzi": "一般耗材",
+          "pinyin": "Yībān hàocái",
+          "thai": "วัสดุสิ้นเปลืองทั่วไป",
+          "note": ""
+        },
+        {
+          "idx": 101,
+          "hanzi": "住民營養品",
+          "pinyin": "Zhùmín yíngyǎng pǐn",
+          "thai": "ผลิตภัณฑ์อาหารเสริมผู้พักอาศัย",
+          "note": ""
+        },
+        {
+          "idx": 102,
+          "hanzi": "清潔用品",
+          "pinyin": "Qīngjié yòngpǐn",
+          "thai": "อุปกรณ์ทำความสะอาด",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "code": "F09-ADMIN",
+      "titleZh": "行政與分攤",
+      "titleEn": "Admin & Allocation",
+      "titleTh": "ค่าธุรการและการปันส่วน",
+      "items": [
+        {
+          "idx": 103,
+          "hanzi": "行政管理支出",
+          "pinyin": "Xíngzhèng guǎnlǐ zhīchū",
+          "thai": "ค่าใช้จ่ายในการบริหาร",
+          "note": ""
+        },
+        {
+          "idx": 104,
+          "hanzi": "目的事業支出",
+          "pinyin": "Mùdì shìyè zhīchū",
+          "thai": "ค่าใช้จ่ายเพื่อกิจการตามวัตถุประสงค์",
+          "note": "ตามวัตถุประสงค์ของมูลนิธิ"
+        },
+        {
+          "idx": 105,
+          "hanzi": "行政作業費",
+          "pinyin": "Xíngzhèng zuòyè fèi",
+          "thai": "ค่าธุรการและการดำเนินงาน",
+          "note": "5500 (มักเป็นค่าปันส่วนข้ามหน่วย)"
+        },
+        {
+          "idx": 106,
+          "hanzi": "兼任行政總務費",
+          "pinyin": "Jiānrèn xíngzhèng zǒngwù fèi",
+          "thai": "ค่าธุรการและงานทั่วไป (ส่วนแบ่ง)",
+          "note": ""
+        },
+        {
+          "idx": 107,
+          "hanzi": "事務器材分攤費",
+          "pinyin": "Shìwù qìcái fēntān fèi",
+          "thai": "ค่าเฉลี่ยเครื่องมืออุปกรณ์สำนักงาน",
+          "note": ""
+        },
+        {
+          "idx": 108,
+          "hanzi": "分攤",
+          "pinyin": "Fēntān",
+          "thai": "การปันส่วน / Allocation",
+          "note": "11.3% เป็นสูตรปันส่วนค่าน้ำ-ไฟ-โทรศัพท์"
+        }
+      ]
+    },
+    {
+      "code": "F10-PROFIT",
+      "titleZh": "損益指標",
+      "titleEn": "P&L Indicators",
+      "titleTh": "ตัวชี้วัดกำไรขาดทุน",
+      "items": [
+        {
+          "idx": 109,
+          "hanzi": "餘絀",
+          "pinyin": "Yú chù",
+          "thai": "กำไรขาดทุน",
+          "note": "คำเฉพาะของ NGO/มูลนิธิ"
+        },
+        {
+          "idx": 110,
+          "hanzi": "本期餘(絀)",
+          "pinyin": "Běnqí yú (chù)",
+          "thai": "กำไร/ขาดทุนงวดนี้",
+          "note": ""
+        },
+        {
+          "idx": 111,
+          "hanzi": "本期餘絀",
+          "pinyin": "Běnqí yú chù",
+          "thai": "กำไร/ขาดทุนงวดนี้",
+          "note": ""
+        },
+        {
+          "idx": 112,
+          "hanzi": "盈餘",
+          "pinyin": "Yíngyú",
+          "thai": "กำไร / Surplus",
+          "note": ""
+        },
+        {
+          "idx": 113,
+          "hanzi": "虧損",
+          "pinyin": "Kuīsǔn",
+          "thai": "ขาดทุน / Loss",
+          "note": ""
+        },
+        {
+          "idx": 114,
+          "hanzi": "支出率",
+          "pinyin": "Zhīchū lǜ",
+          "thai": "อัตราส่วนรายจ่าย",
+          "note": "支出/收入"
+        },
+        {
+          "idx": 115,
+          "hanzi": "餘絀率",
+          "pinyin": "Yú chù lǜ",
+          "thai": "อัตรากำไรขาดทุน",
+          "note": "本期餘絀/收入"
+        },
+        {
+          "idx": 116,
+          "hanzi": "預算",
+          "pinyin": "Yùsuàn",
+          "thai": "งบประมาณ",
+          "note": ""
+        },
+        {
+          "idx": 117,
+          "hanzi": "預估",
+          "pinyin": "Yùgū",
+          "thai": "ประมาณการ",
+          "note": ""
+        },
+        {
+          "idx": 118,
+          "hanzi": "暫估",
+          "pinyin": "Zàn gū",
+          "thai": "ประมาณการชั่วคราว",
+          "note": "ตัวเลขที่ยังไม่ confirm"
+        },
+        {
+          "idx": 119,
+          "hanzi": "精準收入",
+          "pinyin": "Jīngzhǔn shōurù",
+          "thai": "รายรับที่แม่นยำ (final)",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "code": "F11-DEPREC",
+      "titleZh": "折舊資料表欄位",
+      "titleEn": "Depreciation Fields",
+      "titleTh": "คอลัมน์ตารางค่าเสื่อม",
+      "items": [
+        {
+          "idx": 120,
+          "hanzi": "資產編號",
+          "pinyin": "Zīchǎn biānhào",
+          "thai": "รหัสทรัพย์สิน",
+          "note": ""
+        },
+        {
+          "idx": 121,
+          "hanzi": "資產名稱",
+          "pinyin": "Zīchǎn míngchēng",
+          "thai": "ชื่อทรัพย์สิน",
+          "note": ""
+        },
+        {
+          "idx": 122,
+          "hanzi": "資產規格",
+          "pinyin": "Zīchǎn guīgé",
+          "thai": "สเปคทรัพย์สิน",
+          "note": ""
+        },
+        {
+          "idx": 123,
+          "hanzi": "管理區分",
+          "pinyin": "Guǎnlǐ qūfēn",
+          "thai": "หมวดการจัดการ",
+          "note": ""
+        },
+        {
+          "idx": 124,
+          "hanzi": "型態",
+          "pinyin": "Xíngtài",
+          "thai": "ประเภท",
+          "note": ""
+        },
+        {
+          "idx": 125,
+          "hanzi": "主件",
+          "pinyin": "Zhǔ jiàn",
+          "thai": "รายการหลัก",
+          "note": "ตรงข้ามกับรายการย่อย"
+        },
+        {
+          "idx": 126,
+          "hanzi": "主件編號",
+          "pinyin": "Zhǔ jiàn biānhào",
+          "thai": "รหัสรายการหลัก",
+          "note": ""
+        },
+        {
+          "idx": 127,
+          "hanzi": "取得日期",
+          "pinyin": "Qǔdé rìqí",
+          "thai": "วันที่ได้มา",
+          "note": ""
+        },
+        {
+          "idx": 128,
+          "hanzi": "取得成本",
+          "pinyin": "Qǔdé chéngběn",
+          "thai": "ต้นทุนการได้มา",
+          "note": ""
+        },
+        {
+          "idx": 129,
+          "hanzi": "原幣取得成本",
+          "pinyin": "Yuán bì qǔdé chéngběn",
+          "thai": "ต้นทุนการได้มา (สกุลเงินเดิม)",
+          "note": ""
+        },
+        {
+          "idx": 130,
+          "hanzi": "銷帳日期",
+          "pinyin": "Xiāo zhàng rìqí",
+          "thai": "วันที่ตัดบัญชี",
+          "note": ""
+        },
+        {
+          "idx": 131,
+          "hanzi": "開始提列",
+          "pinyin": "Kāishǐ tí liè",
+          "thai": "เริ่มคิดค่าเสื่อม",
+          "note": ""
+        },
+        {
+          "idx": 132,
+          "hanzi": "折舊方法",
+          "pinyin": "Zhéjiù fāngfǎ",
+          "thai": "วิธีคิดค่าเสื่อม",
+          "note": ""
+        },
+        {
+          "idx": 133,
+          "hanzi": "平均法",
+          "pinyin": "Píngjūn fǎ",
+          "thai": "วิธีเส้นตรง / Straight Line",
+          "note": ""
+        },
+        {
+          "idx": 134,
+          "hanzi": "耐用年限",
+          "pinyin": "Nàiyòng niánxiàn",
+          "thai": "อายุการใช้งาน (ปี)",
+          "note": ""
+        },
+        {
+          "idx": 135,
+          "hanzi": "未用年限",
+          "pinyin": "Wèi yòng niánxiàn",
+          "thai": "อายุการใช้งานคงเหลือ",
+          "note": ""
+        },
+        {
+          "idx": 136,
+          "hanzi": "預留殘值",
+          "pinyin": "Yùliú cánzhí",
+          "thai": "มูลค่าซาก",
+          "note": "Salvage Value"
+        },
+        {
+          "idx": 137,
+          "hanzi": "資產價值",
+          "pinyin": "Zīchǎn jiàzhí",
+          "thai": "มูลค่าทรัพย์สิน",
+          "note": ""
+        },
+        {
+          "idx": 138,
+          "hanzi": "本期提列折舊",
+          "pinyin": "Běnqí tí liè zhéjiù",
+          "thai": "ค่าเสื่อมราคางวดนี้",
+          "note": ""
+        },
+        {
+          "idx": 139,
+          "hanzi": "累積折舊",
+          "pinyin": "Lěijī zhéjiù",
+          "thai": "ค่าเสื่อมราคาสะสม",
+          "note": "Accumulated Depreciation"
+        },
+        {
+          "idx": 140,
+          "hanzi": "帳面價值",
+          "pinyin": "Zhàngmiàn jiàzhí",
+          "thai": "มูลค่าตามบัญชี",
+          "note": "Book Value"
+        },
+        {
+          "idx": 141,
+          "hanzi": "折舊分攤方式",
+          "pinyin": "Zhéjiù fēntān fāngshì",
+          "thai": "วิธีเฉลี่ยค่าเสื่อม",
+          "note": ""
+        },
+        {
+          "idx": 142,
+          "hanzi": "依保管部門",
+          "pinyin": "Yī bǎoguǎn bùmén",
+          "thai": "ตามแผนกที่ดูแล",
+          "note": ""
+        },
+        {
+          "idx": 143,
+          "hanzi": "續提殘值",
+          "pinyin": "Xù tí cánzhí",
+          "thai": "มูลค่าซากที่คิดต่อ",
+          "note": ""
+        },
+        {
+          "idx": 144,
+          "hanzi": "續提耐用月數",
+          "pinyin": "Xù tí nàiyòng yuè shù",
+          "thai": "จำนวนเดือนที่คิดต่อ",
+          "note": ""
+        },
+        {
+          "idx": 145,
+          "hanzi": "數量",
+          "pinyin": "Shùliàng",
+          "thai": "จำนวน",
+          "note": ""
+        },
+        {
+          "idx": 146,
+          "hanzi": "單位",
+          "pinyin": "Dānwèi",
+          "thai": "หน่วย",
+          "note": ""
+        },
+        {
+          "idx": 147,
+          "hanzi": "備註",
+          "pinyin": "Bèizhù",
+          "thai": "หมายเหตุ",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "code": "F12-MEASURE",
+      "titleZh": "量詞與時間",
+      "titleEn": "Measure Words & Time",
+      "titleTh": "ลักษณนามและเวลา",
+      "items": [
+        {
+          "idx": 148,
+          "hanzi": "式",
+          "pinyin": "Shì",
+          "thai": "ชุด/ระบบ (set/system)",
+          "note": "一式 = 1 ชุด"
+        },
+        {
+          "idx": 149,
+          "hanzi": "組",
+          "pinyin": "Zǔ",
+          "thai": "ชุด (set)",
+          "note": "一組 = 1 ชุด"
+        },
+        {
+          "idx": 150,
+          "hanzi": "套",
+          "pinyin": "Tào",
+          "thai": "ชุด (suite/kit)",
+          "note": "一套 = 1 ชุด"
+        },
+        {
+          "idx": 151,
+          "hanzi": "台",
+          "pinyin": "Tái",
+          "thai": "เครื่อง/คัน (unit for machines)",
+          "note": "一台冰箱 = ตู้เย็น 1 เครื่อง"
+        },
+        {
+          "idx": 152,
+          "hanzi": "輛",
+          "pinyin": "Liàng",
+          "thai": "คัน (unit for vehicles)",
+          "note": "一輛車 = รถ 1 คัน"
+        },
+        {
+          "idx": 153,
+          "hanzi": "個",
+          "pinyin": "Gè",
+          "thai": "อัน/ชิ้น (general unit)",
+          "note": ""
+        },
+        {
+          "idx": 154,
+          "hanzi": "張",
+          "pinyin": "Zhāng",
+          "thai": "ตัว/แผ่น (flat objects)",
+          "note": "一張椅子 = เก้าอี้ 1 ตัว"
+        },
+        {
+          "idx": 155,
+          "hanzi": "萬",
+          "pinyin": "Wàn",
+          "thai": "หมื่น (10,000)",
+          "note": "1,027萬 = 10,270,000"
+        },
+        {
+          "idx": 156,
+          "hanzi": "元",
+          "pinyin": "Yuán",
+          "thai": "ดอลลาร์ (TWD)",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "code": "F13-ASSET",
+      "titleZh": "設備資產名稱",
+      "titleEn": "Equipment & Assets",
+      "titleTh": "ชื่อทรัพย์สินและอุปกรณ์",
+      "items": [
+        {
+          "idx": 157,
+          "hanzi": "裝修工程",
+          "pinyin": "Zhuāngxiū gōngchéng",
+          "thai": "งานตกแต่ง",
+          "note": ""
+        },
+        {
+          "idx": 158,
+          "hanzi": "資訊系統",
+          "pinyin": "Zīxùn xìtǒng",
+          "thai": "ระบบสารสนเทศ / IT System",
+          "note": ""
+        },
+        {
+          "idx": 159,
+          "hanzi": "硬體設備",
+          "pinyin": "Yìngtǐ shèbèi",
+          "thai": "อุปกรณ์ฮาร์ดแวร์",
+          "note": ""
+        },
+        {
+          "idx": 160,
+          "hanzi": "臉部辨識系統",
+          "pinyin": "Liǎn bù biànshí xìtǒng",
+          "thai": "ระบบจดจำใบหน้า / Face Recognition",
+          "note": ""
+        },
+        {
+          "idx": 161,
+          "hanzi": "投影機",
+          "pinyin": "Tóuyǐng jī",
+          "thai": "เครื่องโปรเจคเตอร์",
+          "note": ""
+        },
+        {
+          "idx": 162,
+          "hanzi": "電視機",
+          "pinyin": "Diànshì jī",
+          "thai": "โทรทัศน์",
+          "note": ""
+        },
+        {
+          "idx": 163,
+          "hanzi": "擴音機",
+          "pinyin": "Kuòyīn jī",
+          "thai": "เครื่องขยายเสียง",
+          "note": ""
+        },
+        {
+          "idx": 164,
+          "hanzi": "液晶螢幕",
+          "pinyin": "Yèjīng yíngmù",
+          "thai": "จอ LCD",
+          "note": ""
+        },
+        {
+          "idx": 165,
+          "hanzi": "壁掛桌機",
+          "pinyin": "Bìguà zhuō jī",
+          "thai": "คอมพิวเตอร์ติดผนัง",
+          "note": ""
+        },
+        {
+          "idx": 166,
+          "hanzi": "空氣品質監測",
+          "pinyin": "Kōngqì pǐnzhí jiāncè",
+          "thai": "ตรวจสอบคุณภาพอากาศ",
+          "note": ""
+        },
+        {
+          "idx": 167,
+          "hanzi": "車輛追蹤管理",
+          "pinyin": "Chēliàng zhuīzōng guǎnlǐ",
+          "thai": "ระบบติดตามและจัดการยานพาหนะ",
+          "note": ""
+        },
+        {
+          "idx": 168,
+          "hanzi": "蒸烤箱",
+          "pinyin": "Zhēng kǎoxiāng",
+          "thai": "เตาอบไอน้ำ",
+          "note": ""
+        },
+        {
+          "idx": 169,
+          "hanzi": "生命徵象量測",
+          "pinyin": "Shēngmìng zhēngxiàng liángcè",
+          "thai": "เครื่องวัดสัญญาณชีพ",
+          "note": "วัดความดัน, ชีพจร, อุณหภูมิ"
+        },
+        {
+          "idx": 170,
+          "hanzi": "換藥車",
+          "pinyin": "Huànyào chē",
+          "thai": "รถเข็นเปลี่ยนยา",
+          "note": ""
+        },
+        {
+          "idx": 171,
+          "hanzi": "座椅式體重機",
+          "pinyin": "Zuòyǐ shì tǐzhòng jī",
+          "thai": "เครื่องชั่งน้ำหนักแบบเก้าอี้",
+          "note": "สำหรับผู้สูงอายุที่ลำบากในการยืน"
+        },
+        {
+          "idx": 172,
+          "hanzi": "上肢復健器材",
+          "pinyin": "Shàngzhī fùjiàn qìcái",
+          "thai": "อุปกรณ์กายภาพบำบัดส่วนบน",
+          "note": ""
+        },
+        {
+          "idx": 173,
+          "hanzi": "餐桌",
+          "pinyin": "Cānzhuō",
+          "thai": "โต๊ะรับประทานอาหาร",
+          "note": ""
+        },
+        {
+          "idx": 174,
+          "hanzi": "長桌",
+          "pinyin": "Cháng zhuō",
+          "thai": "โต๊ะยาว",
+          "note": ""
+        },
+        {
+          "idx": 175,
+          "hanzi": "圓桌",
+          "pinyin": "Yuán zhuō",
+          "thai": "โต๊ะกลม",
+          "note": ""
+        },
+        {
+          "idx": 176,
+          "hanzi": "扶手餐椅",
+          "pinyin": "Fúshǒu cān yǐ",
+          "thai": "เก้าอี้รับประทานอาหารมีที่วางแขน",
+          "note": ""
+        },
+        {
+          "idx": 177,
+          "hanzi": "沙發",
+          "pinyin": "Shāfā",
+          "thai": "โซฟา",
+          "note": ""
+        },
+        {
+          "idx": 178,
+          "hanzi": "飲水機",
+          "pinyin": "Yǐnshuǐ jī",
+          "thai": "เครื่องทำน้ำดื่ม",
+          "note": ""
+        },
+        {
+          "idx": 179,
+          "hanzi": "洗碗機",
+          "pinyin": "Xǐwǎn jī",
+          "thai": "เครื่องล้างจาน",
+          "note": ""
+        },
+        {
+          "idx": 180,
+          "hanzi": "崁入式",
+          "pinyin": "Qiàn rù shì",
+          "thai": "แบบฝัง / Built-in",
+          "note": ""
+        },
+        {
+          "idx": 181,
+          "hanzi": "變頻冰箱",
+          "pinyin": "Biànpín bīngxiāng",
+          "thai": "ตู้เย็นระบบอินเวอร์เตอร์",
+          "note": ""
+        },
+        {
+          "idx": 182,
+          "hanzi": "空調設備",
+          "pinyin": "Kòngtiáo shèbèi",
+          "thai": "เครื่องปรับอากาศ",
+          "note": ""
+        },
+        {
+          "idx": 183,
+          "hanzi": "分離式冷氣機",
+          "pinyin": "Fēnlí shì lěngqì jī",
+          "thai": "แอร์รุ่นแยกส่วน",
+          "note": ""
+        },
+        {
+          "idx": 184,
+          "hanzi": "休閒藤椅",
+          "pinyin": "Xiūxián téng yǐ",
+          "thai": "เก้าอี้หวายพักผ่อน",
+          "note": ""
+        },
+        {
+          "idx": 185,
+          "hanzi": "休閒躺椅",
+          "pinyin": "Xiūxián tǎng yǐ",
+          "thai": "เก้าอี้เอนพักผ่อน",
+          "note": ""
+        },
+        {
+          "idx": 186,
+          "hanzi": "印柚集成桌組",
+          "pinyin": "Yìn yòu jíchéng zhuō zǔ",
+          "thai": "ชุดโต๊ะรวมไม้สัก",
+          "note": "Burmese Teak"
+        },
+        {
+          "idx": 187,
+          "hanzi": "不斷電系統",
+          "pinyin": "Bùduàn diàn xìtǒng",
+          "thai": "ระบบ UPS",
+          "note": "Uninterruptible Power Supply"
+        },
+        {
+          "idx": 188,
+          "hanzi": "灌溉系統",
+          "pinyin": "Guàngài xìtǒng",
+          "thai": "ระบบรดน้ำ",
+          "note": ""
+        },
+        {
+          "idx": 189,
+          "hanzi": "影印機",
+          "pinyin": "Yǐngyìn jī",
+          "thai": "เครื่องถ่ายเอกสาร",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "code": "F14-GLOSSARY",
+      "titleZh": "補助與業務常用詞",
+      "titleEn": "Subsidies & Common Terms",
+      "titleTh": "ศัพท์ทั่วไปและเงินอุดหนุน",
+      "items": [
+        {
+          "idx": 190,
+          "hanzi": "長輩",
+          "pinyin": "Zhǎngbèi",
+          "thai": "ผู้สูงอายุ (เรียกอย่างให้เกียรติ)",
+          "note": ""
+        },
+        {
+          "idx": 191,
+          "hanzi": "住民",
+          "pinyin": "Zhùmín",
+          "thai": "ผู้พักอาศัย / Resident",
+          "note": ""
+        },
+        {
+          "idx": 192,
+          "hanzi": "入住",
+          "pinyin": "Rùzhù",
+          "thai": "ย้ายเข้า / Check-in",
+          "note": ""
+        },
+        {
+          "idx": 193,
+          "hanzi": "床位",
+          "pinyin": "Chuáng wèi",
+          "thai": "เตียง / จำนวนเตียง",
+          "note": ""
+        },
+        {
+          "idx": 194,
+          "hanzi": "床頭卡",
+          "pinyin": "Chuáng tóu kǎ",
+          "thai": "ป้ายหัวเตียง",
+          "note": "แสดงข้อมูลผู้พักอาศัย"
+        },
+        {
+          "idx": 195,
+          "hanzi": "床墊",
+          "pinyin": "Chuáng diàn",
+          "thai": "ที่นอน / Mattress",
+          "note": ""
+        },
+        {
+          "idx": 196,
+          "hanzi": "照服員",
+          "pinyin": "Zhào fú yuán",
+          "thai": "ผู้ดูแล / Caregiver",
+          "note": ""
+        },
+        {
+          "idx": 197,
+          "hanzi": "進階培訓",
+          "pinyin": "Jìnjiē péixùn",
+          "thai": "การฝึกอบรมขั้นสูง",
+          "note": ""
+        },
+        {
+          "idx": 198,
+          "hanzi": "獎勵金",
+          "pinyin": "Jiǎnglì jīn",
+          "thai": "เงินรางวัล / Incentive",
+          "note": ""
+        },
+        {
+          "idx": 199,
+          "hanzi": "服務天數",
+          "pinyin": "Fúwù tiānshù",
+          "thai": "จำนวนวันให้บริการ",
+          "note": ""
+        },
+        {
+          "idx": 200,
+          "hanzi": "服務人次",
+          "pinyin": "Fúwù réncì",
+          "thai": "จำนวนครั้งที่ให้บริการ (man-times)",
+          "note": "1 คน 1 วัน = 1 ครั้ง"
+        },
+        {
+          "idx": 201,
+          "hanzi": "預計",
+          "pinyin": "Yùjì",
+          "thai": "คาดการณ์ / Expected",
+          "note": ""
+        },
+        {
+          "idx": 202,
+          "hanzi": "實際",
+          "pinyin": "Shíjì",
+          "thai": "จริง / Actual",
+          "note": ""
+        },
+        {
+          "idx": 203,
+          "hanzi": "收費",
+          "pinyin": "Shōufèi",
+          "thai": "ค่าธรรมเนียม",
+          "note": ""
+        },
+        {
+          "idx": 204,
+          "hanzi": "調漲",
+          "pinyin": "Tiáo zhǎng",
+          "thai": "ปรับขึ้น (ราคา)",
+          "note": ""
+        },
+        {
+          "idx": 205,
+          "hanzi": "春酒",
+          "pinyin": "Chūnjiǔ",
+          "thai": "งานเลี้ยงตรุษจีน",
+          "note": "งานเลี้ยงต้นปีของบริษัท"
+        },
+        {
+          "idx": 206,
+          "hanzi": "頂樓",
+          "pinyin": "Dǐnglóu",
+          "thai": "ดาดฟ้า",
+          "note": ""
+        },
+        {
+          "idx": 207,
+          "hanzi": "現金支出",
+          "pinyin": "Xiànjīn zhīchū",
+          "thai": "รายจ่ายที่เป็นเงินสด",
+          "note": "ตรงข้ามกับ 折舊 ที่เป็น non-cash"
+        }
+      ]
+    }
+  ]
+}

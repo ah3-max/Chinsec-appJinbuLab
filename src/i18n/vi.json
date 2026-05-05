@@ -1,19 +1,20 @@
 {
   "_todo": "TODO: cần người bản ngữ tiếng Việt rà soát trước khi đưa vào sử dụng (bản dịch khởi đầu do Claude)",
   "app": {
-    "name": "ChineseLearn",
+    "name": "JinBuLap",
     "tagline": "Nền tảng học tiếng Trung cho nhân viên Viện dưỡng lão Ai-Ai"
   },
   "nav": {
     "home": "Trang chủ",
     "learn": "Học",
     "practice": "Luyện tập",
+    "mywork": "Công việc",
     "homework": "Bài tập",
     "profile": "Cá nhân",
     "logout": "Đăng xuất"
   },
   "home": {
-    "welcome": "Chào mừng đến với ChineseLearn",
+    "welcome": "Chào mừng đến với JinBuLap",
     "subtitle": "Từ Bopomofo đến chứng chỉ nội bộ trôi chảy",
     "startLearning": "Bắt đầu học",
     "myCourses": "Khóa học của tôi",

@@ -1,0 +1,102 @@
+{
+  "財團法人": {
+    "sentence": "財團法人愛愛院是一家非營利機構。",
+    "sentencePinyin": "Cáituán fǎrén Àiài yuàn shì yījiā fēi yínglì jīgòu.",
+    "sentenceTh": "มูลนิธิอ้ายอ้ายเป็นองค์กรที่ไม่แสวงหาผลกำไร"
+  },
+  "收入": {
+    "sentence": "今年的總收入比去年增加了十萬元。",
+    "sentencePinyin": "Jīnnián de zǒng shōurù bǐ qùnián zēngjiāle shí wàn yuán.",
+    "sentenceTh": "รายรับรวมปีนี้เพิ่มขึ้นหนึ่งแสนหยวนจากปีที่แล้ว"
+  },
+  "支出": {
+    "sentence": "這個月的支出超過了預算。",
+    "sentencePinyin": "Zhège yuè de zhīchū chāoguòle yùsuàn.",
+    "sentenceTh": "รายจ่ายเดือนนี้เกินงบประมาณที่ตั้งไว้"
+  },
+  "薪資": {
+    "sentence": "每個月的薪資在月底發放。",
+    "sentencePinyin": "Měi gè yuè de xīnzī zài yuèdǐ fāfàng.",
+    "sentenceTh": "เงินเดือนจะจ่ายให้ในช่วงปลายเดือนทุกเดือน"
+  },
+  "補助": {
+    "sentence": "政府提供的補助幫助機構維持運作。",
+    "sentencePinyin": "Zhèngfǔ tígōng de bǔzhù bāngzhù jīgòu wéichí yùnzuò.",
+    "sentenceTh": "เงินอุดหนุนจากรัฐบาลช่วยให้สถาบันดำเนินการต่อไปได้"
+  },
+  "預算": {
+    "sentence": "請按照預算計畫使用費用。",
+    "sentencePinyin": "Qǐng ànzhào yùsuàn jìhuà shǐyòng fèiyòng.",
+    "sentenceTh": "กรุณาใช้จ่ายตามแผนงบประมาณที่วางไว้"
+  },
+  "資產": {
+    "sentence": "機構的固定資產包括建築物和設備。",
+    "sentencePinyin": "Jīgòu de gùdìng zīchǎn bāokuò jiànzhùwù hé shèbèi.",
+    "sentenceTh": "ทรัพย์สินถาวรของสถาบันรวมถึงอาคารและอุปกรณ์"
+  },
+  "費用": {
+    "sentence": "這個月的行政費用需要報帳。",
+    "sentencePinyin": "Zhège yuè de xíngzhèng fèiyòng xūyào bàozhàng.",
+    "sentenceTh": "ค่าใช้จ่ายด้านบริหารเดือนนี้ต้องนำมาเบิกคืน"
+  },
+  "報表": {
+    "sentence": "每季需要提交財務報表給主管機關。",
+    "sentencePinyin": "Měi jì xūyào tíjiāo cáiwù bàobiǎo gěi zhǔguǎn jīguān.",
+    "sentenceTh": "ต้องส่งงบการเงินให้หน่วยงานกำกับดูแลทุกไตรมาส"
+  },
+  "合計": {
+    "sentence": "所有費用的合計金額請填在表格底部。",
+    "sentencePinyin": "Suǒyǒu fèiyòng de héjì jīn'é qǐng tián zài biǎogé dǐbù.",
+    "sentenceTh": "กรุณากรอกยอดรวมค่าใช้จ่ายทั้งหมดที่ส่วนล่างของแบบฟอร์ม"
+  },
+  "保險費": {
+    "sentence": "員工的保險費由機構負擔一半。",
+    "sentencePinyin": "Yuángōng de bǎoxiǎn fèi yóu jīgòu fùdān yībàn.",
+    "sentenceTh": "ค่าประกันของพนักงานสถาบันรับผิดชอบครึ่งหนึ่ง"
+  },
+  "折舊": {
+    "sentence": "電腦設備的折舊年限為五年。",
+    "sentencePinyin": "Diànnǎo shèbèi de zhéjiù niánxiàn wéi wǔ nián.",
+    "sentenceTh": "อายุการคิดค่าเสื่อมราคาของอุปกรณ์คอมพิวเตอร์คือ 5 ปี"
+  },
+  "損益": {
+    "sentence": "本年度的損益結算將在年底公布。",
+    "sentencePinyin": "Běn niándù de sǔnyì jiésuàn jiāng zài niándǐ gōngbù.",
+    "sentenceTh": "ผลกำไรขาดทุนประจำปีจะประกาศเมื่อสิ้นปี"
+  },
+  "捐款": {
+    "sentence": "感謝社會各界的捐款支持本院運作。",
+    "sentencePinyin": "Gǎnxiè shèhuì gèjiè de juānkuǎn zhīchí běn yuàn yùnzuò.",
+    "sentenceTh": "ขอบคุณเงินบริจาคจากทุกภาคส่วนในสังคมที่สนับสนุนการดำเนินงานของสถาบัน"
+  },
+  "服務費": {
+    "sentence": "長照服務費根據照護等級計算。",
+    "sentencePinyin": "Cháng zhào fúwù fèi gēnjù zhàohù děngjí jìsuàn.",
+    "sentenceTh": "ค่าบริการการดูแลระยะยาวคำนวณตามระดับการดูแล"
+  },
+  "水電費": {
+    "sentence": "夏天的水電費比冬天高很多。",
+    "sentencePinyin": "Xiàtiān de shuǐ diàn fèi bǐ dōngtiān gāo hěnduō.",
+    "sentenceTh": "ค่าน้ำค่าไฟในฤดูร้อนสูงกว่าในฤดูหนาวมาก"
+  },
+  "餐費": {
+    "sentence": "院民每日的餐費包含在月費中。",
+    "sentencePinyin": "Yuàn mín měirì de cān fèi bāohán zài yuèfèi zhōng.",
+    "sentenceTh": "ค่าอาหารรายวันของผู้พักอาศัยรวมอยู่ในค่าเดือนแล้ว"
+  },
+  "維修費": {
+    "sentence": "電梯的維修費用需要申請補助。",
+    "sentencePinyin": "Diàntī de wéixiū fèiyòng xūyào shēnqǐng bǔzhù.",
+    "sentenceTh": "ค่าซ่อมบำรุงลิฟต์ต้องยื่นขอเงินอุดหนุน"
+  },
+  "員工": {
+    "sentence": "本院共有五十位員工提供照護服務。",
+    "sentencePinyin": "Běn yuàn gòng yǒu wǔshí wèi yuángōng tígōng zhàohù fúwù.",
+    "sentenceTh": "สถาบันของเรามีพนักงาน 50 คนที่ให้บริการดูแล"
+  },
+  "會計": {
+    "sentence": "會計部門負責管理所有財務帳目。",
+    "sentencePinyin": "Kuàijì bùmén fùzé guǎnlǐ suǒyǒu cáiwù zhàngmù.",
+    "sentenceTh": "ฝ่ายบัญชีรับผิดชอบดูแลบัญชีการเงินทั้งหมด"
+  }
+}

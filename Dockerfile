@@ -3,7 +3,7 @@
 # Multi-stage build for Next.js 15 + Prisma
 # ============================================
 
-# Stage 1: 依賴安裝
+# Stage 1: 依賴安裝 + Prisma 生成
 FROM node:20-alpine AS deps
 RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
@@ -11,24 +11,14 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 COPY prisma ./prisma
 RUN npm ci --legacy-peer-deps && npm cache clean --force
+RUN ./node_modules/.bin/prisma generate
 
-# Stage 2: Prisma 生成
-FROM node:20-alpine AS prisma
-RUN apk add --no-cache libc6-compat openssl
-WORKDIR /app
-
-COPY --from=deps /app/node_modules ./node_modules
-COPY package.json package-lock.json* ./
-COPY prisma ./prisma
-RUN npx prisma generate
-
-# Stage 3: 建置應用
+# Stage 2: 建置應用
 FROM node:20-alpine AS builder
 RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=prisma /app/node_modules/.prisma ./node_modules/.prisma
 COPY . .
 
 # Build-time flags（NEXT_PUBLIC_* 必須在 build 階段就決定）
@@ -39,7 +29,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 RUN npm run build
 
-# Stage 4: 生產執行階段
+# Stage 3: 生產執行階段
 FROM node:20-alpine AS runner
 RUN apk add --no-cache libc6-compat openssl curl tini
 WORKDIR /app

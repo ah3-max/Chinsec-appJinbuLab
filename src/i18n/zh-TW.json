@@ -1,12 +1,13 @@
 {
   "app": {
-    "name": "ChineseLearn",
+    "name": "JinBuLap",
     "tagline": "愛愛院員工繁體中文學習平台"
   },
   "nav": {
     "home": "首頁",
     "learn": "學習",
     "practice": "練習",
+    "mywork": "工作詞彙",
     "homework": "作業",
     "profile": "個人",
     "logout": "登出"

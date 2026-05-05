@@ -1,27 +1,76 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const LOCALES = [
-  { code: "zh-TW", flag: "🇹🇼", short: "中" },
-  { code: "th", flag: "🇹🇭", short: "ไทย" },
-  { code: "vi", flag: "🇻🇳", short: "Tiếng Việt" },
-  { code: "id", flag: "🇮🇩", short: "Bahasa" },
+  { code: "en",    flag: "🇬🇧", short: "EN",       full: "English" },
+  { code: "th",    flag: "🇹🇭", short: "ไทย",      full: "ภาษาไทย" },
+  { code: "vi",    flag: "🇻🇳", short: "VI",       full: "Tiếng Việt" },
+  { code: "id",    flag: "🇮🇩", short: "ID",       full: "Bahasa Indonesia" },
+  { code: "zh-TW", flag: "🇹🇼", short: "中文",     full: "繁體中文" },
 ] as const;
 
-export function LocaleSwitcher({ current }: { current: string }) {
+export type LocaleVariant = "compact" | "prominent";
+
+export function LocaleSwitcher({
+  current,
+  variant = "compact",
+}: {
+  current: string;
+  variant?: LocaleVariant;
+}) {
   const pathname = usePathname();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   function switchTo(locale: string) {
     if (locale === current) return;
-    // Replace the leading /<locale>/ in the path. We deliberately don't preserve
-    // the query string here — the auth pages (login / change-password) shouldn't
-    // forward callbackUrl across locale switches, and avoiding useSearchParams()
-    // keeps this component buildable without a Suspense wrapper.
-    const next = pathname.replace(/^\/[^/]+/, `/${locale}`);
-    router.push(next);
+    // Replace the leading /<locale>/ in the path. Preserve the query string so
+    // auto-login params (?username=&password=&auto=1&callbackUrl=…) survive
+    // a language change on the login screen.
+    const nextPath = pathname.replace(/^\/[^/]+/, `/${locale}`);
+    const qs = searchParams?.toString();
+    router.push(qs ? `${nextPath}?${qs}` : nextPath);
     router.refresh();
+  }
+
+  if (variant === "prominent") {
+    return (
+      <div
+        className="grid w-full gap-2"
+        style={{ gridTemplateColumns: "repeat(5, minmax(0, 1fr))" }}
+      >
+        {LOCALES.map((l) => {
+          const active = l.code === current;
+          return (
+            <button
+              key={l.code}
+              type="button"
+              onClick={() => switchTo(l.code)}
+              aria-current={active ? "page" : undefined}
+              aria-label={l.full}
+              title={l.full}
+              className="flex flex-col items-center justify-center gap-0.5 rounded-xl border-2 py-2 transition-all active:scale-[0.96]"
+              style={{
+                borderColor: active ? "var(--aiai-green-400)" : "var(--aiai-gray-200)",
+                background: active ? "var(--aiai-green-50)" : "#fff",
+                boxShadow: active ? "0 0 0 3px rgba(99, 153, 34, 0.12)" : "none",
+              }}
+            >
+              <span className="text-xl leading-none" aria-hidden>
+                {l.flag}
+              </span>
+              <span
+                className="text-[10px] font-semibold tracking-wide"
+                style={{ color: active ? "var(--aiai-green-800)" : "var(--aiai-gray-500)" }}
+              >
+                {l.short}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    );
   }
 
   return (

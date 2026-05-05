@@ -26,6 +26,7 @@ import { seedScenarioL2S03 } from "./scenarios/L2-S03";
 import { seedScenarioL2S04 } from "./scenarios/L2-S04";
 import { seedScenarioL2S05 } from "./scenarios/L2-S05";
 import { seedScenarioL2S06 } from "./scenarios/L2-S06";
+import { seedAayFinance } from "./courses/aay-finance";
 
 const prisma = new PrismaClient();
 
@@ -255,6 +256,15 @@ async function main() {
   const a2s06 = await seedScenarioL2S06(prisma);
   console.log(
     `✓ L2-S06 ${a2s06.vocabCount} 詞彙 + ${a2s06.exerciseCount} 練習題建立完成`,
+  );
+
+  // ----------------------------------------
+  // 必修課:愛愛院財務報表詞彙對照表 (207 詞 × 14 類別)
+  // ----------------------------------------
+  console.log("📒 建立 AAY-FINANCE 必修課程 (207 詞)...");
+  const aayFin = await seedAayFinance(prisma);
+  console.log(
+    `✓ ${aayFin.courseCode}: ${aayFin.stages} stages · ${aayFin.vocab} 詞彙 · ${aayFin.exercises} 練習題`,
   );
 
   // ----------------------------------------

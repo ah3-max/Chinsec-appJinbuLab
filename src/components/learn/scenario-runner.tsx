@@ -25,6 +25,20 @@ import { VocabularyCard } from "./vocabulary-card";
 import { SentenceCard } from "./sentence-card";
 import { LevelUpModal } from "@/components/learner/level-up-modal";
 
+// Pick the right localization for the current uiLanguage with a graceful
+// fallback chain: uiLang → th → en → fallback. Used everywhere we render a
+// translationI18n / questionI18n / targetTranslationI18n payload, so vi/id
+// users no longer get hardcoded Thai when their own translation exists.
+function pickTranslation(
+  i18n: { th?: string; vi?: string; id?: string; en?: string; "zh-TW"?: string } | undefined,
+  uiLang: string,
+  fallback: string,
+): string {
+  if (!i18n) return fallback;
+  const key = uiLang as keyof typeof i18n;
+  return i18n[key] ?? i18n.th ?? i18n.en ?? i18n["zh-TW"] ?? fallback;
+}
+
 export interface ScenarioVocabPayload {
   id: string;
   hanzi: string;
@@ -200,6 +214,7 @@ export function ScenarioRunner({
         <PracticeStage
           scenario={scenario}
           tLevels={tLevels}
+          uiLanguage={uiLanguage}
           onComplete={() => markDone("practice")}
           onBackToLearn={() => router.push(`/${params.locale}/learn`)}
         />
@@ -412,9 +427,7 @@ function DialogueStage({
               hanzi={line.hanzi}
               pinyin={line.pinyin}
               thaiTranslation={
-                line.translationI18n.th ??
-                line.translationI18n.en ??
-                line.hanzi
+                pickTranslation(line.translationI18n, uiLanguage, line.hanzi)
               }
               audioUrl={line.audioUrl}
               speaker={speakerLabel}
@@ -446,11 +459,13 @@ function playLine(url: string): Promise<void> {
 function PracticeStage({
   scenario,
   tLevels,
+  uiLanguage,
   onComplete,
   onBackToLearn,
 }: {
   scenario: ScenarioPayload;
   tLevels: ReturnType<typeof useTranslations>;
+  uiLanguage: string;
   onComplete: () => void;
   onBackToLearn: () => void;
 }) {
@@ -638,6 +653,7 @@ function PracticeStage({
         exercise={ex}
         picked={picked}
         arrangeOrder={arrangeOrder}
+        uiLanguage={uiLanguage}
         onPick={pickAndSubmit}
         onArrangeChange={setArrangeOrder}
       />
@@ -690,12 +706,14 @@ function ExerciseQuestionCard({
   exercise,
   picked,
   arrangeOrder,
+  uiLanguage,
   onPick,
   onArrangeChange,
 }: {
   exercise: ScenarioExercisePayload;
   picked: unknown | null;
   arrangeOrder: Array<string | number>;
+  uiLanguage: string;
   onPick: (v: unknown) => void;
   onArrangeChange: (order: Array<string | number>) => void;
 }) {
@@ -731,11 +749,23 @@ function ExerciseQuestionCard({
   const promptThai = (exercise.prompt as { thai?: string }).thai;
   const sentenceParts = (exercise.prompt as { sentenceParts?: string[] }).sentenceParts;
   const sentencePinyin = (exercise.prompt as { sentencePinyin?: string }).sentencePinyin;
-  const promptTranslation = (exercise.prompt as { translationI18n?: { th?: string } }).translationI18n?.th;
-  const dialogueQuestion = (exercise.prompt as { questionI18n?: { th?: string } }).questionI18n?.th;
+  const promptTranslation = pickTranslation(
+    (exercise.prompt as { translationI18n?: Parameters<typeof pickTranslation>[0] }).translationI18n,
+    uiLanguage,
+    "",
+  ) || undefined;
+  const dialogueQuestion = pickTranslation(
+    (exercise.prompt as { questionI18n?: Parameters<typeof pickTranslation>[0] }).questionI18n,
+    uiLanguage,
+    "",
+  ) || undefined;
   const arrangeWords = (exercise.prompt as { words?: string[] }).words;
-  const arrangeTarget = (exercise.prompt as { targetTranslationI18n?: { th?: string } })
-    .targetTranslationI18n?.th;
+  const arrangeTarget = pickTranslation(
+    (exercise.prompt as { targetTranslationI18n?: Parameters<typeof pickTranslation>[0] })
+      .targetTranslationI18n,
+    uiLanguage,
+    "",
+  ) || undefined;
 
   if (exercise.type === "GRAMMAR_ARRANGE" && arrangeWords) {
     return (

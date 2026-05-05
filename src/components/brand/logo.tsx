@@ -29,7 +29,7 @@ export function Logo({
   const square = (
     <span
       role="img"
-      aria-label="愛愛院 中文學習 logo"
+      aria-label="JinBuLap logo"
       style={{
         width: size,
         height: size,
@@ -67,7 +67,7 @@ export function Logo({
             letterSpacing: "0.02em",
           }}
         >
-          愛愛院 中文學習
+          JinBuLap
         </span>
         <span
           style={{
@@ -78,7 +78,7 @@ export function Logo({
             letterSpacing: "0.04em",
           }}
         >
-          Aiai Care · Mandarin Learning
+          JinBuLap · Mandarin Learning
         </span>
       </span>
     </span>

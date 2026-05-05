@@ -86,7 +86,7 @@ export default async function ScenarioPage({
   });
   if (!me) redirect(`/${locale}/login`);
 
-  if (!canAccess(me.currentLevel, scenario.level)) {
+  if (!canAccess(me.currentLevel, scenario.level, session.user.role)) {
     redirect(`/${locale}/learn?error=locked`);
   }
 
@@ -109,13 +109,21 @@ export default async function ScenarioPage({
   const vocabularies: ScenarioVocabPayload[] = scenario.vocabularies.map((sv) => {
     const v = sv.vocabulary;
     const tr = v.translations as Record<string, string> | null;
+    // Strip out the internal _imagePromptHint and any other underscore keys —
+    // they're never user-facing translations even when locale lookups run.
+    const isReal = (k: string) => !k.startsWith("_");
+    const pickReal = (k: string) => (tr && isReal(k) ? tr[k] : undefined);
+    // Locale fallback chain: requested locale → English → Thai → Chinese.
+    // English now holds the real meaning (image prompts moved to _imagePromptHint).
+    const localized =
+      pickReal(locale) ?? pickReal("en") ?? pickReal("th") ?? v.hanzi;
     return {
       id: v.id,
       hanzi: v.hanzi,
       zhuyin: v.zhuyin,
       pinyin: v.pinyin,
-      thaiMeaning: tr?.[locale] ?? tr?.th ?? v.hanzi,
-      englishMeaning: tr?.en,
+      thaiMeaning: localized,
+      englishMeaning: pickReal("en"),
       audioUrl: v.audioUrl ?? undefined,
       audioSlowUrl: v.audioSlowUrl ?? undefined,
       isEldercareVocab: v.isEldercareVocab,

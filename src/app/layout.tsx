@@ -11,8 +11,8 @@ const notoSansTC = Noto_Sans_TC({
 });
 
 export const metadata: Metadata = {
-  title: "愛愛院 中文學習",
-  description: "Aiai Care · Mandarin Learning",
+  title: "JinBuLap",
+  description: "JinBuLap · Mandarin Learning",
   manifest: "/manifest.json",
   icons: {
     icon: [

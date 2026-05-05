@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { audit } from "@/lib/audit";
 import { clientIp } from "@/lib/cookie-name";
+import { isLevelBypassRole } from "@/lib/level";
 
 export const runtime = "nodejs";
 
@@ -42,7 +43,10 @@ export async function POST(req: NextRequest) {
   if (!me) {
     return NextResponse.json({ error: "user not found" }, { status: 404 });
   }
-  if (me.currentLevel !== course.level) {
+  if (
+    me.currentLevel !== course.level &&
+    !isLevelBypassRole(session.user.role)
+  ) {
     return NextResponse.json(
       { error: "level mismatch", expected: course.level, actual: me.currentLevel },
       { status: 403 },

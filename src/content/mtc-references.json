@@ -1,0 +1,320 @@
+{
+  "__doc__": "Best-effort hanzi → MTC textbook reference (metadata only, no copyrighted content).  Entries here are aligned to the earliest mention across our scenario content.  Add entries manually as needed; running scripts/sync-mtc-references.ts updates Vocabulary.mtcReference in the DB.",
+  "references": {
+    "我": {
+      "book": "B1",
+      "lesson": "L01",
+      "firstSeenIn": "L1-S01-self-introduction"
+    },
+    "你": {
+      "book": "B1",
+      "lesson": "L01",
+      "firstSeenIn": "L1-S01-self-introduction"
+    },
+    "您": {
+      "book": "B1",
+      "lesson": "L01",
+      "firstSeenIn": "L1-S01-self-introduction"
+    },
+    "是": {
+      "book": "B1",
+      "lesson": "L01",
+      "firstSeenIn": "L1-S01-self-introduction"
+    },
+    "好": {
+      "book": "B1",
+      "lesson": "L01",
+      "firstSeenIn": "L1-S01-self-introduction"
+    },
+    "名字": {
+      "book": "B1",
+      "lesson": "L02",
+      "firstSeenIn": "L1-S01-self-introduction"
+    },
+    "叫": {
+      "book": "B1",
+      "lesson": "L02",
+      "firstSeenIn": "L1-S01-self-introduction"
+    },
+    "來自": {
+      "book": "B1",
+      "lesson": "L03",
+      "firstSeenIn": "L1-S01-self-introduction"
+    },
+    "泰國": {
+      "book": "B1",
+      "lesson": "L02",
+      "firstSeenIn": "L1-S01-self-introduction"
+    },
+    "早安": {
+      "book": "B1",
+      "lesson": "L01",
+      "firstSeenIn": "L1-S02-morning-greetings"
+    },
+    "午安": {
+      "book": "B1",
+      "lesson": "L01",
+      "firstSeenIn": "L1-S02-morning-greetings"
+    },
+    "晚安": {
+      "book": "B1",
+      "lesson": "L01",
+      "firstSeenIn": "L1-S02-morning-greetings"
+    },
+    "早上": {
+      "book": "B1",
+      "lesson": "L02",
+      "firstSeenIn": "L1-S02-morning-greetings"
+    },
+    "今天": {
+      "book": "B1",
+      "lesson": "L02",
+      "firstSeenIn": "L1-S02-morning-greetings"
+    },
+    "怎麼樣": {
+      "book": "B1",
+      "lesson": "L05",
+      "firstSeenIn": "L1-S02-morning-greetings"
+    },
+    "請坐": {
+      "book": "B1",
+      "lesson": "L02",
+      "firstSeenIn": "L1-S02-morning-greetings"
+    },
+    "學姊": {
+      "book": "B1",
+      "lesson": "L03",
+      "firstSeenIn": "L1-S03-meeting-colleagues"
+    },
+    "學長": {
+      "book": "B1",
+      "lesson": "L03",
+      "firstSeenIn": "L1-S03-meeting-colleagues"
+    },
+    "主任": {
+      "book": "B1",
+      "lesson": "L04",
+      "firstSeenIn": "L1-S03-meeting-colleagues"
+    },
+    "同事": {
+      "book": "B1",
+      "lesson": "L04",
+      "firstSeenIn": "L1-S03-meeting-colleagues"
+    },
+    "認識": {
+      "book": "B1",
+      "lesson": "L03",
+      "firstSeenIn": "L1-S03-meeting-colleagues"
+    },
+    "高興": {
+      "book": "B1",
+      "lesson": "L03",
+      "firstSeenIn": "L1-S03-meeting-colleagues"
+    },
+    "麻煩": {
+      "book": "B1",
+      "lesson": "L06",
+      "firstSeenIn": "L1-S03-meeting-colleagues"
+    },
+    "請多指教": {
+      "book": "B1",
+      "lesson": "L06",
+      "firstSeenIn": "L1-S03-meeting-colleagues"
+    },
+    "謝謝": {
+      "book": "B1",
+      "lesson": "L01",
+      "firstSeenIn": "L1-S03-meeting-colleagues"
+    },
+    "慢慢": {
+      "book": "B2",
+      "lesson": "L01",
+      "firstSeenIn": "L2-S01-feeding-assistance"
+    },
+    "嚼": {
+      "book": "B2",
+      "lesson": "L02",
+      "firstSeenIn": "L2-S01-feeding-assistance"
+    },
+    "吞": {
+      "book": "B2",
+      "lesson": "L02",
+      "firstSeenIn": "L2-S01-feeding-assistance"
+    },
+    "別": {
+      "book": "B2",
+      "lesson": "L03",
+      "firstSeenIn": "L2-S01-feeding-assistance"
+    },
+    "急": {
+      "book": "B2",
+      "lesson": "L03",
+      "firstSeenIn": "L2-S01-feeding-assistance"
+    },
+    "試試看": {
+      "book": "B2",
+      "lesson": "L05",
+      "firstSeenIn": "L2-S01-feeding-assistance"
+    },
+    "喜歡": {
+      "book": "B2",
+      "lesson": "L01",
+      "firstSeenIn": "L2-S01-feeding-assistance"
+    },
+    "食物": {
+      "book": "B2",
+      "lesson": "L02",
+      "firstSeenIn": "L2-S01-feeding-assistance"
+    },
+    "早餐": {
+      "book": "B2",
+      "lesson": "L06",
+      "firstSeenIn": "L2-S02-medication-time"
+    },
+    "午餐": {
+      "book": "B2",
+      "lesson": "L06",
+      "firstSeenIn": "L2-S02-medication-time"
+    },
+    "晚餐": {
+      "book": "B2",
+      "lesson": "L06",
+      "firstSeenIn": "L2-S02-medication-time"
+    },
+    "飯前": {
+      "book": "B2",
+      "lesson": "L06",
+      "firstSeenIn": "L2-S02-medication-time"
+    },
+    "飯後": {
+      "book": "B2",
+      "lesson": "L06",
+      "firstSeenIn": "L2-S02-medication-time"
+    },
+    "兩顆": {
+      "book": "B2",
+      "lesson": "L07",
+      "firstSeenIn": "L2-S02-medication-time"
+    },
+    "小心": {
+      "book": "B2",
+      "lesson": "L08",
+      "firstSeenIn": "L2-S02-medication-time"
+    },
+    "別忘了": {
+      "book": "B2",
+      "lesson": "L08",
+      "firstSeenIn": "L2-S02-medication-time"
+    },
+    "等一下": {
+      "book": "B2",
+      "lesson": "L09",
+      "firstSeenIn": "L2-S03-diaper-care"
+    },
+    "馬上": {
+      "book": "B2",
+      "lesson": "L09",
+      "firstSeenIn": "L2-S03-diaper-care"
+    },
+    "不好意思": {
+      "book": "B2",
+      "lesson": "L10",
+      "firstSeenIn": "L2-S03-diaper-care"
+    },
+    "沒關係": {
+      "book": "B2",
+      "lesson": "L10",
+      "firstSeenIn": "L2-S03-diaper-care"
+    },
+    "幫忙": {
+      "book": "B2",
+      "lesson": "L10",
+      "firstSeenIn": "L2-S03-diaper-care"
+    },
+    "乾淨": {
+      "book": "B2",
+      "lesson": "L11",
+      "firstSeenIn": "L2-S03-diaper-care"
+    },
+    "舒服": {
+      "book": "B2",
+      "lesson": "L12",
+      "firstSeenIn": "L2-S03-diaper-care"
+    },
+    "左邊": {
+      "book": "B2",
+      "lesson": "L09",
+      "firstSeenIn": "L2-S04-turning-positioning"
+    },
+    "右邊": {
+      "book": "B2",
+      "lesson": "L09",
+      "firstSeenIn": "L2-S04-turning-positioning"
+    },
+    "慢一點": {
+      "book": "B2",
+      "lesson": "L01",
+      "firstSeenIn": "L2-S04-turning-positioning"
+    },
+    "床": {
+      "book": "B2",
+      "lesson": "L08",
+      "firstSeenIn": "L2-S04-turning-positioning"
+    },
+    "不要動": {
+      "book": "B2",
+      "lesson": "L03",
+      "firstSeenIn": "L2-S04-turning-positioning"
+    },
+    "量": {
+      "book": "B2",
+      "lesson": "L05",
+      "firstSeenIn": "L2-S05-vital-signs"
+    },
+    "高": {
+      "book": "B2",
+      "lesson": "L02",
+      "firstSeenIn": "L2-S05-vital-signs"
+    },
+    "低": {
+      "book": "B2",
+      "lesson": "L02",
+      "firstSeenIn": "L2-S05-vital-signs"
+    },
+    "正常": {
+      "book": "B2",
+      "lesson": "L05",
+      "firstSeenIn": "L2-S05-vital-signs"
+    },
+    "一下": {
+      "book": "B2",
+      "lesson": "L03",
+      "firstSeenIn": "L2-S05-vital-signs"
+    },
+    "結果": {
+      "book": "B2",
+      "lesson": "L11",
+      "firstSeenIn": "L2-S05-vital-signs"
+    },
+    "廁所": {
+      "book": "B2",
+      "lesson": "L06",
+      "firstSeenIn": "L2-S06-toileting-help"
+    },
+    "站起來": {
+      "book": "B2",
+      "lesson": "L08",
+      "firstSeenIn": "L2-S06-toileting-help"
+    },
+    "坐下": {
+      "book": "B2",
+      "lesson": "L08",
+      "firstSeenIn": "L2-S06-toileting-help"
+    },
+    "洗手": {
+      "book": "B2",
+      "lesson": "L05",
+      "firstSeenIn": "L2-S06-toileting-help"
+    }
+  }
+}
