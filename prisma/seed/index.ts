@@ -26,6 +26,9 @@ import { seedScenarioL1S06 } from "./scenarios/L1-S06";
 import { seedScenarioL1S07 } from "./scenarios/L1-S07";
 import { seedScenarioL1S08 } from "./scenarios/L1-S08";
 import { seedScenarioL1S09 } from "./scenarios/L1-S09";
+import { seedScenarioL1S10 } from "./scenarios/L1-S10";
+import { seedScenarioL1S11 } from "./scenarios/L1-S11";
+import { seedScenarioL1S12 } from "./scenarios/L1-S12";
 import { seedScenarioL2S01 } from "./scenarios/L2-S01";
 import { seedScenarioL2S02 } from "./scenarios/L2-S02";
 import { seedScenarioL2S03 } from "./scenarios/L2-S03";
@@ -250,6 +253,12 @@ async function main() {
   console.log(`✓ L1-S08 ${s08.vocabCount} 詞彙 + ${s08.exerciseCount} 練習題建立完成`);
   const s09 = await seedScenarioL1S09(prisma);
   console.log(`✓ L1-S09 ${s09.vocabCount} 詞彙 + ${s09.exerciseCount} 練習題建立完成`);
+  const s10 = await seedScenarioL1S10(prisma);
+  console.log(`✓ L1-S10 ${s10.vocabCount} 詞彙 + ${s10.exerciseCount} 練習題建立完成`);
+  const s11 = await seedScenarioL1S11(prisma);
+  console.log(`✓ L1-S11 ${s11.vocabCount} 詞彙 + ${s11.exerciseCount} 練習題建立完成`);
+  const s12 = await seedScenarioL1S12(prisma);
+  console.log(`✓ L1-S12 ${s12.vocabCount} 詞彙 + ${s12.exerciseCount} 練習題建立完成`);
 
   const a2s01 = await seedScenarioL2S01(prisma);
   console.log(
