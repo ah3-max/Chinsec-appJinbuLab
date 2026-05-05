@@ -202,6 +202,40 @@ export default async function LearnPage({
         </div>
       )}
 
+      {/* Streak-at-risk warning */}
+      {streakAtRisk && (
+        <div
+          className="flex items-center gap-3 rounded-2xl border-2 px-3 py-2 text-sm"
+          style={{
+            borderColor: "#fb923c",
+            background: "linear-gradient(90deg, #fff7ed 0%, #fffbeb 100%)",
+          }}
+        >
+          <span className="text-2xl">🔥</span>
+          <div className="flex-1 min-w-0">
+            <p className="font-bold" style={{ color: "#c2410c" }}>
+              อย่าเสียสตรีค {me?.streakDays} วัน!
+            </p>
+            <p className="text-xs" style={{ color: "#9a3412" }}>
+              เรียนสักนิดเพื่อรักษาตัวเลข 🔥
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Word of the day */}
+      {session?.user?.id && (
+        <WordOfDayWrapper userId={session.user.id} userLevel={userLevel} locale={locale} />
+      )}
+
+      {/* Daily missions */}
+      {session?.user?.id && <DailyMissionsCard userId={session.user.id} />}
+
+      {/* Weekly Exam */}
+      {session?.user?.id && (
+        <WeeklyExamCard locale={locale} userId={session.user.id} />
+      )}
+
       {/* My Course — My Work + My School + AAY-FINANCE (愛愛院財務報表). */}
       <section className="space-y-2">
         <h2
@@ -320,40 +354,6 @@ export default async function LearnPage({
             />
           )}
         </section>
-      )}
-
-      {/* Streak-at-risk warning */}
-      {streakAtRisk && (
-        <div
-          className="flex items-center gap-3 rounded-2xl border-2 px-3 py-2 text-sm"
-          style={{
-            borderColor: "#fb923c",
-            background: "linear-gradient(90deg, #fff7ed 0%, #fffbeb 100%)",
-          }}
-        >
-          <span className="text-2xl">🔥</span>
-          <div className="flex-1 min-w-0">
-            <p className="font-bold" style={{ color: "#c2410c" }}>
-              อย่าเสียสตรีค {me?.streakDays} วัน!
-            </p>
-            <p className="text-xs" style={{ color: "#9a3412" }}>
-              เรียนสักนิดเพื่อรักษาตัวเลข 🔥
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Word of the day */}
-      {session?.user?.id && (
-        <WordOfDayWrapper userId={session.user.id} userLevel={userLevel} locale={locale} />
-      )}
-
-      {/* Daily missions */}
-      {session?.user?.id && <DailyMissionsCard userId={session.user.id} />}
-
-      {/* Weekly Exam */}
-      {session?.user?.id && (
-        <WeeklyExamCard locale={locale} userId={session.user.id} />
       )}
 
     </div>
