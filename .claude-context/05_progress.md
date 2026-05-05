@@ -53,6 +53,15 @@
 - ✅ Task 6 testlearner_th 完整流程驗證(scripts/test-zhuyin-flow.ts 8/8 綠)
 - ✅ Task 7 PATH_A_REPORT + claude:update + 此進度區段
 
+### Phase 2 Path B：歐寶體驗版 A1-S01~S03 (2026-05-05)
+- ✅ Task 1 歐寶帳號（aobao / A1_BEGINNER / uiLanguage=th）+ VocabularyCard + SentenceCard + TranslationReportButton
+- ✅ Task 2 Schema 確認（Scenario / ScenarioVocab / Exercise.scenarioId / TranslationReport 已就緒）
+- ✅ Task 3 L1-S01 第一天上班自我介紹（10 詞 + 8 題 + 對話 + 例句）
+- ✅ Task 4 L1-S02 早安問候阿公阿嬤（10 詞 + 8 題 + 對話）
+- ✅ Task 5 L1-S03 認識同事（10 詞 + 8 題 + 對話）
+- ✅ Task 6 學員介面整合（/learn 顯示情境卡 + ScenarioRunner + 翻譯回報嵌入）
+- ✅ Task 7 scripts/generate-translations.ts（vi/id 待歐寶確認後才跑） + docs/AOBAO_TESTING_GUIDE.md
+
 ---
 
 ## ⏳ 待辦（P1：豐富課程體驗）
