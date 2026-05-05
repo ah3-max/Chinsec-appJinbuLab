@@ -20,6 +20,12 @@ import { seedZhuyinBossExam } from "./curriculum/zhuyin-boss";
 import { seedScenarioL1S01 } from "./scenarios/L1-S01";
 import { seedScenarioL1S02 } from "./scenarios/L1-S02";
 import { seedScenarioL1S03 } from "./scenarios/L1-S03";
+import { seedScenarioL1S04 } from "./scenarios/L1-S04";
+import { seedScenarioL1S05 } from "./scenarios/L1-S05";
+import { seedScenarioL1S06 } from "./scenarios/L1-S06";
+import { seedScenarioL1S07 } from "./scenarios/L1-S07";
+import { seedScenarioL1S08 } from "./scenarios/L1-S08";
+import { seedScenarioL1S09 } from "./scenarios/L1-S09";
 import { seedScenarioL2S01 } from "./scenarios/L2-S01";
 import { seedScenarioL2S02 } from "./scenarios/L2-S02";
 import { seedScenarioL2S03 } from "./scenarios/L2-S03";
@@ -232,6 +238,18 @@ async function main() {
   console.log(
     `✓ L1-S03 ${s03.vocabCount} 詞彙 + ${s03.exerciseCount} 練習題建立完成`,
   );
+  const s04 = await seedScenarioL1S04(prisma);
+  console.log(`✓ L1-S04 ${s04.vocabCount} 詞彙 + ${s04.exerciseCount} 練習題建立完成`);
+  const s05 = await seedScenarioL1S05(prisma);
+  console.log(`✓ L1-S05 ${s05.vocabCount} 詞彙 + ${s05.exerciseCount} 練習題建立完成`);
+  const s06 = await seedScenarioL1S06(prisma);
+  console.log(`✓ L1-S06 ${s06.vocabCount} 詞彙 + ${s06.exerciseCount} 練習題建立完成`);
+  const s07 = await seedScenarioL1S07(prisma);
+  console.log(`✓ L1-S07 ${s07.vocabCount} 詞彙 + ${s07.exerciseCount} 練習題建立完成`);
+  const s08 = await seedScenarioL1S08(prisma);
+  console.log(`✓ L1-S08 ${s08.vocabCount} 詞彙 + ${s08.exerciseCount} 練習題建立完成`);
+  const s09 = await seedScenarioL1S09(prisma);
+  console.log(`✓ L1-S09 ${s09.vocabCount} 詞彙 + ${s09.exerciseCount} 練習題建立完成`);
 
   const a2s01 = await seedScenarioL2S01(prisma);
   console.log(
