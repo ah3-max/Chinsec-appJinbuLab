@@ -1,0 +1,437 @@
+{
+  "courseCode": "AAY-JOBS",
+  "titleZh": "愛愛院職別對照表",
+  "titleI18n": {
+    "zh-TW": "愛愛院職別對照表",
+    "th": "ตารางคำศัพท์ตำแหน่งงานบ้านอ้ายอ้าย",
+    "vi": "Bảng đối chiếu chức danh Aiai",
+    "id": "Tabel Jabatan Aiai",
+    "en": "Aiai Care Job Titles Reference"
+  },
+  "descriptionI18n": {
+    "zh-TW": "【必修課程】愛愛院常見職別、任別、性別、學歷詞彙對照表（中-泰-拼音），共 55 個詞。",
+    "th": "【วิชาบังคับ】 ตารางคำศัพท์ตำแหน่งงาน ประเภทจ้าง เพศ และระดับการศึกษาที่ใช้บ่อยของบ้านพักคนชราอ้ายอ้าย รวม 55 คำ",
+    "vi": "【Bắt buộc】 Bảng từ vựng chức danh, loại nhân viên, giới tính, trình độ học vấn thường dùng tại Aiai, tổng 55 từ",
+    "id": "【Wajib】 Tabel kosakata jabatan, jenis kepegawaian, gender, dan tingkat pendidikan di Aiai, total 55 kata",
+    "en": "【Required】 Reference table for common job titles, employment types, gender, and education levels at Aiai Care (Chinese-Thai-Pinyin), total 55 words."
+  },
+  "stages": [
+    {
+      "code": "J01-TITLE",
+      "titleZh": "職別/職稱",
+      "titleTh": "ตำแหน่งงาน",
+      "titleEn": "Job Titles",
+      "items": [
+        {
+          "idx": 1,
+          "hanzi": "院長",
+          "pinyin": "Yuàn zhǎng",
+          "thai": "ผู้อำนวยการ",
+          "note": ""
+        },
+        {
+          "idx": 2,
+          "hanzi": "護理師兼秘書長",
+          "pinyin": "Hùlǐ shī jiān mìshū zhǎng",
+          "thai": "พยาบาล/เลขาธิการ",
+          "note": ""
+        },
+        {
+          "idx": 3,
+          "hanzi": "行政主任",
+          "pinyin": "Xíngzhèng zhǔrèn",
+          "thai": "ผู้จัดการฝ่ายธุรการ",
+          "note": ""
+        },
+        {
+          "idx": 4,
+          "hanzi": "系統應用組長",
+          "pinyin": "Xìtǒng yìngyòng zǔ zhǎng",
+          "thai": "หัวหน้ากลุ่มระบบสารสนเทศ",
+          "note": ""
+        },
+        {
+          "idx": 5,
+          "hanzi": "運務管理組長",
+          "pinyin": "Yùn wù guǎnlǐ zǔ zhǎng",
+          "thai": "หัวหน้ากลุ่มจัดการปฏิบัติการ",
+          "note": ""
+        },
+        {
+          "idx": 6,
+          "hanzi": "人資組長",
+          "pinyin": "Rénzī zǔ zhǎng",
+          "thai": "หัวหน้ากลุ่มทรัพยากรบุคคล",
+          "note": ""
+        },
+        {
+          "idx": 7,
+          "hanzi": "膳食組長",
+          "pinyin": "Shànshí zǔ zhǎng",
+          "thai": "หัวหน้ากลุ่มโภชนาการ",
+          "note": ""
+        },
+        {
+          "idx": 8,
+          "hanzi": "財會組長",
+          "pinyin": "Cái kuài zǔ zhǎng",
+          "thai": "หัวหน้ากลุ่มบัญชีการเงิน",
+          "note": ""
+        },
+        {
+          "idx": 9,
+          "hanzi": "財會副組長",
+          "pinyin": "Cái kuài fù zǔ zhǎng",
+          "thai": "รองหัวหน้ากลุ่มบัญชีการเงิน",
+          "note": ""
+        },
+        {
+          "idx": 10,
+          "hanzi": "財務管理組副組長",
+          "pinyin": "Cáiwù guǎnlǐ zǔ fù zǔ zhǎng",
+          "thai": "รองหัวหน้ากลุ่มบริหารการเงิน",
+          "note": ""
+        },
+        {
+          "idx": 11,
+          "hanzi": "數位智能副組長",
+          "pinyin": "Shùwèi zhìnéng fù zǔ zhǎng",
+          "thai": "รองหัวหน้ากลุ่มดิจิทัลและ AI",
+          "note": ""
+        },
+        {
+          "idx": 12,
+          "hanzi": "日照主任",
+          "pinyin": "Rìzhào zhǔrèn",
+          "thai": "ผู้จัดการศูนย์ดูแลกลางวัน",
+          "note": ""
+        },
+        {
+          "idx": 13,
+          "hanzi": "行政專員",
+          "pinyin": "Xíngzhèng zhuānyuán",
+          "thai": "เจ้าหน้าที่อาวุโสฝ่ายธุรการ",
+          "note": ""
+        },
+        {
+          "idx": 14,
+          "hanzi": "行政人員",
+          "pinyin": "Xíngzhèng rényuán",
+          "thai": "เจ้าหน้าที่ฝ่ายธุรการ",
+          "note": ""
+        },
+        {
+          "idx": 15,
+          "hanzi": "行政助理",
+          "pinyin": "Xíngzhèng zhùlǐ",
+          "thai": "ผู้ช่วยฝ่ายธุรการ",
+          "note": ""
+        },
+        {
+          "idx": 16,
+          "hanzi": "人資管理師",
+          "pinyin": "Rénzī guǎnlǐ shī",
+          "thai": "นักจัดการทรัพยากรบุคคล",
+          "note": ""
+        },
+        {
+          "idx": 17,
+          "hanzi": "招募管理師",
+          "pinyin": "Zhāomù guǎnlǐ shī",
+          "thai": "นักจัดการสรรหาบุคลากร",
+          "note": ""
+        },
+        {
+          "idx": 18,
+          "hanzi": "薪酬管理師",
+          "pinyin": "Xīnchóu guǎnlǐ shī",
+          "thai": "นักจัดการค่าตอบแทน",
+          "note": ""
+        },
+        {
+          "idx": 19,
+          "hanzi": "組訓專員",
+          "pinyin": "Zǔ xùn zhuānyuán",
+          "thai": "เจ้าหน้าที่อบรมและพัฒนา",
+          "note": ""
+        },
+        {
+          "idx": 20,
+          "hanzi": "工務管理師",
+          "pinyin": "Gōngwù guǎnlǐ shī",
+          "thai": "นักจัดการงานวิศวกรรม",
+          "note": ""
+        },
+        {
+          "idx": 21,
+          "hanzi": "室內設計師",
+          "pinyin": "Shìnèi shèjì shī",
+          "thai": "นักออกแบบภายใน",
+          "note": ""
+        },
+        {
+          "idx": 22,
+          "hanzi": "資訊專員",
+          "pinyin": "Zīxùn zhuānyuán",
+          "thai": "เจ้าหน้าที่อาวุโสฝ่ายไอที",
+          "note": ""
+        },
+        {
+          "idx": 23,
+          "hanzi": "資訊資深專員",
+          "pinyin": "Zīxùn zīshēn zhuānyuán",
+          "thai": "เจ้าหน้าที่ไอทีระดับชำนาญการ",
+          "note": ""
+        },
+        {
+          "idx": 24,
+          "hanzi": "個案管理師",
+          "pinyin": "Gèʼàn guǎnlǐ shī",
+          "thai": "นักจัดการรายกรณี (Case Manager)",
+          "note": ""
+        },
+        {
+          "idx": 25,
+          "hanzi": "社工督導",
+          "pinyin": "Shègōng dūdǎo",
+          "thai": "หัวหน้านักสังคมสงเคราะห์",
+          "note": ""
+        },
+        {
+          "idx": 26,
+          "hanzi": "社工員",
+          "pinyin": "Shègōng yuán",
+          "thai": "นักสังคมสงเคราะห์",
+          "note": ""
+        },
+        {
+          "idx": 27,
+          "hanzi": "社工助理",
+          "pinyin": "Shègōng zhùlǐ",
+          "thai": "ผู้ช่วยนักสังคมสงเคราะห์",
+          "note": ""
+        },
+        {
+          "idx": 28,
+          "hanzi": "日照社工員",
+          "pinyin": "Rìzhào shègōng yuán",
+          "thai": "นักสังคมสงเคราะห์ศูนย์ดูแลกลางวัน",
+          "note": ""
+        },
+        {
+          "idx": 29,
+          "hanzi": "護理人員",
+          "pinyin": "Hùlǐ rényuán",
+          "thai": "พยาบาล",
+          "note": ""
+        },
+        {
+          "idx": 30,
+          "hanzi": "日照護理人員",
+          "pinyin": "Rìzhào hùlǐ rényuán",
+          "thai": "พยาบาลศูนย์ดูแลกลางวัน",
+          "note": ""
+        },
+        {
+          "idx": 31,
+          "hanzi": "照服人員-台籍",
+          "pinyin": "Zhào fú rényuán - Tái jí",
+          "thai": "ผู้ดูแล (สัญชาติไต้หวัน)",
+          "note": ""
+        },
+        {
+          "idx": 32,
+          "hanzi": "照服人員-印籍",
+          "pinyin": "Zhào fú rényuán - Yìn jí",
+          "thai": "ผู้ดูแล (สัญชาติอินโดนีเซีย)",
+          "note": ""
+        },
+        {
+          "idx": 33,
+          "hanzi": "日照照服人員-台籍",
+          "pinyin": "Rìzhào zhào fú rényuán - Tái jí",
+          "thai": "ผู้ดูแลศูนย์ดูแลกลางวัน (สัญชาติไต้หวัน)",
+          "note": ""
+        },
+        {
+          "idx": 34,
+          "hanzi": "生活管理員",
+          "pinyin": "Shēnghuó guǎnlǐ yuán",
+          "thai": "เจ้าหน้าที่จัดการที่พักอาศัย",
+          "note": ""
+        },
+        {
+          "idx": 35,
+          "hanzi": "營養師",
+          "pinyin": "Yíngyǎng shī",
+          "thai": "นักโภชนาการ",
+          "note": ""
+        },
+        {
+          "idx": 36,
+          "hanzi": "職能治療師",
+          "pinyin": "Zhínéng zhìliáo shī",
+          "thai": "นักกิจกรรมบำบัด",
+          "note": ""
+        },
+        {
+          "idx": 37,
+          "hanzi": "會計人員",
+          "pinyin": "Kuàijì rényuán",
+          "thai": "พนักงานบัญชี",
+          "note": ""
+        },
+        {
+          "idx": 38,
+          "hanzi": "總務組長",
+          "pinyin": "Zǒngwù zǔ zhǎng",
+          "thai": "หัวหน้ากลุ่มงานทั่วไป",
+          "note": ""
+        },
+        {
+          "idx": 39,
+          "hanzi": "總務人員",
+          "pinyin": "Zǒngwù rényuán",
+          "thai": "พนักงานงานทั่วไป",
+          "note": ""
+        },
+        {
+          "idx": 40,
+          "hanzi": "總務助理",
+          "pinyin": "Zǒngwù zhùlǐ",
+          "thai": "ผู้ช่วยงานทั่วไป",
+          "note": ""
+        },
+        {
+          "idx": 41,
+          "hanzi": "膳食人員",
+          "pinyin": "Shànshí rényuán",
+          "thai": "พนักงานโภชนาการ/แม่ครัว",
+          "note": ""
+        },
+        {
+          "idx": 42,
+          "hanzi": "清潔人員",
+          "pinyin": "Qīngjié rényuán",
+          "thai": "พนักงานทำความสะอาด",
+          "note": ""
+        },
+        {
+          "idx": 43,
+          "hanzi": "司機",
+          "pinyin": "Sījī",
+          "thai": "พนักงานขับรถ",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "code": "J02-EMP",
+      "titleZh": "任別",
+      "titleTh": "ประเภทการจ้าง",
+      "titleEn": "Employment Type",
+      "items": [
+        {
+          "idx": 44,
+          "hanzi": "專任",
+          "pinyin": "Zhuān rèn",
+          "thai": "พนักงานประจำ (Full-time)",
+          "note": ""
+        },
+        {
+          "idx": 45,
+          "hanzi": "兼任",
+          "pinyin": "Jiān rèn",
+          "thai": "พนักงานพาร์ทไทม์ (Part-time)",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "code": "J03-SEX",
+      "titleZh": "性別",
+      "titleTh": "เพศ",
+      "titleEn": "Gender",
+      "items": [
+        {
+          "idx": 46,
+          "hanzi": "男",
+          "pinyin": "Nán",
+          "thai": "ชาย",
+          "note": ""
+        },
+        {
+          "idx": 47,
+          "hanzi": "女",
+          "pinyin": "Nǚ",
+          "thai": "หญิง",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "code": "J04-EDU",
+      "titleZh": "學歷",
+      "titleTh": "ระดับการศึกษา",
+      "titleEn": "Education",
+      "items": [
+        {
+          "idx": 48,
+          "hanzi": "博士",
+          "pinyin": "Bóshì",
+          "thai": "ปริญญาเอก",
+          "note": ""
+        },
+        {
+          "idx": 49,
+          "hanzi": "碩士",
+          "pinyin": "Shuòshì",
+          "thai": "ปริญญาโท",
+          "note": ""
+        },
+        {
+          "idx": 50,
+          "hanzi": "大學",
+          "pinyin": "Dàxué",
+          "thai": "ปริญญาตรี",
+          "note": ""
+        },
+        {
+          "idx": 51,
+          "hanzi": "專科",
+          "pinyin": "Zhuānkē",
+          "thai": "อนุปริญญา",
+          "note": ""
+        },
+        {
+          "idx": 52,
+          "hanzi": "高中職",
+          "pinyin": "Gāozhōng zhí",
+          "thai": "มัธยมปลาย/อาชีวะ",
+          "note": ""
+        },
+        {
+          "idx": 53,
+          "hanzi": "高中",
+          "pinyin": "Gāozhōng",
+          "thai": "มัธยมปลาย",
+          "note": ""
+        },
+        {
+          "idx": 54,
+          "hanzi": "國中",
+          "pinyin": "Guózhōng",
+          "thai": "มัธยมต้น",
+          "note": ""
+        },
+        {
+          "idx": 55,
+          "hanzi": "國小",
+          "pinyin": "Guóxiǎo",
+          "thai": "ประถมศึกษา",
+          "note": ""
+        }
+      ]
+    }
+  ]
+}

@@ -54,6 +54,7 @@ import { seedScenarioL3S10 } from "./scenarios/L3-S10";
 import { seedScenarioL3S11 } from "./scenarios/L3-S11";
 import { seedScenarioL3S12 } from "./scenarios/L3-S12";
 import { seedAayFinance } from "./courses/aay-finance";
+import { seedAayJobs } from "./courses/aay-jobs";
 
 const prisma = new PrismaClient();
 
@@ -347,6 +348,12 @@ async function main() {
   const aayFin = await seedAayFinance(prisma);
   console.log(
     `✓ ${aayFin.courseCode}: ${aayFin.stages} stages · ${aayFin.vocab} 詞彙 · ${aayFin.exercises} 練習題`,
+  );
+
+  console.log("📒 建立 AAY-JOBS 必修課程 (職別對照表)...");
+  const aayJobs = await seedAayJobs(prisma);
+  console.log(
+    `✓ ${aayJobs.courseCode}: ${aayJobs.stages} stages · ${aayJobs.vocab} 詞彙 · ${aayJobs.exercises} 練習題`,
   );
 
   // ----------------------------------------

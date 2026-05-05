@@ -9,7 +9,6 @@ import {
   Clock,
   Flame,
   BookOpen,
-  Briefcase,
 } from "lucide-react";
 import { Level, type UserRole } from "@prisma/client";
 import { auth } from "@/lib/auth";
@@ -236,7 +235,7 @@ export default async function LearnPage({
         <WeeklyExamCard locale={locale} userId={session.user.id} />
       )}
 
-      {/* My Course — My Work + My School + AAY-FINANCE (愛愛院財務報表). */}
+      {/* My Course — My School + AAY-FINANCE (愛愛院財務報表) + AAY-JOBS (職別對照表). */}
       <section className="space-y-2">
         <h2
           className="text-base font-semibold"
@@ -244,81 +243,28 @@ export default async function LearnPage({
         >
           {t("myCourses")}
         </h2>
-        <div className="space-y-2">
-          {/* My Work — synthetic card, links to /mywork */}
-          <Link
-            href={`/${locale}/mywork`}
-            className="block transition-transform active:scale-[0.99]"
-          >
-            <article
-              className="rounded-xl border bg-white p-3 shadow-sm transition-shadow hover:shadow-md"
-              style={{ borderColor: "var(--aiai-green-100)" }}
-            >
-              <div className="flex items-center gap-3">
-                <div
-                  className="flex size-11 shrink-0 items-center justify-center rounded-xl"
-                  style={{
-                    background: "var(--aiai-green-100)",
-                    color: "var(--aiai-green-800)",
-                  }}
-                >
-                  <Briefcase className="size-5" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p
-                    className="truncate text-sm font-semibold"
-                    style={{ color: "var(--aiai-gray-800)" }}
-                  >
-                    {locale === "zh-TW"
-                      ? "工作詞彙 · MyWork"
-                      : locale === "th"
-                        ? "งานของฉัน · MyWork"
-                        : locale === "vi"
-                          ? "Công việc · MyWork"
-                          : locale === "id"
-                            ? "Pekerjaan · MyWork"
-                            : "MyWork"}
-                  </p>
-                  <p
-                    className="mt-0.5 text-[11px]"
-                    style={{ color: "var(--aiai-gray-400)" }}
-                  >
-                    {locale === "zh-TW"
-                      ? "職別 · 財務報表 · 設備資產"
-                      : locale === "th"
-                        ? "ตำแหน่งงาน · งบการเงิน · ทรัพย์สิน"
-                        : locale === "vi"
-                          ? "Chức vụ · Báo cáo tài chính · Tài sản"
-                          : locale === "id"
-                            ? "Jabatan · Laporan keuangan · Aset"
-                            : "Job titles · Financials · Assets"}
-                  </p>
-                </div>
-                <ArrowRight
-                  className="size-4 shrink-0"
-                  style={{ color: "var(--aiai-green-600)" }}
-                />
-              </div>
-            </article>
-          </Link>
-          {/* My School (MY-SCHOOL) + 愛愛院財務報表 (AAY-FINANCE) */}
-          <CourseList
-            courses={courses.filter(
-              (c) => c.code === "MY-SCHOOL" || c.code === "AAY-FINANCE",
-            )}
-            courseProgress={courseProgress}
-            classify={classify}
-            locale={locale}
-            tLearn={tLearn}
-            tLevels={tLevels}
-          />
-        </div>
+        <CourseList
+          courses={courses.filter(
+            (c) =>
+              c.code === "MY-SCHOOL" ||
+              c.code === "AAY-FINANCE" ||
+              c.code === "AAY-JOBS",
+          )}
+          courseProgress={courseProgress}
+          classify={classify}
+          locale={locale}
+          tLearn={tLearn}
+          tLevels={tLevels}
+        />
       </section>
 
       {/* Eldercare scenario stages — scenarios + level-courses (注音, A1-C2) */}
       {(scenarios.length > 0 ||
         courses.some(
-          (c) => c.code !== "MY-SCHOOL" && c.code !== "AAY-FINANCE",
+          (c) =>
+            c.code !== "MY-SCHOOL" &&
+            c.code !== "AAY-FINANCE" &&
+            c.code !== "AAY-JOBS",
         )) && (
         <section className="space-y-2">
           <h2
@@ -340,11 +286,17 @@ export default async function LearnPage({
           {/* Level-progression courses (注音 / A1-C2). AAY-FINANCE moved to
               "My course" section above. */}
           {courses.filter(
-            (c) => c.code !== "MY-SCHOOL" && c.code !== "AAY-FINANCE",
+            (c) =>
+            c.code !== "MY-SCHOOL" &&
+            c.code !== "AAY-FINANCE" &&
+            c.code !== "AAY-JOBS",
           ).length > 0 && (
             <CourseList
               courses={courses.filter(
-                (c) => c.code !== "MY-SCHOOL" && c.code !== "AAY-FINANCE",
+                (c) =>
+            c.code !== "MY-SCHOOL" &&
+            c.code !== "AAY-FINANCE" &&
+            c.code !== "AAY-JOBS",
               )}
               courseProgress={courseProgress}
               classify={classify}
