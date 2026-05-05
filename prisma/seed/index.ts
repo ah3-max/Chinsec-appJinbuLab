@@ -41,6 +41,18 @@ import { seedScenarioL2S09 } from "./scenarios/L2-S09";
 import { seedScenarioL2S10 } from "./scenarios/L2-S10";
 import { seedScenarioL2S11 } from "./scenarios/L2-S11";
 import { seedScenarioL2S12 } from "./scenarios/L2-S12";
+import { seedScenarioL3S01 } from "./scenarios/L3-S01";
+import { seedScenarioL3S02 } from "./scenarios/L3-S02";
+import { seedScenarioL3S03 } from "./scenarios/L3-S03";
+import { seedScenarioL3S04 } from "./scenarios/L3-S04";
+import { seedScenarioL3S05 } from "./scenarios/L3-S05";
+import { seedScenarioL3S06 } from "./scenarios/L3-S06";
+import { seedScenarioL3S07 } from "./scenarios/L3-S07";
+import { seedScenarioL3S08 } from "./scenarios/L3-S08";
+import { seedScenarioL3S09 } from "./scenarios/L3-S09";
+import { seedScenarioL3S10 } from "./scenarios/L3-S10";
+import { seedScenarioL3S11 } from "./scenarios/L3-S11";
+import { seedScenarioL3S12 } from "./scenarios/L3-S12";
 import { seedAayFinance } from "./courses/aay-finance";
 
 const prisma = new PrismaClient();
@@ -302,6 +314,31 @@ async function main() {
   console.log(`✓ L2-S11 ${a2s11.vocabCount} 詞彙 + ${a2s11.exerciseCount} 練習題建立完成`);
   const a2s12 = await seedScenarioL2S12(prisma);
   console.log(`✓ L2-S12 ${a2s12.vocabCount} 詞彙 + ${a2s12.exerciseCount} 練習題建立完成`);
+
+  const b1s01 = await seedScenarioL3S01(prisma);
+  console.log(`✓ L3-S01 ${b1s01.vocabCount} 詞彙 + ${b1s01.exerciseCount} 練習題建立完成`);
+  const b1s02 = await seedScenarioL3S02(prisma);
+  console.log(`✓ L3-S02 ${b1s02.vocabCount} 詞彙 + ${b1s02.exerciseCount} 練習題建立完成`);
+  const b1s03 = await seedScenarioL3S03(prisma);
+  console.log(`✓ L3-S03 ${b1s03.vocabCount} 詞彙 + ${b1s03.exerciseCount} 練習題建立完成`);
+  const b1s04 = await seedScenarioL3S04(prisma);
+  console.log(`✓ L3-S04 ${b1s04.vocabCount} 詞彙 + ${b1s04.exerciseCount} 練習題建立完成`);
+  const b1s05 = await seedScenarioL3S05(prisma);
+  console.log(`✓ L3-S05 ${b1s05.vocabCount} 詞彙 + ${b1s05.exerciseCount} 練習題建立完成`);
+  const b1s06 = await seedScenarioL3S06(prisma);
+  console.log(`✓ L3-S06 ${b1s06.vocabCount} 詞彙 + ${b1s06.exerciseCount} 練習題建立完成`);
+  const b1s07 = await seedScenarioL3S07(prisma);
+  console.log(`✓ L3-S07 ${b1s07.vocabCount} 詞彙 + ${b1s07.exerciseCount} 練習題建立完成`);
+  const b1s08 = await seedScenarioL3S08(prisma);
+  console.log(`✓ L3-S08 ${b1s08.vocabCount} 詞彙 + ${b1s08.exerciseCount} 練習題建立完成`);
+  const b1s09 = await seedScenarioL3S09(prisma);
+  console.log(`✓ L3-S09 ${b1s09.vocabCount} 詞彙 + ${b1s09.exerciseCount} 練習題建立完成`);
+  const b1s10 = await seedScenarioL3S10(prisma);
+  console.log(`✓ L3-S10 ${b1s10.vocabCount} 詞彙 + ${b1s10.exerciseCount} 練習題建立完成`);
+  const b1s11 = await seedScenarioL3S11(prisma);
+  console.log(`✓ L3-S11 ${b1s11.vocabCount} 詞彙 + ${b1s11.exerciseCount} 練習題建立完成`);
+  const b1s12 = await seedScenarioL3S12(prisma);
+  console.log(`✓ L3-S12 ${b1s12.vocabCount} 詞彙 + ${b1s12.exerciseCount} 練習題建立完成`);
 
   // ----------------------------------------
   // 必修課:愛愛院財務報表詞彙對照表 (207 詞 × 14 類別)
